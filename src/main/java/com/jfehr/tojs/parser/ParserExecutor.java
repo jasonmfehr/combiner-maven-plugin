@@ -3,27 +3,37 @@ package com.jfehr.tojs.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jfehr.tojs.logging.ParameterizedLogger;
+
 public class ParserExecutor {
 
-	private List<String> parsersToExecute;
-	private List<ToJsParser> parserObjects;
-	private ParserFactory parserFactory;
-	private boolean parsersInitialized;
+	private static final String NULL_PARSERS_TO_EXECUTE_PARAM_MESSAGE = "parsersToExecute parameter passed to ParserExecutor.execute cannot be null";
+	private static final String NULL_CONTENTS_TO_PARSE_PARAM_MESSAGE = "contentsToParse parameter passed to ParserExecutor.execute cannot be null";
 	
-	public ParserExecutor() {
-		parsersInitialized = false;
-	}
+	private final ParserFactory parserFactory;
+	private final ParameterizedLogger logger;
 	
-	public ParserExecutor(ParserFactory parserFactory) {
-		super();
+	public ParserExecutor(final ParserFactory parserFactory, final ParameterizedLogger logger) {
 		this.parserFactory = parserFactory;
+		this.logger = logger;
 	}
 	
-	public String executeParsers(String contentsToParse) {
-		final List<ToJsParser> parserObjects;
+	public String execute(final List<String> parsersToExecute, final String contentsToParse) {
+		final List<ToJsParser> parserObjects = new ArrayList<ToJsParser>();
 		String tmpParsed;
 		
-		parserObjects = this.buildParserObjects();
+		if(parsersToExecute == null){
+			throw new NullPointerException(NULL_PARSERS_TO_EXECUTE_PARAM_MESSAGE);
+		}
+		
+		if(contentsToParse == null){
+			throw new NullPointerException(NULL_CONTENTS_TO_PARSE_PARAM_MESSAGE);
+		}
+		
+		for(String parser : parsersToExecute){
+			logger.debugWithParams("ParserExecutor attempting to instantiate parser with name [{0}]", parser);
+			parserObjects.add(parserFactory.buildParser(parser));
+		}
 		
 		tmpParsed = contentsToParse; 
 		
@@ -32,35 +42,6 @@ public class ParserExecutor {
 		}
 		
 		return tmpParsed;
-	}
-	
-	public List<String> getParsersToExecute() {
-		return parsersToExecute;
-	}
-	public void setParsersToExecute(List<String> parsersToExecute) {
-		this.parsersInitialized = false;
-		this.parsersToExecute = parsersToExecute;
-	}
-	
-	public ParserFactory getParserFactory() {
-		return parserFactory;
-	}
-	public void setParserFactory(ParserFactory parserFactory) {
-		this.parserFactory = parserFactory;
-	}
-
-	private List<ToJsParser> buildParserObjects() {
-		if(!this.parsersInitialized){
-			this.parserObjects = new ArrayList<ToJsParser>();
-			
-			for(String parser : this.parsersToExecute){
-				this.parserObjects.add(parserFactory.buildParser(parser));
-			}
-			
-			this.parsersInitialized = true;
-		}
-		
-		return this.parserObjects;
 	}
 	
 }

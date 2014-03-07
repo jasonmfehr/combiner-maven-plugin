@@ -101,7 +101,15 @@ public class ParserFactoryTest {
 		}
 		
 		assertTrue(expectedClasses.isEmpty());
+	}
+	
+	@Test(expected=ParserNotFoundException.class)
+	public void testParserListInvalidParsers() {
+		final List<String> parserList = new ArrayList<String>();
 		
+		parserList.add(MOCK_PARSER_DEFAULT_PKG);
+		parserList.add(MOCK_PARSER_NONEXISTANT);
+		fixture.buildParsers(parserList);
 	}
 	
 	//=== Mock classes for testing ===\\

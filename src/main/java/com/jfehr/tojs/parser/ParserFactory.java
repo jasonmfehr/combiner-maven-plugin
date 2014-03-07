@@ -10,13 +10,13 @@ import com.jfehr.tojs.logging.ParameterizedLogger;
 public class ParserFactory {
 	private static final String DEFAULT_PARSER_PACKAGE = "com.jfehr.tojs.parser.";
 	private static final String PARSER_IS_INTERFACE_MESSAGE = "The parser is an interface.  It must be a class that implements the " + ToJsParser.class.getName() + " interface.";
-	private static final String PARSER_DOES_NOT_IMPLEMENT_INTERFACE = "The parser does not implement the " + ToJsParser.class.getName() + " interface.  This interface must be implemented.";
+	private static final String PARSER_DOES_NOT_IMPLEMENT_INTERFACE_MESSAGE = "The parser does not implement the " + ToJsParser.class.getName() + " interface.  This interface must be implemented.";
 	private static final String NULL_PARSER_NAMES_PARAM = "parserNamesList parameter passed to ParserFactory.buildParsers cannot be null";
 	private static final String NULL_PARSER_NAME_PARAM = "parserName parameter passed to ParserFactory.buildParser cannot be null";
 	
-	private ParameterizedLogger logger;
+	private final ParameterizedLogger logger;
 	
-	public ParserFactory(ParameterizedLogger logger) {
+	public ParserFactory(final ParameterizedLogger logger) {
 		this.logger = logger;
 	}
 	
@@ -88,7 +88,7 @@ public class ParserFactory {
 		}
 		
 		if(!this.implementsParserInterface(clazz)){
-			throw new InvalidParserException(PARSER_DOES_NOT_IMPLEMENT_INTERFACE, parserName);
+			throw new InvalidParserException(PARSER_DOES_NOT_IMPLEMENT_INTERFACE_MESSAGE, parserName);
 		}
 		
 		try {

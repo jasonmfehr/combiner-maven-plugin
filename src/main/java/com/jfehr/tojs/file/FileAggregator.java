@@ -51,6 +51,7 @@ public class FileAggregator {
 		
 		inputFileContents = this.readInputFiles(charSet);
 		
+		/*
 		parserExecutor = new ParserExecutor();
 		parserExecutor.setParsersToExecute(this.parsers);
 		parsedContents = new HashMap<String, String>();
@@ -60,6 +61,7 @@ public class FileAggregator {
 		}
 		
 		this.writeParsedContents(outputFile, charSet, parsedContents);
+		 */
 		
 	}
 	
