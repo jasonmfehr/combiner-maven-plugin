@@ -1,12 +1,20 @@
 package com.jfehr.tojs.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
 
+/**
+ * 
+ * @author jasonmfehr
+ * @since 1.0.0
+ *
+ */
 public class ParserFactory {
 	private static final String DEFAULT_PARSER_PACKAGE = "com.jfehr.tojs.parser.";
 	private static final String PARSER_IS_INTERFACE_MESSAGE = "The parser is an interface.  It must be a class that implements the " + ToJsParser.class.getName() + " interface.";
@@ -15,9 +23,11 @@ public class ParserFactory {
 	private static final String NULL_PARSER_NAME_PARAM = "parserName parameter passed to ParserFactory.buildParser cannot be null";
 	
 	private final ParameterizedLogger logger;
+	private final Map<String, ToJsParser> parserCache;
 	
 	public ParserFactory(final ParameterizedLogger logger) {
 		this.logger = logger;
+		this.parserCache = new HashMap<String, ToJsParser>();
 	}
 	
 	public List<ToJsParser> buildParsers(final List<String> parserNamesList) {
@@ -44,16 +54,24 @@ public class ParserFactory {
 		if(parserName != null){
 			logger.debugWithParams("ParserFactory.buildParser called with parser named [{0}]", " + parserName + ");
 			
-			parserObj = this.instantiateParserUnchanged(parserName);
-			
-			if(parserObj == null){
-				logger.debugWithParams("Coud not instatiate class with the exact package and name of [{0}]", parserName);
-				parserObj = this.instantiateParserDefaultPackage(parserName);
-			}
-			
-			if(parserObj == null){
-				logger.debugWithParams("Could not instantiate parser with a name of [{0}] in the default package of [{1}]", parserName, DEFAULT_PARSER_PACKAGE);
-				throw new ParserNotFoundException(parserName);
+			if(parserCache.containsKey(parserName)){
+				parserObj = parserCache.get(parserName);
+			}else{
+				//TODO catch exceptions coming from instantiateParser instead
+				//of using these if statements
+				parserObj = this.instantiateParserUnchanged(parserName);
+				
+				if(parserObj == null){
+					logger.debugWithParams("Coud not instatiate class with the exact package and name of [{0}]", parserName);
+					parserObj = this.instantiateParserDefaultPackage(parserName);
+				}
+				
+				if(parserObj == null){
+					logger.debugWithParams("Could not instantiate parser with a name of [{0}] in the default package of [{1}]", parserName, DEFAULT_PARSER_PACKAGE);
+					throw new ParserNotFoundException(parserName);
+				}
+				
+				parserCache.put(parserName, parserObj);
 			}
 		}else{
 			throw new NullPointerException(NULL_PARSER_NAME_PARAM);

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.testutil.MockParserNonDefaultPackage;
+import com.jfehr.tojs.testutil.TestUtil;
 
 public class ParserFactoryTest {
 
@@ -110,6 +112,21 @@ public class ParserFactoryTest {
 		parserList.add(MOCK_PARSER_DEFAULT_PKG);
 		parserList.add(MOCK_PARSER_NONEXISTANT);
 		fixture.buildParsers(parserList);
+	}
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testParserCaching() {
+		final Map<String, ToJsParser> parserCache;
+		final ToJsParser parser;
+		
+		assertEquals(MockParserNonDefaultPackage.class, fixture.buildParser(MOCK_PARSER_NON_DEFAULT_PKG).getClass());
+		
+		parserCache = (Map<String, ToJsParser>)TestUtil.getPrivateField(fixture, "parserCache");
+		assertEquals(1, parserCache.size());
+		assertTrue(parserCache.containsKey(MOCK_PARSER_NON_DEFAULT_PKG));
+		parser = parserCache.get(MOCK_PARSER_NON_DEFAULT_PKG);
+		assertEquals(MockParserNonDefaultPackage.class, parser.getClass());
 	}
 	
 	//=== Mock classes for testing ===\\

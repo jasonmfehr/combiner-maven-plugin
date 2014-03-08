@@ -8,6 +8,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
 
 import com.jfehr.tojs.exception.DirectoryNotFoundException;
 import com.jfehr.tojs.exception.NotReadableException;
+import com.jfehr.tojs.logging.ParameterizedLogger;
 
 /**
  * Searches through a base directory locating files that match a 
@@ -21,20 +22,24 @@ import com.jfehr.tojs.exception.NotReadableException;
  */
 public class FileLocator {
 
-	private DirectoryScanner directoryScanner;
-	private String baseDir;
-	private List<String> includes;
-	private List<String> excludes;
+	private final ParameterizedLogger logger;
 	
-	public FileLocator() {
-		directoryScanner = new DirectoryScanner();
+	public FileLocator(ParameterizedLogger logger) {
+		this.logger = logger;
 	}
 	
 	/**
 	 * Locate a set of files the match the provided includes patterns 
 	 * but do not match the provided excludes patterns.<br /><br />
 	 * 
-	 * <b>Note:</b> This implementation is NOT thread safe!<br /><br />
+	 * @param directoryScanner {@link DirectoryScanner} used to search for 
+	 *                         files
+	 * @param baseDir {@link String} containing an absolute path to a 
+	 *                base directory that will be searched
+	 * @param includes {@link List} containing file patterns to include in the 
+	 *                 results set
+	 * @param excludes {@link List} containing file patterns to exclude from the 
+	 *                 results set
 	 * 
 	 * @return {@link List} of file paths relative to the baseDir
 	 * 
@@ -43,81 +48,38 @@ public class FileLocator {
 	 *                                  specified in the baseDir parameter 
 	 *                                  does not exist or is not readable 
 	 */
-	public List<String> locateFiles() {
-		this.validateBaseDir();
+	public List<String> locateFiles(final DirectoryScanner directoryScanner, final String baseDir, final List<String> includes, final List<String> excludes) {
+		this.validateBaseDir(baseDir);
 		
 		directoryScanner.addDefaultExcludes();
-		directoryScanner.setBasedir(this.baseDir);
-		directoryScanner.setIncludes(this.includes.toArray(new String[this.includes.size()]));
+		directoryScanner.setBasedir(baseDir);
+		directoryScanner.setIncludes(includes.toArray(new String[includes.size()]));
 		
-		if(this.excludes != null){
-			this.directoryScanner.setExcludes(this.excludes.toArray(new String[this.excludes.size()]));
+		if(excludes != null){
+			directoryScanner.setExcludes(excludes.toArray(new String[excludes.size()]));
 		}
 		
-		this.directoryScanner.scan();
+		directoryScanner.scan();
 		
-		return Arrays.asList(this.directoryScanner.getIncludedFiles());
-	}
-	
-	public String getBaseDir() {
-		return baseDir;
-	}
-	
-	/**
-	 * sets the base directory that will be searched during 
-	 * a {@link FileLocator#locateFiles()} execution
-	 * 
-	 * @param baseDir {@link String} containing an absolute path to a 
-	 *                base directory that will be searched
-	 */
-	public void setBaseDir(final String baseDir) {
-		this.baseDir = baseDir;
-	}
-
-	public List<String> getIncludes() {
-		return includes;
-	}
-	
-	/**
-	 * sets the patterns for file names that will be included during 
-	 * a {@link FileLocator#locateFiles()} execution
-	 * @param includes {@link List} containing file patterns to include in the 
-	 *                 results set
-	 */
-	public void setIncludes(final List<String> includes) {
-		this.includes = includes;
-	}
-
-	public List<String> getExcludes() {
-		return excludes;
-	}
-	
-	/**
-	 * sets the patterns for file names that will be excluded during 
-	 * a {@link FileLocator#locateFiles()} execution
-	 * @param excludes {@link List} containing file patterns to exclude from the 
-	 *                 results set
-	 */
-	public void setExcludes(final List<String> excludes) {
-		this.excludes = excludes;
+		return Arrays.asList(directoryScanner.getIncludedFiles());
 	}
 
 	//TODO switch to using FileValidator class
-	private void validateBaseDir() {
+	private void validateBaseDir(final String baseDir) {
 		final File baseDirFile;
 		
-		if(this.baseDir == null || "".equals(baseDir)){
+		if(baseDir == null || "".equals(baseDir)){
 			throw new IllegalArgumentException("The base directory to scan for matching files was not specified.");
 		}
 		
-		baseDirFile = new File(this.baseDir);
+		baseDirFile = new File(baseDir);
 		
 		if(!baseDirFile.exists()){
-			throw new DirectoryNotFoundException(this.baseDir);
+			throw new DirectoryNotFoundException(baseDir);
 		}
 		
 		if(!baseDirFile.canRead()){
-			throw new NotReadableException(this.baseDir);
+			throw new NotReadableException(baseDir);
 		}
 	}
 }
