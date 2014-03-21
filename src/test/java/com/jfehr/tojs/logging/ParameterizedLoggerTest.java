@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 public class ParameterizedLoggerTest {
 
@@ -16,14 +18,14 @@ public class ParameterizedLoggerTest {
 	
 	
 	private ParameterizedLogger fixture;
-	private Log mockLogger;
-	private Exception testException;;
+	@Mock private Log mockLogger;
+	@Mock private Exception mockException;
 	
 	@Before
 	public void setUp() {
-		mockLogger = Mockito.mock(Log.class);
+		MockitoAnnotations.initMocks(this);
+		
 		fixture = new ParameterizedLogger(mockLogger);
-		testException = new Exception();
 	}
 	
 	//=== BEGIN DEBUG LEVEL TESTS ===\\
@@ -42,14 +44,14 @@ public class ParameterizedLoggerTest {
 	
 	@Test
 	public void testDebugContentError() {
-		fixture.debug(TEST_CONTENT, testException);
-		Mockito.verify(mockLogger).debug(TEST_CONTENT, testException);
+		fixture.debug(TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).debug(TEST_CONTENT, mockException);
 	}
 	
 	@Test
 	public void testDebugErrorOnly() {
-		fixture.debug(testException);
-		Mockito.verify(mockLogger).debug(testException);
+		fixture.debug(mockException);
+		Mockito.verify(mockLogger).debug(mockException);
 	}
 	
 	@Test
@@ -69,14 +71,14 @@ public class ParameterizedLoggerTest {
 	@Test
 	public void testDebugParameterizedContentErrorEnabled() {
 		Mockito.when(mockLogger.isDebugEnabled()).thenReturn(true);
-		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, testException, TEST_PARAM_1);
-		Mockito.verify(mockLogger).debug(TEST_EXPECTED_PARAMETERIZED_CONTENT, testException);
+		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, mockException, TEST_PARAM_1);
+		Mockito.verify(mockLogger).debug(TEST_EXPECTED_PARAMETERIZED_CONTENT, mockException);
 	}
 	
 	@Test
 	public void testDebugParameterizedContentErrorDisabled() {
 		Mockito.when(mockLogger.isDebugEnabled()).thenReturn(false);
-		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, testException, TEST_PARAM_1);
+		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, mockException, TEST_PARAM_1);
 		Mockito.verify(mockLogger, Mockito.never()).debug(Mockito.anyString());
 	}
 	//=== END DEBUG LEVEL TESTS ===\\
@@ -97,14 +99,14 @@ public class ParameterizedLoggerTest {
 	
 	@Test
 	public void testInfoContentError() {
-		fixture.info(TEST_CONTENT, testException);
-		Mockito.verify(mockLogger).info(TEST_CONTENT, testException);
+		fixture.info(TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).info(TEST_CONTENT, mockException);
 	}
 	
 	@Test
 	public void testInfoErrorOnly() {
-		fixture.info(testException);
-		Mockito.verify(mockLogger).info(testException);
+		fixture.info(mockException);
+		Mockito.verify(mockLogger).info(mockException);
 	}
 	
 	@Test
@@ -138,14 +140,14 @@ public class ParameterizedLoggerTest {
 	
 	@Test
 	public void testWarnContentError() {
-		fixture.warn(TEST_CONTENT, testException);
-		Mockito.verify(mockLogger).warn(TEST_CONTENT, testException);
+		fixture.warn(TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).warn(TEST_CONTENT, mockException);
 	}
 	
 	@Test
 	public void testWarnErrorOnly() {
-		fixture.warn(testException);
-		Mockito.verify(mockLogger).warn(testException);
+		fixture.warn(mockException);
+		Mockito.verify(mockLogger).warn(mockException);
 	}
 	
 	@Test
@@ -179,14 +181,14 @@ public class ParameterizedLoggerTest {
 	
 	@Test
 	public void testErrorContentError() {
-		fixture.error(TEST_CONTENT, testException);
-		Mockito.verify(mockLogger).error(TEST_CONTENT, testException);
+		fixture.error(TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).error(TEST_CONTENT, mockException);
 	}
 	
 	@Test
 	public void testErrorErrorOnly() {
-		fixture.error(testException);
-		Mockito.verify(mockLogger).error(testException);
+		fixture.error(mockException);
+		Mockito.verify(mockLogger).error(mockException);
 	}
 	
 	@Test

@@ -22,12 +22,12 @@ import org.mockito.exceptions.base.MockitoAssertionError;
 import com.jfehr.tojs.exception.DirectoryNotFoundException;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
+import com.jfehr.tojs.testutil.TestUtil;
 
 public class FileLocatorTest {
 
-	private static final String TMP_TEST_DIR = "src/test/resources/tmp/";
-	private static final String NOT_READABLE_DIR = TMP_TEST_DIR + "notreadable";
-	private static final String NOT_EXISTS_DIR = TMP_TEST_DIR + "idontexist";
+	private static final String NOT_READABLE_DIR = TestUtil.TMP_TEST_DIR + "notreadable";
+	private static final String NOT_EXISTS_DIR = TestUtil.TMP_TEST_DIR + "idontexist";
 	
 	private static final String INCLUDE_PREFIX = "include_";
 	private static final String EXCLUDE_PREFIX = "exclude_";
@@ -40,15 +40,11 @@ public class FileLocatorTest {
 	private List<String> includes;
 	private List<String> excludes;
 	
-	@Mock
-	private DirectoryScanner mockScanner;
-	private ParameterizedLogger mockLogger;
+	@Mock private DirectoryScanner mockScanner;
+	@Mock private ParameterizedLogger mockLogger;
 	
-	@Captor
-	private ArgumentCaptor<String[]> includesCaptor;
-	
-	@Captor
-	private ArgumentCaptor<String[]> excludesCaptor;
+	@Captor private ArgumentCaptor<String[]> includesCaptor;
+	@Captor private ArgumentCaptor<String[]> excludesCaptor;
 	
 	@Before
 	public void setUp() {
@@ -78,10 +74,10 @@ public class FileLocatorTest {
 		
 		Mockito.when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(mockScanner, TMP_TEST_DIR, includes, excludes);
+		foundFilesList = fixture.locateFiles(mockScanner, TestUtil.TMP_TEST_DIR, includes, excludes);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
+		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
 		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
 		Mockito.verify(mockScanner).setExcludes(excludesCaptor.capture());
 		
@@ -107,10 +103,10 @@ public class FileLocatorTest {
 		
 		Mockito.when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(mockScanner, TMP_TEST_DIR, includes, null);
+		foundFilesList = fixture.locateFiles(mockScanner, TestUtil.TMP_TEST_DIR, includes, null);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
+		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
 		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
 		Mockito.verify(mockScanner, Mockito.never()).setExcludes(Mockito.any(String[].class));
 		
@@ -129,7 +125,7 @@ public class FileLocatorTest {
 	@Test(expected=NullPointerException.class)
 	public void testNullDirectoryScanner() {
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(null, TMP_TEST_DIR, includes, excludes);
+		fixture.locateFiles(null, TestUtil.TMP_TEST_DIR, includes, excludes);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -150,12 +146,13 @@ public class FileLocatorTest {
 	
 	@Test(expected=NotReadableException.class)
 	public void testNonReadableBaseDir() throws Exception {
-		final File nonReadableDir = new File(NOT_READABLE_DIR);
+		//final File nonReadableDir = new File(NOT_READABLE_DIR);
 		
-		assertTrue("test pre-condition failed, could not create non-readable directory [" + NOT_READABLE_DIR + "]", nonReadableDir.mkdir());
-		assertTrue("test pre-condition failed, could not set directory [" + NOT_READABLE_DIR + "] as not readable", nonReadableDir.setReadable(false, false));
-		nonReadableDir.deleteOnExit();
-		
+		//assertTrue("test pre-condition failed, could not create non-readable directory [" + NOT_READABLE_DIR + "]", nonReadableDir.mkdir());
+		//assertTrue("test pre-condition failed, could not set directory [" + NOT_READABLE_DIR + "] as not readable", nonReadableDir.setReadable(false, false));
+		//nonReadableDir.deleteOnExit();
+
+		TestUtil.createNotReadableDirectory(NOT_READABLE_DIR);
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
 		fixture.locateFiles(mockScanner, NOT_READABLE_DIR, includes, excludes);
 	}

@@ -26,9 +26,10 @@ import com.jfehr.tojs.parser.ParserExecutor;
  * 
  */
 public class FileAggregator {
+	//TODO created aggregator interface
 	private static final char LINE_SEPARATOR = '\n';
 	
-	//TODO this class may be doing too much and may need to be broken apart
+	//TODO this class is doing too much and needs to be broken apart especially the file reading/writing
 	private final ParserExecutor parserExecutor;
 	private final ParameterizedLogger logger;
 	
@@ -42,6 +43,9 @@ public class FileAggregator {
 		final File outputFile;
 		final Map<String, String> inputFileContents;
 		final Map<String, String> parsedContents;
+
+		//fail-fast input validation
+		this.checkParams(jsObjectName, fileEncoding, outputFilePath, inputFiles, parsers);
 		
 		//build the charset first so its exceptions are thrown 
 		//before we start messing with the file system
@@ -62,19 +66,39 @@ public class FileAggregator {
 		this.writeParsedContents(jsObjectName, outputFile, charSet, parsedContents);
 	}
 	
+	//TODO better validation strategy (if validation is even necessary)
+	private void checkParams(final String jsObjectName, final String fileEncoding, final String outputFilePath, final List<String> inputFiles, List<String> parsers) {
+		logger.debug("FileAggregator checking input parameters");
+		
+		this.checkNullEmpty("jsObjectName", jsObjectName);
+		this.checkNullEmpty("fileEncoding", fileEncoding);
+		this.checkNullEmpty("outputFilePath", outputFilePath);
+		this.checkNull("inputFiles", inputFiles);
+		this.checkNull("parsers", parsers);
+	}
+	
+	private void checkNullEmpty(final String paramName, final String paramValue) {
+		if(paramValue == null || "".equals(paramValue)){
+			throw new IllegalArgumentException(paramName + " parameter must be specified");
+		}
+	}
+	
+	private void checkNull(final String paramName, final List<?> paramValue) {
+		if(paramValue == null){
+			throw new IllegalArgumentException(paramName + " parameter must be specified");
+		}
+	}
+	
 	private File createOutputFile(final String outputFilePath) {
 		final File outputFile;
-		
-		//ensure the output file was specified
-		if(outputFilePath == null || "".equals(outputFilePath)){
-			throw new IllegalArgumentException("Required parameter output file was not specified.");
-		}
+		final File parentFile;
 		
 		outputFile = new File(outputFilePath);
 		
 		//create the directory structure (if it does not exist) where the 
 		//output file will reside
-		if(!outputFile.getParentFile().mkdirs()){
+		parentFile = outputFile.getParentFile();
+		if(!parentFile.exists() && !parentFile.mkdirs()){
 			throw new DirectoryCreationException(outputFile.getParentFile().getPath());
 		}
 		
@@ -97,12 +121,16 @@ public class FileAggregator {
 	}
 	
 	private Charset buildCharset(final String fileEncoding) {
-		//TODO use platform default encoding if not specified
+		final Charset cs;
+		
 		if(!Charset.isSupported(fileEncoding)){
 			throw new IllegalCharsetNameException(fileEncoding);
 		}
 		
-		return Charset.forName(fileEncoding);
+		cs = Charset.forName(fileEncoding);
+		logger.infoWithParams("using charset {0}", cs.displayName());
+		
+		return cs;
 	}
 	
 	private Map<String, String> readInputFiles(final Charset charSet, final List<String> inputFiles) {
@@ -132,7 +160,7 @@ public class FileAggregator {
 		}
 		
 		sb.append("    };").append(LINE_SEPARATOR);
-		sb.append("})(window);").append(LINE_SEPARATOR);
+		sb.append("})(window);").append(LINE_SEPARATOR).append(LINE_SEPARATOR);
 		
 		try{
 			Files.write(sb.toString(), outputFile, charSet);

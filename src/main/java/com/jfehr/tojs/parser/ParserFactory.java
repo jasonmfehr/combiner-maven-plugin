@@ -33,6 +33,7 @@ public class ParserFactory {
 	public List<ToJsParser> buildParsers(final List<String> parserNamesList) {
 		final List<ToJsParser> parserObjs;
 		
+		//TODO build default list of parsers if not specified
 		if(parserNamesList != null){
 			logger.debugWithParams("ParserFactory.buildParsers called with list containing [{0}] items", parserNamesList.size());
 			

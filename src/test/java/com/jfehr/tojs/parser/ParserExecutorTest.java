@@ -10,20 +10,22 @@ import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class ParserExecutorTest {
 
-	private ParserFactory mockParserFactory;
-	private ParameterizedLogger mockLogger;
 	private ParserExecutor fixture;
+	
+	@Mock private ParserFactory mockParserFactory;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@Before
 	public void setUp(){
-		mockLogger = Mockito.mock(ParameterizedLogger.class);
-		mockParserFactory = Mockito.mock(ParserFactory.class);
+		MockitoAnnotations.initMocks(this);
 		
 		fixture = new ParserExecutor(mockParserFactory, mockLogger);
 	}

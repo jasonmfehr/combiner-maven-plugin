@@ -56,7 +56,7 @@ public class ToJs extends AbstractMojo {
 	@Parameter(defaultValue="${project.build.sourceEncoding}", property="tojs.fileEncoding")
 	private String fileEncoding;
 	
-	@Parameter(property="tojs.skip")
+	@Parameter(property="tojs.skip", defaultValue="false")
 	private Boolean skip;
 	
 	@Component
@@ -70,6 +70,7 @@ public class ToJs extends AbstractMojo {
 		
 		logger = new ParameterizedLogger(this.getLog());
 		if(!Boolean.TRUE.equals(this.skip)){
+			//TODO switch to standard maven layout: --- artifactId:version:goal (???) @ consuming project name
 			logger.debug("Entering tojs jsfile goal");
 			this.debugLogInputs(logger);
 			

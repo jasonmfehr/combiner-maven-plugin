@@ -9,7 +9,8 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
@@ -27,11 +28,13 @@ public class ParserFactoryTest {
 	private static final String MOCK_PARSER_NONEXISTANT = "NonExistantParser";
 	
 	private ParserFactory fixture;
-	private ParameterizedLogger mockLogger;
+	
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@Before
 	public void setUp() {
-		mockLogger = Mockito.mock(ParameterizedLogger.class);
+		MockitoAnnotations.initMocks(this);
+		
 		fixture = new ParserFactory(mockLogger);
 	}
 	
