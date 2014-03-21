@@ -1,0 +1,29 @@
+InputSourceReader -> Transformer -> Combiner -> OutputDestinationWriter
+file reader -> transformers -> jscombine -> file writer
+     |              |
+file locator    stripNewlines
+
+<inputSources>
+    <includes>
+        <include>src/**/*.java</include>
+    </includes>
+    <excludes>
+        <exclude>something</exclude>
+    </excludes>
+</inputSources>
+<transformers>
+    <transformer>StripNewlines</transformer>
+</transformers>
+<!-- future --> 
+<combiners>
+    <combiner>JsCombiner</combiner>
+</combiners>
+<outputDestination>target/myfile.js</outputDestination>
+<settings>
+    <setting>
+        <key>jsObjectName</key>
+        <value>test.foo</value>
+    </setting>
+</settings>
+<skip>false</skip>
+<encoding>UTF-8</encoding>
