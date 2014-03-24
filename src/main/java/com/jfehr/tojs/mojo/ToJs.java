@@ -11,7 +11,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.DirectoryScanner;
 
 import com.jfehr.tojs.file.FileAggregator;
 import com.jfehr.tojs.file.FileLocator;
@@ -24,38 +23,20 @@ import com.jfehr.tojs.parser.ParserFactory;
  * @author jasonmfehr
  * @since 1.0.0
  */
-@Mojo(name="jsfile", defaultPhase=LifecyclePhase.GENERATE_TEST_RESOURCES, threadSafe=true)
+@Mojo(name="combine", defaultPhase=LifecyclePhase.PROCESS_SOURCES, threadSafe=true)
 public class ToJs extends AbstractMojo {
-	//TODO add lots of debug logging
+
 	/**
-	 * list of files to included using ant patter syntax
+	 * list of combinations with each one representing a set of 
+	 * resources to combine and the pipeline implementations to 
+	 * use when combining them
 	 */
 	@Parameter(required=true)
-	private List<String> fileIncludes;
+	private List<Combination> combinations;
 	
 	/**
-	 * list of files to exclude using ant patter syntax, applied 
-	 * to all files matching the fileIncludes patterns
+	 * determines if the plugin execution should be skipped
 	 */
-	@Parameter
-	private List<String> fileExcludes;
-	
-	/**
-	 * name of the file where the aggregated files will be written, 
-	 * relative to the ${project.build.directory}
-	 */
-	@Parameter(required=true, property="tojs.outputFile")
-	private String outputFile;
-	
-	@Parameter
-	private List<String> parsers;
-	
-	@Parameter(required=true, property="tojs.jsObjectName")
-	private String jsObjectName;
-	
-	@Parameter(defaultValue="${project.build.sourceEncoding}", property="tojs.fileEncoding")
-	private String fileEncoding;
-	
 	@Parameter(property="tojs.skip", defaultValue="false")
 	private Boolean skip;
 	
@@ -73,13 +54,14 @@ public class ToJs extends AbstractMojo {
 			//TODO switch to standard maven layout: --- artifactId:version:goal (???) @ consuming project name
 			logger.debug("Entering tojs jsfile goal");
 			this.debugLogInputs(logger);
-			
+			/*
 			locator = new FileLocator(logger);
 			locatedFiles = locator.locateFiles(new DirectoryScanner(), mavenProject.getBasedir().getAbsolutePath(), fileIncludes, fileExcludes);
 			this.debugLogList("list of files matching includes but not matching excludes", locatedFiles, logger);
 
 			aggregator = this.buildFileAggregator(logger);
 			aggregator.aggregate(this.jsObjectName, this.fileEncoding, this.outputFile, locatedFiles, parsers);
+			*/
 			
 			logger.debug("Exiting tojs jsfile goal");
 		}else{
@@ -112,15 +94,20 @@ public class ToJs extends AbstractMojo {
 	 */
 	private void debugLogInputs(final ParameterizedLogger logger) {
 		if(logger.isDebugEnabled()){
-			logger.debug("the following user settings were specified in the pom");
-			logger.debugWithParams("file encoding: {0}", fileEncoding);
-			logger.debugWithParams("output file: {0}", outputFile);
-			logger.debugWithParams("javascript object name: {0}", jsObjectName);
-			logger.debugWithParams("base directory for input files: {0}", mavenProject.getBasedir());
-			logger.debugWithParams("base build output directory: {0}", mavenProject.getBuild().getDirectory());
-			
-			this.debugLogList("file include patterns list", fileIncludes, logger);
-			this.debugLogList("file exclude patterns list", fileExcludes, logger);
+			logger.debugWithParams("{0} combination sets specified", this.combinations.size());
+			for(Combination c : this.combinations){
+				logger.debug("--- Begin Combination Set ---");
+				logger.debugWithParams("  encoding: {0}", c.getEncoding());
+				logger.debugWithParams("  output destination: {0}", c.getOutputDestination());
+				logger.debugWithParams("  combiner: {0}", c.getCombiner());
+				logger.debugWithParams("  base directory for input files: {0}", mavenProject.getBasedir());
+				logger.debugWithParams("  base build output directory: {0}", mavenProject.getBuild().getDirectory());
+				logger.debugWithParams("  input resources {0}", c.getInputSources());
+				
+				this.debugLogList("  transformers list", c.getTransformers(), logger);
+				this.debugLogList("  settings", c.getSettings(), logger);
+				logger.debug("--- End Combination Set ---");
+			}
 		}
 	}
 	

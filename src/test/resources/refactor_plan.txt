@@ -14,10 +14,7 @@ file locator    stripNewlines
 <transformers>
     <transformer>StripNewlines</transformer>
 </transformers>
-<!-- future --> 
-<combiners>
-    <combiner>JsCombiner</combiner>
-</combiners>
+<combiner>JsCombiner</combiner>
 <outputDestination>target/myfile.js</outputDestination>
 <settings>
     <setting>
