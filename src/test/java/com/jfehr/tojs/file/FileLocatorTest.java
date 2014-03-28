@@ -1,10 +1,11 @@
 package com.jfehr.tojs.file;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +20,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.base.MockitoAssertionError;
 
-import com.jfehr.tojs.exception.DirectoryNotFoundException;
+import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.testutil.TestUtil;
 
 public class FileLocatorTest {
 
-	private static final String NOT_READABLE_DIR = TestUtil.TMP_TEST_DIR + "notreadable";
-	private static final String NOT_EXISTS_DIR = TestUtil.TMP_TEST_DIR + "idontexist";
-	
 	private static final String INCLUDE_PREFIX = "include_";
 	private static final String EXCLUDE_PREFIX = "exclude_";
 	private static final String FOUND_FILES_PREFIX = "found_";
@@ -42,24 +40,28 @@ public class FileLocatorTest {
 	
 	@Mock private DirectoryScanner mockScanner;
 	@Mock private ParameterizedLogger mockLogger;
+	@Mock private FileValidator mockValidator;
 	
 	@Captor private ArgumentCaptor<String[]> includesCaptor;
 	@Captor private ArgumentCaptor<String[]> excludesCaptor;
 	
 	@Before
 	public void setUp() {
+		MockitoAnnotations.initMocks(this);
+		
 		fixture = new FileLocator(mockLogger);
 		includes = new ArrayList<String>();
 		excludes = new ArrayList<String>();
 		
-		MockitoAnnotations.initMocks(this);
+		TestUtil.setPrivateField(fixture, "directoryScanner", mockScanner);
+		TestUtil.setPrivateField(fixture, "fileValidator", mockValidator);
 	}
 	
 	@Test
 	public void testHappyPathWithExcludes() {
 		List<String> foundFilesList;
 		String[] foundFilesArr = new String[FOUND_FILES_LENGTH];
-		
+
 		for(int i=0; i<INCLUDE_LENGTH; i++){
 			includes.add(INCLUDE_PREFIX + Integer.toString(i));
 		}
@@ -72,9 +74,9 @@ public class FileLocatorTest {
 			foundFilesArr[i] = FOUND_FILES_PREFIX + Integer.toString(i);
 		}
 		
-		Mockito.when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
+		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(mockScanner, TestUtil.TMP_TEST_DIR, includes, excludes);
+		foundFilesList = fixture.locateFiles(TestUtil.TMP_TEST_DIR, includes, excludes);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
 		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
@@ -101,9 +103,9 @@ public class FileLocatorTest {
 			foundFilesArr[i] = FOUND_FILES_PREFIX + Integer.toString(i);
 		}
 		
-		Mockito.when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
+		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(mockScanner, TestUtil.TMP_TEST_DIR, includes, null);
+		foundFilesList = fixture.locateFiles(TestUtil.TMP_TEST_DIR, includes, null);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
 		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
@@ -118,43 +120,34 @@ public class FileLocatorTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNullBaseDir() {
+		doThrow(new IllegalArgumentException()).when(mockValidator).existsAndReadable(anyString());
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(mockScanner, null, includes, excludes);
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testNullDirectoryScanner() {
-		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(null, TestUtil.TMP_TEST_DIR, includes, excludes);
+		
+		fixture.locateFiles(null, includes, excludes);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmptyBaseDir() {
+		doThrow(new IllegalArgumentException()).when(mockValidator).existsAndReadable(anyString());
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(mockScanner, "", includes, excludes);
+		
+		fixture.locateFiles("", includes, excludes);
 	}
 	
-	@Test(expected=DirectoryNotFoundException.class)
+	@Test(expected=FileSystemLocationNotFound.class)
 	public void testNonExistantBaseDir() {
-		final File nonExistsDir = new File(NOT_EXISTS_DIR);
-		
-		assertFalse("test pre-condition failed, non-existant directory [" + NOT_EXISTS_DIR + "] actually exists.", nonExistsDir.exists());
-		
+		doThrow(new FileSystemLocationNotFound("")).when(mockValidator).existsAndReadable(anyString());
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(mockScanner, NOT_EXISTS_DIR, includes, includes);
+		
+		fixture.locateFiles("foo", includes, includes);
 	}
 	
 	@Test(expected=NotReadableException.class)
 	public void testNonReadableBaseDir() throws Exception {
-		//final File nonReadableDir = new File(NOT_READABLE_DIR);
-		
-		//assertTrue("test pre-condition failed, could not create non-readable directory [" + NOT_READABLE_DIR + "]", nonReadableDir.mkdir());
-		//assertTrue("test pre-condition failed, could not set directory [" + NOT_READABLE_DIR + "] as not readable", nonReadableDir.setReadable(false, false));
-		//nonReadableDir.deleteOnExit();
-
-		TestUtil.createNotReadableDirectory(NOT_READABLE_DIR);
+		doThrow(new NotReadableException("")).when(mockValidator).existsAndReadable(anyString());
 		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
-		fixture.locateFiles(mockScanner, NOT_READABLE_DIR, includes, excludes);
+		
+		fixture.locateFiles("foo", includes, excludes);
 	}
 	
 	private void assertArray(String entryPrefix, int expectedLength, String[] actual) {

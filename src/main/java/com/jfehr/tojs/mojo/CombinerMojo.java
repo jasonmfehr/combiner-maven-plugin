@@ -3,6 +3,7 @@ package com.jfehr.tojs.mojo;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
@@ -24,7 +25,7 @@ import com.jfehr.tojs.parser.ParserFactory;
  * @since 1.0.0
  */
 @Mojo(name="combine", defaultPhase=LifecyclePhase.PROCESS_SOURCES, threadSafe=true)
-public class ToJs extends AbstractMojo {
+public class CombinerMojo extends AbstractMojo {
 
 	/**
 	 * list of combinations with each one representing a set of 
@@ -43,16 +44,18 @@ public class ToJs extends AbstractMojo {
 	@Component
 	private MavenProject mavenProject;
 	
+	@Component
+	private MojoExecution mojoExecution;
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		final FileLocator locator;
 		final FileAggregator aggregator;
-		final ParameterizedLogger logger;
 		final List<String> locatedFiles;
+		final ParameterizedLogger logger;
 		
 		logger = new ParameterizedLogger(this.getLog());
 		if(!Boolean.TRUE.equals(this.skip)){
-			//TODO switch to standard maven layout: --- artifactId:version:goal (???) @ consuming project name
-			logger.debug("Entering tojs jsfile goal");
+			logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
 			this.debugLogInputs(logger);
 			/*
 			locator = new FileLocator(logger);
@@ -63,9 +66,9 @@ public class ToJs extends AbstractMojo {
 			aggregator.aggregate(this.jsObjectName, this.fileEncoding, this.outputFile, locatedFiles, parsers);
 			*/
 			
-			logger.debug("Exiting tojs jsfile goal");
+			logger.debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
 		}else{
-			logger.debug("skipping tojs-maven-plugin execution");
+			logger.info("skipping combiner-maven-plugin execution");
 		}
 	}
 	
@@ -102,40 +105,10 @@ public class ToJs extends AbstractMojo {
 				logger.debugWithParams("  combiner: {0}", c.getCombiner());
 				logger.debugWithParams("  base directory for input files: {0}", mavenProject.getBasedir());
 				logger.debugWithParams("  base build output directory: {0}", mavenProject.getBuild().getDirectory());
-				logger.debugWithParams("  input resources {0}", c.getInputSources());
-				
-				this.debugLogList("  transformers list", c.getTransformers(), logger);
-				this.debugLogList("  settings", c.getSettings(), logger);
+				logger.debugWithParams("  input resources: {0}", c.getInputSources());
+				logger.debugWithParams("  transformers: {0}", c.getTransformers());
+				logger.debugWithParams("  settings: {0}", c.getSettings());
 				logger.debug("--- End Combination Set ---");
-			}
-		}
-	}
-	
-	/**
-	 * Write debug level information about a list to a logger.  
-	 * Does a check to see if debug is enabled before executing  
-	 * any code.
-	 * 
-	 * @param message {@link String} to write out before writing the 
-	 *                contents of the list
-	 * @param list {@link List} to write out, the toString() method 
-	 *             of each item will be written
-	 * @param logger {@link Log} where the list information will 
-	 *               be written
-	 */
-	private void debugLogList(final String message, final List<?> list, final ParameterizedLogger logger) {
-		final int listSize;
-		
-		if(logger.isDebugEnabled()){
-			logger.debug(message);
-			if(list == null){
-				logger.debug("list is null");
-			}else{
-				listSize = list.size();
-				logger.debugWithParams("list contains {0} items", listSize);
-				for(int i=0; i<listSize; i++){
-					logger.debugWithParams("item {0} of {1}: {2}", (i+1), listSize, list.get(i).toString());
-				}
 			}
 		}
 	}

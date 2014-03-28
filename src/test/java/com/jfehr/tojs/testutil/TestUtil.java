@@ -75,27 +75,32 @@ public final class TestUtil {
 	}
 	
 	public static void cleanTmpTestDir() {
-		final File testDir = new File(TestUtil.TMP_TEST_DIR);
+		final File testDir = new File(TMP_TEST_DIR);
 		
-		if(testDir.exists()){
-			TestUtil.deleteDirectory(testDir);
-		}
-		assertTrue(TestUtil.buildFailMsg("could not create tmp test directory [" + testDir.getPath() + "]"), testDir.mkdir());
-		assertTrue(TestUtil.buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as readable"), testDir.setReadable(true));
-		assertTrue(TestUtil.buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as writeable"), testDir.setWritable(true));
-		assertTrue(TestUtil.buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as executable"), testDir.setExecutable(true));
+		deleteDirectory(testDir);
+		
+		assertTrue(buildFailMsg("could not create tmp test directory [" + testDir.getPath() + "]"), testDir.mkdir());
+		assertTrue(buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as readable"), testDir.setReadable(true));
+		assertTrue(buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as writeable"), testDir.setWritable(true));
+		assertTrue(buildFailMsg("could not set tmp test directory [" + testDir.getPath() + "] as executable"), testDir.setExecutable(true));
 	}
 	
 	public static void deleteDirectory(File dir) {
-		for(File f : dir.listFiles()){
+		if(dir.exists()){
+			dir.setReadable(true);
+			dir.setExecutable(true);
+			dir.setWritable(true);
+		}
+		
+		for(final File f : dir.listFiles()){
 			if(f.isFile()){
-				assertTrue(TestUtil.buildFailMsg("could not delete file [" + f.getPath() + "]"), f.delete());
+				assertTrue(buildFailMsg("could not delete file [" + f.getPath() + "]"), f.delete());
 			}else{
 				deleteDirectory(f);
 			}
 		}
 		
-		assertTrue(TestUtil.buildFailMsg("could not delete file [" + dir.getPath() + "]"), dir.delete());
+		assertTrue(buildFailMsg("could not delete file [" + dir.getPath() + "]"), dir.delete());
 	}
 	
 	public static String buildFailMsg(final String msg) {

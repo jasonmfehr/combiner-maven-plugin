@@ -43,14 +43,32 @@ public class ParameterizedLoggerTest {
 	}
 	
 	@Test
-	public void testDebugContentError() {
+	public void testDebugContentOnlyLogLevel() {
+		fixture.log(LoggerLevel.DEBUG, TEST_CONTENT);
+		Mockito.verify(mockLogger).debug(TEST_CONTENT);
+	}
+	
+	@Test
+	public void testDebugContentException() {
 		fixture.debug(TEST_CONTENT, mockException);
 		Mockito.verify(mockLogger).debug(TEST_CONTENT, mockException);
 	}
 	
 	@Test
-	public void testDebugErrorOnly() {
+	public void testDebugContentExceptionLogLevel() {
+		fixture.log(LoggerLevel.DEBUG, TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).debug(TEST_CONTENT, mockException);
+	}
+	
+	@Test
+	public void testDebugExceptionOnly() {
 		fixture.debug(mockException);
+		Mockito.verify(mockLogger).debug(mockException);
+	}
+	
+	@Test
+	public void testDebugExceptionOnlyLogLevel() {
+		fixture.log(LoggerLevel.DEBUG, mockException);
 		Mockito.verify(mockLogger).debug(mockException);
 	}
 	
@@ -69,14 +87,21 @@ public class ParameterizedLoggerTest {
 	}
 	
 	@Test
-	public void testDebugParameterizedContentErrorEnabled() {
+	public void testDebugParameterizedContentOnlyLogLevel() {
+		Mockito.when(mockLogger.isDebugEnabled()).thenReturn(true);
+		fixture.logWithParams(LoggerLevel.DEBUG, TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
+		Mockito.verify(mockLogger).debug(TEST_EXPECTED_PARAMETERIZED_CONTENT);
+	}
+	
+	@Test
+	public void testDebugParameterizedContentExceptionEnabled() {
 		Mockito.when(mockLogger.isDebugEnabled()).thenReturn(true);
 		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, mockException, TEST_PARAM_1);
 		Mockito.verify(mockLogger).debug(TEST_EXPECTED_PARAMETERIZED_CONTENT, mockException);
 	}
 	
 	@Test
-	public void testDebugParameterizedContentErrorDisabled() {
+	public void testDebugParameterizedContentExceptionDisabled() {
 		Mockito.when(mockLogger.isDebugEnabled()).thenReturn(false);
 		fixture.debugWithParams(TEST_PARAMETERIZED_CONTENT, mockException, TEST_PARAM_1);
 		Mockito.verify(mockLogger, Mockito.never()).debug(Mockito.anyString());
@@ -98,14 +123,32 @@ public class ParameterizedLoggerTest {
 	}
 	
 	@Test
-	public void testInfoContentError() {
+	public void testInfoContentOnlyLogLevel() {
+		fixture.log(LoggerLevel.INFO, TEST_CONTENT);
+		Mockito.verify(mockLogger).info(TEST_CONTENT);
+	}
+	
+	@Test
+	public void testInfoContentException() {
 		fixture.info(TEST_CONTENT, mockException);
 		Mockito.verify(mockLogger).info(TEST_CONTENT, mockException);
 	}
 	
 	@Test
-	public void testInfoErrorOnly() {
+	public void testInfoContentExceptionLogLevel() {
+		fixture.log(LoggerLevel.INFO, TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).info(TEST_CONTENT, mockException);
+	}
+	
+	@Test
+	public void testInfoExceptionOnly() {
 		fixture.info(mockException);
+		Mockito.verify(mockLogger).info(mockException);
+	}
+	
+	@Test
+	public void testInfoExceptionOnlyLogLevel() {
+		fixture.log(LoggerLevel.INFO, mockException);
 		Mockito.verify(mockLogger).info(mockException);
 	}
 	
@@ -121,6 +164,13 @@ public class ParameterizedLoggerTest {
 		Mockito.when(mockLogger.isInfoEnabled()).thenReturn(false);
 		fixture.infoWithParams(TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
 		Mockito.verify(mockLogger, Mockito.never()).info(Mockito.anyString());
+	}
+	
+	@Test
+	public void testInfoParameterizedContentLogLevel() {
+		Mockito.when(mockLogger.isInfoEnabled()).thenReturn(true);
+		fixture.logWithParams(LoggerLevel.INFO, TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
+		Mockito.verify(mockLogger).info(TEST_EXPECTED_PARAMETERIZED_CONTENT);
 	}
 	//=== END INFO LEVEL TESTS ===\\
 	
@@ -139,14 +189,32 @@ public class ParameterizedLoggerTest {
 	}
 	
 	@Test
-	public void testWarnContentError() {
+	public void testWarnContentOnlyLogLevel() {
+		fixture.log(LoggerLevel.WARN, TEST_CONTENT);
+		Mockito.verify(mockLogger).warn(TEST_CONTENT);
+	}
+	
+	@Test
+	public void testWarnContentException() {
 		fixture.warn(TEST_CONTENT, mockException);
 		Mockito.verify(mockLogger).warn(TEST_CONTENT, mockException);
 	}
 	
 	@Test
-	public void testWarnErrorOnly() {
+	public void testWarnContentExceptionLogLevel() {
+		fixture.log(LoggerLevel.WARN, TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).warn(TEST_CONTENT, mockException);
+	}
+	
+	@Test
+	public void testWarnExceptionOnly() {
 		fixture.warn(mockException);
+		Mockito.verify(mockLogger).warn(mockException);
+	}
+	
+	@Test
+	public void testWarnExceptionOnlyLogLevel() {
+		fixture.log(LoggerLevel.WARN, mockException);
 		Mockito.verify(mockLogger).warn(mockException);
 	}
 	
@@ -163,9 +231,16 @@ public class ParameterizedLoggerTest {
 		fixture.warnWithParams(TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
 		Mockito.verify(mockLogger, Mockito.never()).warn(Mockito.anyString());
 	}
+	
+	@Test
+	public void testWarnParameterizedContentLogLevel() {
+		Mockito.when(mockLogger.isWarnEnabled()).thenReturn(true);
+		fixture.logWithParams(LoggerLevel.WARN, TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
+		Mockito.verify(mockLogger).warn(TEST_EXPECTED_PARAMETERIZED_CONTENT);
+	}
 	//=== END INFO LEVEL TESTS ===\\
 	
-	//=== BEGIN ERROR LEVEL TESTS ===\\
+	//=== BEGIN Exception LEVEL TESTS ===\\
 	@Test
 	public void testIsErrorEnabled() {
 		Mockito.when(mockLogger.isErrorEnabled()).thenReturn(true);
@@ -180,14 +255,32 @@ public class ParameterizedLoggerTest {
 	}
 	
 	@Test
-	public void testErrorContentError() {
+	public void testErrorContentOnlyLogLevel() {
+		fixture.log(LoggerLevel.ERROR, TEST_CONTENT);
+		Mockito.verify(mockLogger).error(TEST_CONTENT);
+	}
+	
+	@Test
+	public void testErrorContentException() {
 		fixture.error(TEST_CONTENT, mockException);
 		Mockito.verify(mockLogger).error(TEST_CONTENT, mockException);
 	}
 	
 	@Test
-	public void testErrorErrorOnly() {
+	public void testErrorContentExceptionLogLevel() {
+		fixture.log(LoggerLevel.ERROR, TEST_CONTENT, mockException);
+		Mockito.verify(mockLogger).error(TEST_CONTENT, mockException);
+	}
+	
+	@Test
+	public void testErrorExceptionOnly() {
 		fixture.error(mockException);
+		Mockito.verify(mockLogger).error(mockException);
+	}
+	
+	@Test
+	public void testErrorExceptionOnlyLogLevel() {
+		fixture.log(LoggerLevel.ERROR, mockException);
 		Mockito.verify(mockLogger).error(mockException);
 	}
 	
@@ -203,6 +296,13 @@ public class ParameterizedLoggerTest {
 		Mockito.when(mockLogger.isErrorEnabled()).thenReturn(false);
 		fixture.errorWithParams(TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
 		Mockito.verify(mockLogger, Mockito.never()).error(Mockito.anyString());
+	}
+	
+	@Test
+	public void testErrorParameterizedContentLogLevel() {
+		Mockito.when(mockLogger.isErrorEnabled()).thenReturn(true);
+		fixture.logWithParams(LoggerLevel.ERROR, TEST_PARAMETERIZED_CONTENT, TEST_PARAM_1);
+		Mockito.verify(mockLogger).error(TEST_EXPECTED_PARAMETERIZED_CONTENT);
 	}
 	//=== END ERROR LEVEL TESTS ===\\
 }

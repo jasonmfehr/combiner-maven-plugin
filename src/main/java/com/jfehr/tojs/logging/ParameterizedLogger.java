@@ -106,6 +106,74 @@ public class ParameterizedLogger implements Log {
 		}
 	}
 	
+	public void log(final LoggerLevel level, final CharSequence content) {
+		switch(level){
+			case ERROR:
+				this.error(content);
+				break;
+			case WARN:
+				this.warn(content);
+				break;
+			case INFO:
+				this.info(content);
+				break;
+			case DEBUG:
+				this.debug(content);
+				break;
+		}
+	}
+
+	public void log(final LoggerLevel level, final CharSequence content, final Throwable error) {
+		switch(level){
+			case ERROR:
+				this.error(content, error);
+				break;
+			case WARN:
+				this.warn(content, error);
+				break;
+			case INFO:
+				this.info(content, error);
+				break;
+			case DEBUG:
+				this.debug(content, error);
+				break;
+		}
+	}
+
+	public void log(final LoggerLevel level, final Throwable error) {
+		switch(level){
+			case ERROR:
+				this.error(error);
+				break;
+			case WARN:
+				this.warn(error);
+				break;
+			case INFO:
+				this.info(error);
+				break;
+			case DEBUG:
+				this.debug(error);
+				break;
+		}
+	}
+	
+	public void logWithParams(final LoggerLevel level, final CharSequence content, final Object... parameters) {
+		switch(level){
+			case ERROR:
+				this.errorWithParams(content, parameters);
+				break;
+			case WARN:
+				this.warnWithParams(content, parameters);
+				break;
+			case INFO:
+				this.infoWithParams(content, parameters);
+				break;
+			case DEBUG:
+				this.debugWithParams(content, parameters);
+				break;
+		}
+	}
+	
 	private String charSeqToStr(final CharSequence charSequence) {
 		final StringBuilder sb = new StringBuilder(charSequence);
 		
