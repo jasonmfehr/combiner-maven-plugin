@@ -41,13 +41,11 @@
             <artifactId>guava</artifactId>
             <version>16.0.1</version>
         </dependency>
-        <!-- TODO remove this
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.2.1</version>
+            <version>3.3.1</version>
         </dependency>
-        -->
         
         <dependency>
             <groupId>junit</groupId>

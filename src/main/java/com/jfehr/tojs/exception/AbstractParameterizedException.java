@@ -1,5 +1,7 @@
 package com.jfehr.tojs.exception;
 
+import java.text.MessageFormat;
+
 /**
  * Base class for any exceptions that have a single variable parameter 
  * within the exception message.  Builds the exception message using the 
@@ -18,10 +20,9 @@ package com.jfehr.tojs.exception;
  */
 public abstract class AbstractParameterizedException extends RuntimeException {
 
-	protected static final String PARAMETER_PLACEHOLDER = "{}";
+	protected static final String PARAMETER_PLACEHOLDER = "{0}";
 	
 	private static final long serialVersionUID = 7319642112102383672L;
-	private static final String PARAMETER_PLACEHOLDER_REGEX = "\\{\\}";
 	
 	protected abstract String getExceptionMessage();
 	
@@ -52,7 +53,7 @@ public abstract class AbstractParameterizedException extends RuntimeException {
 	}
 	
 	public String getMessage() {
-		return this.getExceptionMessage().replaceAll(PARAMETER_PLACEHOLDER_REGEX, "[" + this.parameter + "]");
+		return MessageFormat.format(this.getExceptionMessage(), this.parameter);
 	}
 
 	public String getParameter() {

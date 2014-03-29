@@ -9,7 +9,7 @@ package com.jfehr.tojs.exception;
 public class InvalidParserException extends AbstractParameterizedException {
 
 	private static final long serialVersionUID = -5238054214469781883L;
-	private static final String MESSAGE = "Invalid parser {}.  ";
+	private static final String MESSAGE = "Invalid parser " + AbstractParameterizedException.PARAMETER_PLACEHOLDER;
 	
 	private final String concatMessage;
 	
