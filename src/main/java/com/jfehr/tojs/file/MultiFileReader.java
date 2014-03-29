@@ -14,9 +14,11 @@ import com.jfehr.tojs.logging.ParameterizedLogger;
 public class MultiFileReader {
 
 	private final ParameterizedLogger logger;
+	private final FileValidator fileValidator;
 	
 	public MultiFileReader(final ParameterizedLogger logger) {
 		this.logger = logger;
+		fileValidator = new FileValidator(logger);
 	}
 	
 	public Map<String, String> readInputFiles(final Charset charSet, final List<String> inputFiles) {
@@ -24,10 +26,12 @@ public class MultiFileReader {
 		File tmpFileObj;
 		
 		for(final String filePath : inputFiles){
+			logger.debugWithParams("MultiFileReader reading file {0}", filePath);
+			fileValidator.existsAndReadable(filePath);
+			tmpFileObj = new File(filePath);
+			
 			try {
-				logger.debugWithParams("MultiFileReader reading file {0}", filePath);
-				tmpFileObj = new File(filePath);
-				filesContents.put(tmpFileObj.getName(), Files.toString(tmpFileObj, charSet));
+				filesContents.put(tmpFileObj.getAbsolutePath(), Files.toString(tmpFileObj, charSet));
 			} catch (IOException e) {
 				throw new FileReadException(filePath, e);
 			}
