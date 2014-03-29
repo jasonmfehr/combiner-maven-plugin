@@ -1,6 +1,9 @@
 package com.jfehr.tojs.parser;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +14,6 @@ import java.util.Map.Entry;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.jfehr.tojs.logging.ParameterizedLogger;
@@ -22,6 +24,7 @@ public class ParserExecutorTest {
 	
 	@Mock private ParserFactory mockParserFactory;
 	@Mock private ParameterizedLogger mockLogger;
+	@Mock private ToJsParser mockParser;
 	
 	@Before
 	public void setUp(){
@@ -58,7 +61,7 @@ public class ParserExecutorTest {
 		assertEquals(Integer.toString(numParsers + 1), actual);
 		
 		for(Entry<String, ToJsParser> mockParser : mockParsers.entrySet()){
-			Mockito.verify(mockParser.getValue()).parse(mockParser.getKey());
+			verify(mockParser.getValue()).parse(mockParser.getKey());
 		}
 	}
 	
@@ -70,16 +73,14 @@ public class ParserExecutorTest {
 		
 		assertEquals("", actual);
 		
-		Mockito.verifyZeroInteractions(mockParserFactory);
+		verifyZeroInteractions(mockParserFactory);
 	}
 
 	private ToJsParser buildMockParserObject(int number) {
-		final ToJsParser mockParser;
 		final String parserName = Integer.toString(number);
 		
-		mockParser = Mockito.mock(ToJsParser.class);
-		Mockito.when(mockParserFactory.buildParser(parserName)).thenReturn(mockParser);
-		Mockito.when(mockParser.parse(parserName)).thenReturn(Integer.toString(number + 1));
+		when(mockParserFactory.buildParser(parserName)).thenReturn(mockParser);
+		when(mockParser.parse(parserName)).thenReturn(Integer.toString(number + 1));
 		
 		return mockParser;
 	}

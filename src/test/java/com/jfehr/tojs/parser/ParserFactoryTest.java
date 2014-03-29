@@ -23,7 +23,7 @@ public class ParserFactoryTest {
 	private static final String MOCK_PARSER_DEFAULT_PKG = "ParserFactoryTest$MockParserImplementsIface";
 	private static final String MOCK_PARSER_INVALID = "ParserFactoryTest$MockInvalidParser";
 	private static final String MOCK_PARSER_INHERITS_IFACE = "ParserFactoryTest$MockParserInheritsIface";
-	private static final String MOCK_PARSER_NON_DEFAULT_PKG = "com.jfehr.tojs.MockParserNonDefaultPackage";
+	private static final String MOCK_PARSER_NON_DEFAULT_PKG = "com.jfehr.tojs.testutil.MockParserNonDefaultPackage";
 	private static final String MOCK_PARSER_IFACE = "ParserFactoryTest$ToJsParserSubIface";
 	private static final String MOCK_PARSER_NONEXISTANT = "NonExistantParser";
 	

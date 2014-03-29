@@ -4,8 +4,11 @@ import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -18,7 +21,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.base.MockitoAssertionError;
 
@@ -79,12 +81,12 @@ public class FileLocatorTest {
 		
 		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, excludes);
 		
-		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
-		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
-		Mockito.verify(mockScanner).setExcludes(excludesCaptor.capture());
+		verify(mockScanner).addDefaultExcludes();
+		verify(mockScanner).setBasedir(TMP_TEST_DIR);
+		verify(mockScanner).setIncludes(includesCaptor.capture());
+		verify(mockScanner).setExcludes(excludesCaptor.capture());
 		
-		Mockito.verify(mockScanner).scan();
+		verify(mockScanner).scan();
 		
 		this.assertArray(INCLUDE_PREFIX, INCLUDE_LENGTH, includesCaptor.getValue());
 		this.assertArray(EXCLUDE_PREFIX, EXCLUDE_LENGTH, excludesCaptor.getValue());
@@ -108,12 +110,12 @@ public class FileLocatorTest {
 		
 		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, null);
 		
-		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
-		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
-		Mockito.verify(mockScanner, Mockito.never()).setExcludes(Mockito.any(String[].class));
+		verify(mockScanner).addDefaultExcludes();
+		verify(mockScanner).setBasedir(TMP_TEST_DIR);
+		verify(mockScanner).setIncludes(includesCaptor.capture());
+		verify(mockScanner, never()).setExcludes(any(String[].class));
 		
-		Mockito.verify(mockScanner).scan();
+		verify(mockScanner).scan();
 		
 		this.assertArray(INCLUDE_PREFIX, INCLUDE_LENGTH, includesCaptor.getValue());
 		this.assertArray(FOUND_FILES_PREFIX, FOUND_FILES_LENGTH, foundFilesList.toArray(new String[foundFilesList.size()]));
@@ -122,7 +124,7 @@ public class FileLocatorTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testNullBaseDir() {
 		doThrow(new IllegalArgumentException()).when(mockValidator).existsAndReadable(anyString());
-		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
+		doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
 		
 		fixture.locateFiles(null, includes, excludes);
 	}
@@ -130,7 +132,7 @@ public class FileLocatorTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmptyBaseDir() {
 		doThrow(new IllegalArgumentException()).when(mockValidator).existsAndReadable(anyString());
-		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
+		doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
 		
 		fixture.locateFiles("", includes, excludes);
 	}
@@ -138,7 +140,7 @@ public class FileLocatorTest {
 	@Test(expected=FileSystemLocationNotFound.class)
 	public void testNonExistantBaseDir() {
 		doThrow(new FileSystemLocationNotFound("")).when(mockValidator).existsAndReadable(anyString());
-		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
+		doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
 		
 		fixture.locateFiles("foo", includes, includes);
 	}
@@ -146,7 +148,7 @@ public class FileLocatorTest {
 	@Test(expected=NotReadableException.class)
 	public void testNonReadableBaseDir() throws Exception {
 		doThrow(new NotReadableException("")).when(mockValidator).existsAndReadable(anyString());
-		Mockito.doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
+		doThrow(new MockitoAssertionError("DirectoryScanner scan() method was called but should not have been")).when(mockScanner).scan();
 		
 		fixture.locateFiles("foo", includes, excludes);
 	}
