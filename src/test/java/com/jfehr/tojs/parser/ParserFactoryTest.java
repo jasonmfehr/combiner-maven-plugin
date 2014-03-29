@@ -1,5 +1,6 @@
 package com.jfehr.tojs.parser;
 
+import static com.jfehr.tojs.testutil.TestUtil.getPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,14 +17,13 @@ import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.testutil.MockParserNonDefaultPackage;
-import com.jfehr.tojs.testutil.TestUtil;
 
 public class ParserFactoryTest {
 
 	private static final String MOCK_PARSER_DEFAULT_PKG = "ParserFactoryTest$MockParserImplementsIface";
 	private static final String MOCK_PARSER_INVALID = "ParserFactoryTest$MockInvalidParser";
 	private static final String MOCK_PARSER_INHERITS_IFACE = "ParserFactoryTest$MockParserInheritsIface";
-	private static final String MOCK_PARSER_NON_DEFAULT_PKG = "com.jfehr.tojs.testutil.MockParserNonDefaultPackage";
+	private static final String MOCK_PARSER_NON_DEFAULT_PKG = "com.jfehr.tojs.MockParserNonDefaultPackage";
 	private static final String MOCK_PARSER_IFACE = "ParserFactoryTest$ToJsParserSubIface";
 	private static final String MOCK_PARSER_NONEXISTANT = "NonExistantParser";
 	
@@ -125,7 +125,7 @@ public class ParserFactoryTest {
 		
 		assertEquals(MockParserNonDefaultPackage.class, fixture.buildParser(MOCK_PARSER_NON_DEFAULT_PKG).getClass());
 		
-		parserCache = (Map<String, ToJsParser>)TestUtil.getPrivateField(fixture, "parserCache");
+		parserCache = (Map<String, ToJsParser>)getPrivateField(fixture, "parserCache");
 		assertEquals(1, parserCache.size());
 		assertTrue(parserCache.containsKey(MOCK_PARSER_NON_DEFAULT_PKG));
 		parser = parserCache.get(MOCK_PARSER_NON_DEFAULT_PKG);

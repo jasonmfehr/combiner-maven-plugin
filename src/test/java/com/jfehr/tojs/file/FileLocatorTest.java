@@ -1,5 +1,7 @@
 package com.jfehr.tojs.file;
 
+import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
@@ -23,7 +25,6 @@ import org.mockito.exceptions.base.MockitoAssertionError;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
-import com.jfehr.tojs.testutil.TestUtil;
 
 public class FileLocatorTest {
 
@@ -53,8 +54,8 @@ public class FileLocatorTest {
 		includes = new ArrayList<String>();
 		excludes = new ArrayList<String>();
 		
-		TestUtil.setPrivateField(fixture, "directoryScanner", mockScanner);
-		TestUtil.setPrivateField(fixture, "fileValidator", mockValidator);
+		setPrivateField(fixture, "directoryScanner", mockScanner);
+		setPrivateField(fixture, "fileValidator", mockValidator);
 	}
 	
 	@Test
@@ -76,10 +77,10 @@ public class FileLocatorTest {
 		
 		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(TestUtil.TMP_TEST_DIR, includes, excludes);
+		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, excludes);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
+		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
 		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
 		Mockito.verify(mockScanner).setExcludes(excludesCaptor.capture());
 		
@@ -105,10 +106,10 @@ public class FileLocatorTest {
 		
 		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		
-		foundFilesList = fixture.locateFiles(TestUtil.TMP_TEST_DIR, includes, null);
+		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, null);
 		
 		Mockito.verify(mockScanner).addDefaultExcludes();
-		Mockito.verify(mockScanner).setBasedir(TestUtil.TMP_TEST_DIR);
+		Mockito.verify(mockScanner).setBasedir(TMP_TEST_DIR);
 		Mockito.verify(mockScanner).setIncludes(includesCaptor.capture());
 		Mockito.verify(mockScanner, Mockito.never()).setExcludes(Mockito.any(String[].class));
 		

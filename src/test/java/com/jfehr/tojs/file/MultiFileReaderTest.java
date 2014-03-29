@@ -3,6 +3,7 @@ package com.jfehr.tojs.file;
 import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET;
 import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.tojs.testutil.TestUtil.buildFailMsg;
+import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -19,7 +20,6 @@ import org.mockito.Mock;
 import com.google.common.io.Files;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.logging.ParameterizedLogger;
-import com.jfehr.tojs.testutil.TestUtil;
 
 public class MultiFileReaderTest {
 
@@ -35,7 +35,7 @@ public class MultiFileReaderTest {
 		initMocks(this);
 		
 		fixture = new MultiFileReader(mockLogger);
-		TestUtil.setPrivateField(fixture, "fileValidator", mockValidator);
+		setPrivateField(fixture, "fileValidator", mockValidator);
 	}
 	
 	@Test

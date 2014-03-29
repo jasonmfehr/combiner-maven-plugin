@@ -2,6 +2,7 @@ package com.jfehr.tojs.file;
 
 import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
+import static com.jfehr.tojs.testutil.TestUtil.createFile;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
@@ -16,7 +17,6 @@ import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
-import com.jfehr.tojs.testutil.TestUtil;
 
 public class FileValidatorTest {
 
@@ -50,13 +50,13 @@ public class FileValidatorTest {
 	
 	@Test(expected=NotReadableException.class)
 	public void testReadableExistsNotReadable() {
-		TestUtil.createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
+		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
 		fixture.existsAndReadable(TMP_TEST_DIR + TEST_LOCATION);
 	}
 	
 	@Test
 	public void testExistsReadable() {
-		TestUtil.createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.TRUE);
+		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.TRUE);
 		fixture.existsAndReadable(TMP_TEST_DIR + TEST_LOCATION);
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());
@@ -83,13 +83,13 @@ public class FileValidatorTest {
 	
 	@Test(expected=NotWriteableException.class)
 	public void testWriteableExistsNotWriteable() {
-		TestUtil.createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
+		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
 		fixture.existsAndWriteable(TMP_TEST_DIR + TEST_LOCATION);
 	}
 	
 	@Test
 	public void testExistsWriteable() {
-		TestUtil.createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.TRUE, Boolean.FALSE);
+		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.TRUE, Boolean.FALSE);
 		fixture.existsAndWriteable(TMP_TEST_DIR + TEST_LOCATION);
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());

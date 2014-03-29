@@ -1,6 +1,11 @@
 package com.jfehr.tojs.file;
 
 import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET_STR;
+import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
+import static com.jfehr.tojs.testutil.TestUtil.createDirectory;
+import static com.jfehr.tojs.testutil.TestUtil.createFile;
+import static com.jfehr.tojs.testutil.TestUtil.createNotWriteableDirectory;
 
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
@@ -15,15 +20,14 @@ import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.NotWriteableException;
 import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.parser.ParserExecutor;
-import com.jfehr.tojs.testutil.TestUtil;
 
 public class FileAggregatorTest {
 
 	private static final String INVALID_CHARSET = "MyFooCharSet";
-	private static final String NOT_WRITEABLE_DIR = TestUtil.TMP_TEST_DIR + "not_writeable_dir/";
+	private static final String NOT_WRITEABLE_DIR = TMP_TEST_DIR + "not_writeable_dir/";
 	private static final String NOT_WRITEABLE_SUBDIR = NOT_WRITEABLE_DIR + "subdir/";
-	private static final String NOT_WRITEABLE_DIR_2 = TestUtil.TMP_TEST_DIR + "not_writeable_dir_2/";
-	private static final String WRITEABLE_DIR = TestUtil.TMP_TEST_DIR + "writeable_dir/";
+	private static final String NOT_WRITEABLE_DIR_2 = TMP_TEST_DIR + "not_writeable_dir_2/";
+	private static final String WRITEABLE_DIR = TMP_TEST_DIR + "writeable_dir/";
 	private static final String WRITEABLE_FILE_NAME = WRITEABLE_DIR + "writeable_file";
 	
 	private FileAggregator fixture;
@@ -33,7 +37,7 @@ public class FileAggregatorTest {
 	
 	@Before
 	public void setUp() {
-		TestUtil.cleanTmpTestDir();
+		cleanTmpTestDir();
 		MockitoAnnotations.initMocks(this);
 		
 		fixture = new FileAggregator(mockParserExecutor, mockLogger);
@@ -88,20 +92,20 @@ public class FileAggregatorTest {
 	
 	@Test(expected=DirectoryCreationException.class)
 	public void testOutputFileDirNotCreatable() {
-		TestUtil.createNotWriteableDirectory(NOT_WRITEABLE_DIR);
+		createNotWriteableDirectory(NOT_WRITEABLE_DIR);
 		fixture.aggregate(" ", TEST_CHARSET_STR, NOT_WRITEABLE_SUBDIR + "test", new ArrayList<String>(), new ArrayList<String>());
 	}
 	
 	@Test(expected=NotWriteableException.class)
 	public void testOutputFileNotWriteable() {
-		TestUtil.createNotWriteableDirectory(NOT_WRITEABLE_DIR_2);
+		createNotWriteableDirectory(NOT_WRITEABLE_DIR_2);
 		fixture.aggregate(" ", TEST_CHARSET_STR, NOT_WRITEABLE_DIR_2  + "test.file", new ArrayList<String>(), new ArrayList<String>());
 	}
 	
 	@Test(expected=FileExistsException.class)
 	public void testFileExists() {
-		TestUtil.createDirectory(WRITEABLE_DIR, true, true);
-		TestUtil.createFile(WRITEABLE_FILE_NAME, true, true);
+		createDirectory(WRITEABLE_DIR, true, true);
+		createFile(WRITEABLE_FILE_NAME, true, true);
 		
 		fixture.aggregate(" ", TEST_CHARSET_STR, WRITEABLE_FILE_NAME, new ArrayList<String>(), new ArrayList<String>());
 	}
