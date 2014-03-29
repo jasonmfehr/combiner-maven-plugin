@@ -1,8 +1,7 @@
 package com.jfehr.tojs.file;
 
-import static org.junit.Assert.assertTrue;
+import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET_STR;
 
-import java.io.File;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 
@@ -26,7 +25,6 @@ public class FileAggregatorTest {
 	private static final String NOT_WRITEABLE_DIR_2 = TestUtil.TMP_TEST_DIR + "not_writeable_dir_2/";
 	private static final String WRITEABLE_DIR = TestUtil.TMP_TEST_DIR + "writeable_dir/";
 	private static final String WRITEABLE_FILE_NAME = WRITEABLE_DIR + "writeable_file";
-	private static final String UTF_8 = "UTF-8";
 	
 	private FileAggregator fixture;
 	
@@ -91,13 +89,13 @@ public class FileAggregatorTest {
 	@Test(expected=DirectoryCreationException.class)
 	public void testOutputFileDirNotCreatable() {
 		TestUtil.createNotWriteableDirectory(NOT_WRITEABLE_DIR);
-		fixture.aggregate(" ", UTF_8, NOT_WRITEABLE_SUBDIR + "test", new ArrayList<String>(), new ArrayList<String>());
+		fixture.aggregate(" ", TEST_CHARSET_STR, NOT_WRITEABLE_SUBDIR + "test", new ArrayList<String>(), new ArrayList<String>());
 	}
 	
 	@Test(expected=NotWriteableException.class)
 	public void testOutputFileNotWriteable() {
 		TestUtil.createNotWriteableDirectory(NOT_WRITEABLE_DIR_2);
-		fixture.aggregate(" ", UTF_8, NOT_WRITEABLE_DIR_2  + "test.file", new ArrayList<String>(), new ArrayList<String>());
+		fixture.aggregate(" ", TEST_CHARSET_STR, NOT_WRITEABLE_DIR_2  + "test.file", new ArrayList<String>(), new ArrayList<String>());
 	}
 	
 	@Test(expected=FileExistsException.class)
@@ -105,7 +103,7 @@ public class FileAggregatorTest {
 		TestUtil.createDirectory(WRITEABLE_DIR, true, true);
 		TestUtil.createFile(WRITEABLE_FILE_NAME, true, true);
 		
-		fixture.aggregate(" ", UTF_8, WRITEABLE_FILE_NAME, new ArrayList<String>(), new ArrayList<String>());
+		fixture.aggregate(" ", TEST_CHARSET_STR, WRITEABLE_FILE_NAME, new ArrayList<String>(), new ArrayList<String>());
 	}
 	
 }

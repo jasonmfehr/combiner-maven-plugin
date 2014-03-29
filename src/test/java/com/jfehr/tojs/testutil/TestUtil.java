@@ -6,11 +6,14 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 
 public final class TestUtil {
 
 	public static final String TMP_TEST_DIR = "src/test/resources/tmp/";
 	public static final String FAIL_MSG = "test pre-condition failed -- ";
+	public static final String TEST_CHARSET_STR = "UTF-8";
+	public static final Charset TEST_CHARSET = Charset.forName(TEST_CHARSET_STR);
 	
 	private TestUtil() {
 
