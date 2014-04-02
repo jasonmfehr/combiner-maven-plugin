@@ -1,4 +1,4 @@
-package com.jfehr.tojs.combiner;
+package com.jfehr.combiner.combiner;
 
 import java.io.File;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.jfehr.tojs.combiner;
+package com.jfehr.combiner.combiner;
 
 import static org.junit.Assert.assertEquals;
 

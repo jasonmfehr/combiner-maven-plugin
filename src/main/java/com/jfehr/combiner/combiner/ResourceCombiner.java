@@ -1,4 +1,4 @@
-package com.jfehr.tojs.combiner;
+package com.jfehr.combiner.combiner;
 
 import java.util.List;
 import java.util.Map;
