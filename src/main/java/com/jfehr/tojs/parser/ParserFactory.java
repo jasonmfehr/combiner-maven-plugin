@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 /**
  * 

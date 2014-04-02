@@ -13,9 +13,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.InvalidParserException;
 import com.jfehr.tojs.exception.ParserNotFoundException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.testutil.MockParserNonDefaultPackage;
 
 public class ParserFactoryTest {

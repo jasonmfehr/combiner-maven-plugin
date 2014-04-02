@@ -3,7 +3,7 @@ package com.jfehr.tojs.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jfehr.tojs.logging.ParameterizedLogger;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class ParserExecutor {
 

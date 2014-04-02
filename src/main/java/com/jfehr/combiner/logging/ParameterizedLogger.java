@@ -1,4 +1,4 @@
-package com.jfehr.tojs.logging;
+package com.jfehr.combiner.logging;
 
 import java.text.MessageFormat;
 

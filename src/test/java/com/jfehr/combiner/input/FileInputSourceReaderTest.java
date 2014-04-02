@@ -19,9 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.jfehr.tojs.file.FileLocator;
-import com.jfehr.tojs.file.MultiFileReader;
-import com.jfehr.tojs.logging.ParameterizedLogger;
+import com.jfehr.combiner.file.FileLocator;
+import com.jfehr.combiner.file.MultiFileReader;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.mojo.Setting;
 
 public class FileInputSourceReaderTest {

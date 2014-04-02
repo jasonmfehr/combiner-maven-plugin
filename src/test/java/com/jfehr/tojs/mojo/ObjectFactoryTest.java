@@ -8,9 +8,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.testutil.MockNonDefaultPackage;
 
 public class ObjectFactoryTest {

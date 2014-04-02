@@ -1,4 +1,4 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
@@ -24,9 +24,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.base.MockitoAssertionError;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class FileLocatorTest {
 

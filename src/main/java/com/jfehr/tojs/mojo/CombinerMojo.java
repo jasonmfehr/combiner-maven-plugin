@@ -13,9 +13,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import com.jfehr.combiner.file.FileLocator;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.file.FileAggregator;
-import com.jfehr.tojs.file.FileLocator;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.parser.ParserExecutor;
 import com.jfehr.tojs.parser.ParserFactory;
 

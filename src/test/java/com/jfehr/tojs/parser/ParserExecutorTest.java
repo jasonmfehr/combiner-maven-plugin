@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.jfehr.tojs.logging.ParameterizedLogger;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class ParserExecutorTest {
 

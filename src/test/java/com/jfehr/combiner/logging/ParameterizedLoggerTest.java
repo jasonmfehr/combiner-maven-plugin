@@ -1,4 +1,4 @@
-package com.jfehr.tojs.logging;
+package com.jfehr.combiner.logging;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;

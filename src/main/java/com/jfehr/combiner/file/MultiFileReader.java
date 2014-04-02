@@ -1,4 +1,4 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.io.Files;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileReadException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class MultiFileReader {
 

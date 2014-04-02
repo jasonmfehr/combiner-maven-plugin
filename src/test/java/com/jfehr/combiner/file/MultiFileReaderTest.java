@@ -1,4 +1,4 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET;
 import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.google.common.io.Files;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class MultiFileReaderTest {
 

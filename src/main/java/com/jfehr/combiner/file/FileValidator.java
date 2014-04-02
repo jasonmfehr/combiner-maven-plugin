@@ -1,11 +1,11 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import java.io.File;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 
 public class FileValidator {

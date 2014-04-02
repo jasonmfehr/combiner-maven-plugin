@@ -1,11 +1,11 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.plexus.util.DirectoryScanner;
 
-import com.jfehr.tojs.logging.ParameterizedLogger;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
 /**
  * Searches through a base directory locating files that match a 

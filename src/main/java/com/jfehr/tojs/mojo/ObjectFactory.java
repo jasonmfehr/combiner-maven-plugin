@@ -5,9 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class ObjectFactory {
 

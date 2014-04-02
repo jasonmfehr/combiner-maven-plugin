@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.common.io.Files;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.FileReadException;
 import com.jfehr.tojs.exception.FileWriteException;
 import com.jfehr.tojs.exception.NotWriteableException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.parser.ParserExecutor;
 
 /**

@@ -15,10 +15,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.NotWriteableException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 import com.jfehr.tojs.parser.ParserExecutor;
 
 public class FileAggregatorTest {

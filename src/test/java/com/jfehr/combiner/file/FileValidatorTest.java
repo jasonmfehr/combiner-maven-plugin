@@ -1,4 +1,4 @@
-package com.jfehr.tojs.file;
+package com.jfehr.combiner.file;
 
 import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
@@ -13,10 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
-import com.jfehr.tojs.logging.ParameterizedLogger;
 
 public class FileValidatorTest {
 
