@@ -2,7 +2,6 @@ package com.jfehr.combiner.transformer;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,11 +13,6 @@ public class StripNewlinesTest {
 	@Before
 	public void setUp() {
 		fixture = new StripNewlines();
-	}
-	
-	@After
-	public void tearDown() {
-		fixture = null;
 	}
 	
 	@Test
