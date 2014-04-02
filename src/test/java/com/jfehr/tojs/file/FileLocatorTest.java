@@ -78,6 +78,7 @@ public class FileLocatorTest {
 		}
 		
 		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
+		when(mockLogger.isDebugEnabled()).thenReturn(true);
 		
 		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, excludes);
 		
