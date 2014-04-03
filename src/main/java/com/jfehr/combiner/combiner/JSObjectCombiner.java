@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.maven.project.MavenProject;
+
 import com.jfehr.tojs.mojo.Setting;
 
 public class JSObjectCombiner implements ResourceCombiner {
@@ -14,7 +16,7 @@ public class JSObjectCombiner implements ResourceCombiner {
 	
 	private static final char LINE_SEPARATOR = '\n';
 	
-	public String combine(final Map<String, String> transformedResourceContents, final List<Setting> settings) {
+	public String combine(final Map<String, String> transformedResourceContents, final List<Setting> settings, final MavenProject mavenProject) {
 		return this.doCombine(this.determineJSObjectName(settings), transformedResourceContents);
 	}
 	

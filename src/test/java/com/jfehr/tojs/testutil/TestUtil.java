@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
+import com.google.common.io.Files;
+
 public final class TestUtil {
 
 	public static final String TMP_TEST_DIR = "src/test/resources/tmp/";
@@ -28,9 +30,13 @@ public final class TestUtil {
 	}
 	
 	public static void createDirectory(final String directoryPath, boolean isReadable, boolean isWriteable) {
+		createDirectory(directoryPath, isReadable, isWriteable, false);
+	}
+	
+	public static void createDirectory(final String directoryPath, boolean isReadable, boolean isWriteable, boolean createParentDirs) {
 		final File directory = new File(directoryPath);
 
-		assertTrue(buildFailMsg("could not create directory [" + directoryPath + "]"), directory.mkdir());
+		assertTrue(buildFailMsg("could not create directory [" + directoryPath + "]"), (createParentDirs ? directory.mkdirs() : directory.mkdir()));
 		directory.deleteOnExit();
 		
 		assertTrue(buildFailMsg("could not set directory [" + directoryPath + "] as readable=" + Boolean.toString(isReadable)), directory.setReadable(isReadable, false));
@@ -108,6 +114,14 @@ public final class TestUtil {
 	
 	public static String buildFailMsg(final String msg) {
 		return FAIL_MSG + msg;
+	}
+	
+	public static String readFile(final String filePath) {
+		try {
+			return Files.toString(new File(filePath), TEST_CHARSET);
+		} catch (IOException e) {
+			throw new TestUtilException(e);
+		}	
 	}
 	
 	private static Field locateField(Object targetObj, String fieldName) {

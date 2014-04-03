@@ -16,17 +16,17 @@ public class EscapeDoubleQuotesTest {
 	
 	@Test
 	public void testEscapeQuotes() {
-		assertEquals("this \\\"word\\\" is in escaped double quotes", fixture.transform("this \"word\" is in escaped double quotes", null));
+		assertEquals("this \\\"word\\\" is in escaped double quotes", fixture.transform("this \"word\" is in escaped double quotes", null, null));
 	}
 	
 	@Test
 	public void testNoEscapeQuotes() {
-		assertEquals("this word is not in double quotes", fixture.transform("this word is not in double quotes", null));
+		assertEquals("this word is not in double quotes", fixture.transform("this word is not in double quotes", null, null));
 	}
 	
 	@Test
 	public void testSkipAlreadyEscapedQuotes() {
-		assertEquals("this \\\"word\\\" is not double escaped", fixture.transform("this \\\"word\\\" is not double escaped", null));
+		assertEquals("this \\\"word\\\" is not double escaped", fixture.transform("this \\\"word\\\" is not double escaped", null, null));
 	}
 
 }

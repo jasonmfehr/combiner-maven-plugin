@@ -32,7 +32,7 @@ public class JSObjectCombinerTest {
 	
 	@Test
 	public void testNullSettings() {
-		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, null)));
+		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, null, null)));
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class JSObjectCombinerTest {
 		objectNameSetting.setValue("bar");
 		settings.add(objectNameSetting);
 
-		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, settings)));
+		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, settings, null)));
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class JSObjectCombinerTest {
 		objectNameSetting.setValue(TEST_OBJECT_NAME);
 		settings.add(objectNameSetting);
 		
-		assertEquals(EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME, this.compressResults(fixture.combine(testContents, settings)));
+		assertEquals(EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME, this.compressResults(fixture.combine(testContents, settings, null)));
 	}
 	
 	private String compressResults(final String results) {

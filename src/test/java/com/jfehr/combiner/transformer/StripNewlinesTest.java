@@ -17,27 +17,27 @@ public class StripNewlinesTest {
 	
 	@Test
 	public void testNoNewlines() {
-		assertEquals("this string has no newlines", fixture.transform("this string has no newlines", null));
+		assertEquals("this string has no newlines", fixture.transform("this string has no newlines", null, null));
 	}
 	
 	@Test
 	public void testStripLineFeedsOnly() {
-		assertEquals("this string has line feed characters", fixture.transform("this string has\n line feed characters", null));
+		assertEquals("this string has line feed characters", fixture.transform("this string has\n line feed characters", null, null));
 	}
 	
 	@Test
 	public void testStripCarriageReturnsOnly() {
-		assertEquals("this string has carriage return characters", fixture.transform("this string has\r carriage return characters", null));
+		assertEquals("this string has carriage return characters", fixture.transform("this string has\r carriage return characters", null, null));
 	}
 	
 	@Test
 	public void testStripCRLF() {
-		assertEquals("this string has both carriage return and line feed characters", fixture.transform("this string has\r both\n carriage return\r\n and line feed characters", null));
+		assertEquals("this string has both carriage return and line feed characters", fixture.transform("this string has\r both\n carriage return\r\n and line feed characters", null, null));
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void testNull() {
-		fixture.transform(null, null);
+		fixture.transform(null, null, null);
 	}
 
 }

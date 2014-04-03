@@ -9,6 +9,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -31,6 +32,11 @@ public class FileValidatorTest {
 		cleanTmpTestDir();
 		initMocks(this);
 		fixture = new FileValidator(mockLogger);
+	}
+	
+	@AfterClass
+	public static void deleteTmpTestDir() {
+		cleanTmpTestDir();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
