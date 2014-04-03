@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.tojs.mojo.Setting;
+import com.jfehr.combiner.mojo.Setting;
 
 public class EscapeDoubleQuotes implements ResourceTransformer {
 

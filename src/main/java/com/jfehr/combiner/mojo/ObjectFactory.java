@@ -1,4 +1,4 @@
-package com.jfehr.tojs.mojo;
+package com.jfehr.combiner.mojo;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.jfehr.tojs.mojo.Setting;
+import com.jfehr.combiner.mojo.Setting;
 
 public class JSObjectCombinerTest {
 

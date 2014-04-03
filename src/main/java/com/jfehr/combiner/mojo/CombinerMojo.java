@@ -1,4 +1,4 @@
-package com.jfehr.tojs.mojo;
+package com.jfehr.combiner.mojo;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.file.FileAggregator;
 import com.jfehr.tojs.parser.ParserExecutor;
@@ -27,6 +26,10 @@ import com.jfehr.tojs.parser.ParserFactory;
 @Mojo(name="combine", defaultPhase=LifecyclePhase.PROCESS_SOURCES, threadSafe=true)
 public class CombinerMojo extends AbstractMojo {
 
+	private static final String DEFAULT_PACKAGE_INPUT = "com.jfehr.combiner.input";
+	private static final String DEFAULT_PACKAGE_TRANSFORMER = "com.jfehr.combiner.transformer";
+	private static final String DEFAULT_PACKAGE_COMBINER = "com.jfehr.combiner.combiner";
+	private static final String DEFAULT_PACKAGE_OUTPUT = "com.jfehr.combiner.output";
 	/**
 	 * list of combinations with each one representing a set of 
 	 * resources to combine and the pipeline implementations to 
@@ -48,15 +51,22 @@ public class CombinerMojo extends AbstractMojo {
 	private MojoExecution mojoExecution;
 	
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		final ParameterizedLogger logger;
+		final ObjectFactory factory;
+		/*
 		final FileLocator locator;
 		final FileAggregator aggregator;
 		final List<String> locatedFiles;
-		final ParameterizedLogger logger;
+		*/
 		
 		logger = new ParameterizedLogger(this.getLog());
 		if(!Boolean.TRUE.equals(this.skip)){
 			logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
-			this.debugLogInputs(logger);
+			factory = new ObjectFactory(logger);
+			for(Combination c : this.combinations){
+				this.debugLogInputs(logger, c);
+				
+			}
 			/*
 			locator = new FileLocator(logger);
 			locatedFiles = locator.locateFiles(new DirectoryScanner(), mavenProject.getBasedir().getAbsolutePath(), fileIncludes, fileExcludes);
@@ -95,21 +105,21 @@ public class CombinerMojo extends AbstractMojo {
 	 * 
 	 * @param logger {@link Log} where the information will be written
 	 */
-	private void debugLogInputs(final ParameterizedLogger logger) {
+	private void debugLogInputs(final ParameterizedLogger logger, final Combination combination) {
 		if(logger.isDebugEnabled()){
 			logger.debugWithParams("{0} combination sets specified", this.combinations.size());
-			for(Combination c : this.combinations){
-				logger.debug("--- Begin Combination Set ---");
-				logger.debugWithParams("  encoding: {0}", c.getEncoding());
-				logger.debugWithParams("  output destination: {0}", c.getOutputDestination());
-				logger.debugWithParams("  combiner: {0}", c.getCombiner());
-				logger.debugWithParams("  base directory for input files: {0}", mavenProject.getBasedir());
-				logger.debugWithParams("  base build output directory: {0}", mavenProject.getBuild().getDirectory());
-				logger.debugWithParams("  input resources: {0}", c.getInputSources());
-				logger.debugWithParams("  transformers: {0}", c.getTransformers());
-				logger.debugWithParams("  settings: {0}", c.getSettings());
-				logger.debug("--- End Combination Set ---");
-			}
+			logger.debug("--- Begin Combination Configuration ---");
+			logger.debugWithParams("  input source reader: {0}", combination.getInputSourceReader());
+			logger.debugWithParams("  transformers: {0}", combination.getTransformers());
+			logger.debugWithParams("  combiner: {0}", combination.getCombiner());
+			logger.debugWithParams("  output source writer: {0}", combination.getOutputSourceWriter());
+			logger.debugWithParams("  encoding: {0}", combination.getEncoding());
+			logger.debugWithParams("  output destination: {0}", combination.getOutputDestination());
+			logger.debugWithParams("  base directory for input files: {0}", mavenProject.getBasedir());
+			logger.debugWithParams("  base build output directory: {0}", mavenProject.getBuild().getDirectory());
+			logger.debugWithParams("  input resources: {0}", combination.getInputSources());
+			logger.debugWithParams("  settings: {0}", combination.getSettings());
+			logger.debug("--- End Combination Set Configuration ---");
 		}
 	}
 

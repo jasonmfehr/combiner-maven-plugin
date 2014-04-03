@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.tojs.mojo.Setting;
+import com.jfehr.combiner.mojo.Setting;
 
 public interface InputSourceReader {
 

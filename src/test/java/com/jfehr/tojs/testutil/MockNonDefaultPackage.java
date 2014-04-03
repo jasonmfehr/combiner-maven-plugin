@@ -1,6 +1,6 @@
 package com.jfehr.tojs.testutil;
 
-import com.jfehr.tojs.mojo.ObjectFactoryTest.MockBaseInterface;
+import com.jfehr.combiner.mojo.ObjectFactoryTest.MockBaseInterface;
 
 public class MockNonDefaultPackage implements MockBaseInterface {
 

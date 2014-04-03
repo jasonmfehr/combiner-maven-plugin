@@ -9,12 +9,12 @@ import org.apache.maven.project.MavenProject;
 
 import com.google.common.io.Files;
 import com.jfehr.combiner.logging.ParameterizedLogger;
+import com.jfehr.combiner.mojo.Setting;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.FileWriteException;
 import com.jfehr.tojs.exception.NotWriteableException;
-import com.jfehr.tojs.mojo.Setting;
 
 public class FileOutputSourceWriter implements OutputSourceWriter {
 

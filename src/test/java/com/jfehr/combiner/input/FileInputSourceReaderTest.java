@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.tojs.mojo.Setting;
+import com.jfehr.combiner.mojo.Setting;
 
 public class FileInputSourceReaderTest {
 

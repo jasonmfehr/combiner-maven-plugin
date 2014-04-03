@@ -11,10 +11,12 @@ file locator    stripNewlines
         <exclude>something</exclude>
     </excludes>
 </inputSources>
+<inputSourceReader>FileInputSourceReader</inputSourceReader>
 <transformers>
     <transformer>StripNewlines</transformer>
 </transformers>
 <combiner>JsCombiner</combiner>
+<outputSourceWriter>FileOutputSourceWriter</outputSourceWriter>
 <outputDestination>target/myfile.js</outputDestination>
 <settings>
     <setting>
