@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.jfehr.combiner.factory.ResourceTransformerFactory;
 import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.transformer.MockResourceTransformer;
 

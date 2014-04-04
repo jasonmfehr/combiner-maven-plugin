@@ -9,9 +9,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
+import com.jfehr.combiner.testutil.MockNonDefaultPackage;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
-import com.jfehr.tojs.testutil.MockNonDefaultPackage;
 
 public class ObjectFactoryTest {
 
@@ -20,7 +20,7 @@ public class ObjectFactoryTest {
 	private static final String MOCK_LOGGER_CTOR = "ObjectFactoryTest$MockImplementsIfaceWithLogger";
 	private static final String MOCK_INVALID = "ObjectFactoryTest$MockInvalid";
 	private static final String MOCK_INHERITS_IFACE = "ObjectFactoryTest$MockInheritsIface";
-	private static final String MOCK_NON_DEFAULT_PKG = "com.jfehr.tojs.testutil.MockNonDefaultPackage";
+	private static final String MOCK_NON_DEFAULT_PKG = "com.jfehr.combiner.testutil.MockNonDefaultPackage";
 	private static final String MOCK_IFACE = "ObjectFactoryTest$MockSubIface";
 	private static final String MOCK_NONEXISTANT = "NonExistant";
 	

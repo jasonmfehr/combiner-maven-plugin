@@ -1,4 +1,4 @@
-package com.jfehr.tojs.testutil;
+package com.jfehr.combiner.testutil;
 
 import com.jfehr.combiner.factory.ObjectFactoryTest.MockBaseInterface;
 

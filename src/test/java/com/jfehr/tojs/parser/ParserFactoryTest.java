@@ -1,6 +1,6 @@
 package com.jfehr.tojs.parser;
 
-import static com.jfehr.tojs.testutil.TestUtil.getPrivateField;
+import static com.jfehr.combiner.testutil.TestUtil.getPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

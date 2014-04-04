@@ -1,17 +1,17 @@
 package com.jfehr.combiner.output;
 
-import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET_STR;
-import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
-import static com.jfehr.tojs.testutil.TestUtil.createDirectory;
-import static com.jfehr.tojs.testutil.TestUtil.readFile;
+import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET_STR;
+import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.combiner.testutil.TestUtil.cleanTmpTestDir;
+import static com.jfehr.combiner.testutil.TestUtil.createDirectory;
+import static com.jfehr.combiner.testutil.TestUtil.readFile;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 import java.nio.charset.UnsupportedCharsetException;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -39,8 +39,8 @@ public class FileOutputSourceWriterTest {
 		fixture = new FileOutputSourceWriter(mockLogger);
 	}
 	
-	@AfterClass
-	public static void deleteTmpTestDir() {
+	@After
+	public void deleteTmpTestDir() {
 		cleanTmpTestDir();
 	}
 	

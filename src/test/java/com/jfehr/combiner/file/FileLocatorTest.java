@@ -1,7 +1,7 @@
 package com.jfehr.combiner.file;
 
-import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
+import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.combiner.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;

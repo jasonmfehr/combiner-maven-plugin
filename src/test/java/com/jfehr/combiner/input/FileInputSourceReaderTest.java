@@ -1,9 +1,9 @@
 package com.jfehr.combiner.input;
 
-import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET;
-import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET_STR;
-import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.tojs.testutil.TestUtil.setPrivateField;
+import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET;
+import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET_STR;
+import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.combiner.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;

@@ -1,15 +1,15 @@
 package com.jfehr.combiner.file;
 
-import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
-import static com.jfehr.tojs.testutil.TestUtil.createFile;
+import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.combiner.testutil.TestUtil.cleanTmpTestDir;
+import static com.jfehr.combiner.testutil.TestUtil.createFile;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -34,8 +34,8 @@ public class FileValidatorTest {
 		fixture = new FileValidator(mockLogger);
 	}
 	
-	@AfterClass
-	public static void deleteTmpTestDir() {
+	@After
+	public void deleteTmpTestDir() {
 		cleanTmpTestDir();
 	}
 	

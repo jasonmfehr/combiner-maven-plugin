@@ -1,4 +1,4 @@
-package com.jfehr.tojs.testutil;
+package com.jfehr.combiner.testutil;
 
 public class TestUtilException extends RuntimeException {
 

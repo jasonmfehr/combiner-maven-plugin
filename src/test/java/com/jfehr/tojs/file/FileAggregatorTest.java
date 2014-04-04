@@ -1,11 +1,11 @@
 package com.jfehr.tojs.file;
 
-import static com.jfehr.tojs.testutil.TestUtil.TEST_CHARSET_STR;
-import static com.jfehr.tojs.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.tojs.testutil.TestUtil.cleanTmpTestDir;
-import static com.jfehr.tojs.testutil.TestUtil.createDirectory;
-import static com.jfehr.tojs.testutil.TestUtil.createFile;
-import static com.jfehr.tojs.testutil.TestUtil.createNotWriteableDirectory;
+import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET_STR;
+import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
+import static com.jfehr.combiner.testutil.TestUtil.cleanTmpTestDir;
+import static com.jfehr.combiner.testutil.TestUtil.createDirectory;
+import static com.jfehr.combiner.testutil.TestUtil.createFile;
+import static com.jfehr.combiner.testutil.TestUtil.createNotWriteableDirectory;
 
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
@@ -41,8 +41,6 @@ public class FileAggregatorTest {
 		MockitoAnnotations.initMocks(this);
 		
 		fixture = new FileAggregator(mockParserExecutor, mockLogger);
-		
-		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

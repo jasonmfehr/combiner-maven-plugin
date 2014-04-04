@@ -1,4 +1,4 @@
-package com.jfehr.tojs.testutil;
+package com.jfehr.combiner.testutil;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
