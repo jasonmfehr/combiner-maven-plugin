@@ -1,4 +1,4 @@
-package com.jfehr.combiner.mojo;
+package com.jfehr.combiner.factory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
