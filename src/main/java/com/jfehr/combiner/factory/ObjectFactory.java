@@ -1,6 +1,8 @@
 package com.jfehr.combiner.factory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
@@ -51,6 +53,16 @@ public class ObjectFactory {
 		}
 		
 		return obj;
+	}
+	
+	public <T> List<T> buildObjectList(final List<String> classNames, final String defaultPackage, Class<T> superInterface) {
+		final List<T> objectList = new ArrayList<T>();
+		
+		for(String cN : classNames){
+			objectList.add(this.buildObject(cN, defaultPackage, superInterface));
+		}
+		
+		return objectList;
 	}
 	
 	@SuppressWarnings("unchecked")

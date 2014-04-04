@@ -1,7 +1,11 @@
 package com.jfehr.combiner.factory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -90,6 +94,22 @@ public class ObjectFactoryTest {
 	@Test(expected=ObjectInstantiationException.class)
 	public void testParserNonExistant() {
 		this.runTest(MOCK_NONEXISTANT);
+	}
+	
+	@Test
+	public void testList() {
+		final List<String> inputList = new ArrayList<String>();
+		final List<MockBaseInterface> actualList;
+		
+		inputList.add(MOCK_DEFAULT_PKG);
+		inputList.add(MOCK_LOGGER_CTOR);
+		
+		actualList = fixture.buildObjectList(inputList, DEFAULT_PACKAGE_NAME, MockBaseInterface.class);
+		
+		assertNotNull(actualList);
+		assertEquals(2, actualList.size());
+		assertTrue(actualList.get(0) instanceof MockImplementsIface);
+		assertTrue(actualList.get(1) instanceof MockImplementsIfaceWithLogger);
 	}
 	
 	private Object runTest(final String className, final String defaultPackage) {
