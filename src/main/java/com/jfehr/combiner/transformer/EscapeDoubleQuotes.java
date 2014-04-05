@@ -1,16 +1,17 @@
 package com.jfehr.combiner.transformer;
 
-import java.util.List;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
-import org.apache.maven.project.MavenProject;
+public class EscapeDoubleQuotes extends AbstractResourceTransformer {
 
-import com.jfehr.combiner.mojo.Setting;
+	public EscapeDoubleQuotes(final ParameterizedLogger logger) {
+		super(logger);
+	}
 
-public class EscapeDoubleQuotes implements ResourceTransformer {
-
-	public String transform(String resourceContents, List<Setting> settings, final MavenProject mavenProject) {
+	@Override
+	protected String doTransform(String resourceKey, String resourceValue) {
 		//replace all non-escaped instances of double quotes with an escaped double quote
-		return resourceContents.replaceAll("(?<!\\\\)\"", "\\\\\"");
+		return resourceValue.replaceAll("(?<!\\\\)\"", "\\\\\"");
 	}
 
 }

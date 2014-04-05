@@ -23,6 +23,7 @@ public class MultiFileReader {
 	
 	public Map<String, String> readInputFiles(final Charset charSet, final List<String> inputFiles) {
 		final Map<String, String> filesContents = new HashMap<String, String>();
+		String content;
 		File tmpFileObj;
 		
 		for(final String filePath : inputFiles){
@@ -31,7 +32,9 @@ public class MultiFileReader {
 			tmpFileObj = new File(filePath);
 			
 			try {
-				filesContents.put(tmpFileObj.getAbsolutePath(), Files.toString(tmpFileObj, charSet));
+				content = Files.toString(tmpFileObj, charSet);
+				logger.debugWithParams("contents of file has length of {0}", content.length());
+				filesContents.put(tmpFileObj.getAbsolutePath(), content);
 			} catch (IOException e) {
 				throw new FileReadException(filePath, e);
 			}

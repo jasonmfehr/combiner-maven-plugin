@@ -1,15 +1,16 @@
 package com.jfehr.combiner.transformer;
 
-import java.util.List;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
-import org.apache.maven.project.MavenProject;
+public class StripNewlines extends AbstractResourceTransformer {
 
-import com.jfehr.combiner.mojo.Setting;
+	public StripNewlines(final ParameterizedLogger logger) {
+		super(logger);
+	}
 
-public class StripNewlines implements ResourceTransformer {
-
-	public String transform(final String resourceContents, final List<Setting> settings, final MavenProject mavenProject) {
-		return resourceContents.replaceAll("\r|\n", "");
+	@Override
+	protected String doTransform(final String resourceKey, final String resourceValue) {
+		return resourceValue.replaceAll("\r|\n", "");
 	}
 
 }

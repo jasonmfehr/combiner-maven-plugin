@@ -24,9 +24,17 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		this.logger = logger;
 	}
 	
+	//TODO the unit tests for this method never assert that the correct fullOutputDestination is created
 	public void write(final String encoding, final String outputDestination, final String combinedResources, final List<Setting> settings, final MavenProject mavenProject) {
-		final Charset charSet = this.buildCharset(encoding);
-		final File outputFile = this.createOutputFile(outputDestination);
+		final Charset charSet;
+		final File outputFile;
+		final String fullOutputDestination;
+		
+		fullOutputDestination = mavenProject.getBuild().getDirectory() + "/" + outputDestination;
+		logger.debugWithParams("{0} starting execution with charset {1} and output destination {2}", this.getClass().getName(), encoding, fullOutputDestination);
+		
+		charSet = this.buildCharset(encoding);
+		outputFile = this.createOutputFile(fullOutputDestination);
 		
 		this.writeParsedContents(outputFile, charSet, combinedResources);
 	}

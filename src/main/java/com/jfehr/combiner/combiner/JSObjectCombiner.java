@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Setting;
 
 public class JSObjectCombiner implements ResourceCombiner {
@@ -16,8 +17,20 @@ public class JSObjectCombiner implements ResourceCombiner {
 	
 	private static final char LINE_SEPARATOR = '\n';
 	
+	private final ParameterizedLogger logger;
+	
+	public JSObjectCombiner(final ParameterizedLogger logger) {
+		this.logger = logger;
+	}
+	
 	public String combine(final Map<String, String> transformedResourceContents, final List<Setting> settings, final MavenProject mavenProject) {
-		return this.doCombine(this.determineJSObjectName(settings), transformedResourceContents);
+		final String combined;
+		
+		logger.debugWithParams("{0} starting execution", this.getClass().getName());
+		combined = this.doCombine(this.determineJSObjectName(settings), transformedResourceContents);
+		logger.debugWithParams("{0} finished with a combined contents having length {1}", this.getClass().getName(), combined.length());
+		
+		return combined;
 	}
 	
 	private String determineJSObjectName(final List<Setting> settings) {

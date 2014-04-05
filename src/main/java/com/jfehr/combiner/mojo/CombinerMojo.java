@@ -1,6 +1,7 @@
 package com.jfehr.combiner.mojo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
@@ -13,8 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import com.jfehr.combiner.combiner.ResourceCombiner;
+import com.jfehr.combiner.factory.InputSourceReaderFactory;
 import com.jfehr.combiner.factory.ObjectFactory;
+import com.jfehr.combiner.factory.OutputSourceWriterFactory;
+import com.jfehr.combiner.factory.ResourceCombinerFactory;
+import com.jfehr.combiner.factory.ResourceTransformerFactory;
+import com.jfehr.combiner.input.InputSourceReader;
 import com.jfehr.combiner.logging.ParameterizedLogger;
+import com.jfehr.combiner.output.OutputSourceWriter;
+import com.jfehr.combiner.transformer.ResourceTransformer;
 import com.jfehr.tojs.file.FileAggregator;
 import com.jfehr.tojs.parser.ParserExecutor;
 import com.jfehr.tojs.parser.ParserFactory;
@@ -65,8 +74,7 @@ public class CombinerMojo extends AbstractMojo {
 			logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
 			factory = new ObjectFactory(logger);
 			for(Combination c : this.combinations){
-				this.debugLogInputs(logger, c);
-				
+				this.executeCombination(c, logger);
 			}
 			/*
 			locator = new FileLocator(logger);
@@ -83,6 +91,35 @@ public class CombinerMojo extends AbstractMojo {
 		}
 	}
 	
+	//TODO obviously this method has to be broken apart
+	private void executeCombination(final Combination combo, final ParameterizedLogger logger) {
+		final String combinedSources;
+		Map<String, String> sources;
+		this.debugLogInputs(logger, combo);
+		
+		final InputSourceReaderFactory isFactory = new InputSourceReaderFactory(logger);
+		final InputSourceReader isReader;
+		isReader = isFactory.buildObject(combo.getInputSourceReader());
+		sources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), this.mavenProject);
+		
+		final ResourceTransformerFactory transformerFactory = new ResourceTransformerFactory(logger);
+		final List<ResourceTransformer> tranformers;
+		tranformers = transformerFactory.buildObjectList(combo.getTransformers());
+		for(ResourceTransformer rt : tranformers){
+			sources = rt.transform(sources, combo.getSettings(), this.mavenProject);
+		}
+		
+		final ResourceCombinerFactory combinerFactory = new ResourceCombinerFactory(logger);
+		final ResourceCombiner combiner;
+		combiner = combinerFactory.buildObject(combo.getCombiner());
+		combinedSources = combiner.combine(sources, combo.getSettings(), this.mavenProject);
+		
+		final OutputSourceWriterFactory osFactory = new OutputSourceWriterFactory(logger);
+		final OutputSourceWriter osWriter;
+		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
+		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedSources, combo.getSettings(), this.mavenProject);
+	}
+ 	
 	/**
 	 * factory method to build a {@link FileAggregator} object since 
 	 * {@link FileAggregator} objects are constructed using an 
