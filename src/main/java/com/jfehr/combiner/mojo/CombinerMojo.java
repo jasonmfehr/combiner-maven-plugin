@@ -16,7 +16,6 @@ import org.apache.maven.project.MavenProject;
 
 import com.jfehr.combiner.combiner.ResourceCombiner;
 import com.jfehr.combiner.factory.InputSourceReaderFactory;
-import com.jfehr.combiner.factory.ObjectFactory;
 import com.jfehr.combiner.factory.OutputSourceWriterFactory;
 import com.jfehr.combiner.factory.ResourceCombinerFactory;
 import com.jfehr.combiner.factory.ResourceTransformerFactory;
@@ -24,9 +23,6 @@ import com.jfehr.combiner.input.InputSourceReader;
 import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.output.OutputSourceWriter;
 import com.jfehr.combiner.transformer.ResourceTransformer;
-import com.jfehr.tojs.file.FileAggregator;
-import com.jfehr.tojs.parser.ParserExecutor;
-import com.jfehr.tojs.parser.ParserFactory;
 
 /**
  * 
@@ -36,10 +32,6 @@ import com.jfehr.tojs.parser.ParserFactory;
 @Mojo(name="combine", defaultPhase=LifecyclePhase.PROCESS_SOURCES, threadSafe=true)
 public class CombinerMojo extends AbstractMojo {
 
-	private static final String DEFAULT_PACKAGE_INPUT = "com.jfehr.combiner.input";
-	private static final String DEFAULT_PACKAGE_TRANSFORMER = "com.jfehr.combiner.transformer";
-	private static final String DEFAULT_PACKAGE_COMBINER = "com.jfehr.combiner.combiner";
-	private static final String DEFAULT_PACKAGE_OUTPUT = "com.jfehr.combiner.output";
 	/**
 	 * list of combinations with each one representing a set of 
 	 * resources to combine and the pipeline implementations to 
@@ -62,28 +54,13 @@ public class CombinerMojo extends AbstractMojo {
 	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		final ParameterizedLogger logger;
-		final ObjectFactory factory;
-		/*
-		final FileLocator locator;
-		final FileAggregator aggregator;
-		final List<String> locatedFiles;
-		*/
 		
 		logger = new ParameterizedLogger(this.getLog());
 		if(!Boolean.TRUE.equals(this.skip)){
 			logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
-			factory = new ObjectFactory(logger);
 			for(Combination c : this.combinations){
 				this.executeCombination(c, logger);
 			}
-			/*
-			locator = new FileLocator(logger);
-			locatedFiles = locator.locateFiles(new DirectoryScanner(), mavenProject.getBasedir().getAbsolutePath(), fileIncludes, fileExcludes);
-			this.debugLogList("list of files matching includes but not matching excludes", locatedFiles, logger);
-
-			aggregator = this.buildFileAggregator(logger);
-			aggregator.aggregate(this.jsObjectName, this.fileEncoding, this.outputFile, locatedFiles, parsers);
-			*/
 			
 			logger.debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
 		}else{
@@ -120,23 +97,6 @@ public class CombinerMojo extends AbstractMojo {
 		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedSources, combo.getSettings(), this.mavenProject);
 	}
  	
-	/**
-	 * factory method to build a {@link FileAggregator} object since 
-	 * {@link FileAggregator} objects are constructed using an 
-	 * inversion of control methodology
-	 * 
-	 * @return {@link FileAggregator} the newly constructed object
-	 */
-	private FileAggregator buildFileAggregator(final ParameterizedLogger logger) {
-		final ParserFactory parserFactory;
-		final ParserExecutor parserExecutor;
-		
-		parserFactory = new ParserFactory(logger);
-		parserExecutor = new ParserExecutor(parserFactory, logger);
-		
-		return new FileAggregator(parserExecutor, logger);
-	}
-	
 	/**
 	 * Writes debug level information about the user configurable 
 	 * plugin parameters
