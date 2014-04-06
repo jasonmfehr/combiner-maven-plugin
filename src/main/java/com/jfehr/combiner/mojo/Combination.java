@@ -21,7 +21,7 @@ public class Combination {
 	 * {@link InputSourceReader} class to use when reading the inputSources.  If no package is specified, 
 	 * defaults to {@code com.jfehr.combiner.input} 
 	 */
-	@Parameter(required=true, property="combiner.inputSourceReader", defaultValue="FileInputSourceReader")
+	@Parameter(required=true, defaultValue="FileInputSourceReader")
 	private String inputSourceReader;
 	
 	/**
@@ -37,26 +37,26 @@ public class Combination {
 	 * {@link ResourceCombiner} that will be used to combine all the input sources.  
 	 * If no package is specified, defaults to {@code com.jfehr.combiner.combiner}
 	 */
-	@Parameter(required=true, property="combiner.combiner")
+	@Parameter(required=true)
 	private String combiner;
 	
 	/**
 	 * {@link OutputSourceWriter} class to use to write out the combined contents.  If no package is specified, 
 	 * defaults to {@code com.jfehr.combiner.output} 
 	 */
-	@Parameter(required=true, property="combiner.outputSourceWriter", defaultValue="FileOutputSourceWriter")
+	@Parameter(required=true, defaultValue="FileOutputSourceWriter")
 	private String outputSourceWriter;
 	
 	/**
 	 * Location of the resource where the combined inputs will be written.
 	 */
-	@Parameter(required=true, property="combiner.destination")
+	@Parameter(required=true)
 	private String outputDestination;
 	
 	/**
 	 * The charset to use when reading and writing the resources.
 	 */
-	@Parameter(required=true, defaultValue="${project.build.sourceEncoding}", property="combiner.encoding")
+	@Parameter(required=true, defaultValue="${project.build.sourceEncoding}")
 	private String encoding;
 	
 	/**
