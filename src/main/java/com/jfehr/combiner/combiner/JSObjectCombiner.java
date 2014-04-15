@@ -1,14 +1,12 @@
 package com.jfehr.combiner.combiner;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 
 public class JSObjectCombiner implements ResourceCombiner {
 
@@ -23,7 +21,7 @@ public class JSObjectCombiner implements ResourceCombiner {
 		this.logger = logger;
 	}
 	
-	public String combine(final Map<String, String> transformedResourceContents, final List<Setting> settings, final MavenProject mavenProject) {
+	public String combine(final Map<String, String> transformedResourceContents, final Map<String, String> settings, final MavenProject mavenProject) {
 		final String combined;
 		
 		logger.debugWithParams("{0} starting execution", this.getClass().getName());
@@ -33,16 +31,11 @@ public class JSObjectCombiner implements ResourceCombiner {
 		return combined;
 	}
 	
-	private String determineJSObjectName(final List<Setting> settings) {
+	private String determineJSObjectName(final Map<String, String> settings) {
 		String determinedName = DEFAULT_JS_OBJECT_NAME;
 		
-		if(settings != null){
-			for(final Setting s : settings){
-				if(JS_OBJECT_NAME_KEY.equalsIgnoreCase(s.getKey())){
-					determinedName = s.getValue();
-					break;
-				}
-			}
+		if(settings != null && settings.containsKey(JS_OBJECT_NAME_KEY)){
+			return settings.get(JS_OBJECT_NAME_KEY);
 		}
 		
 		return determinedName;

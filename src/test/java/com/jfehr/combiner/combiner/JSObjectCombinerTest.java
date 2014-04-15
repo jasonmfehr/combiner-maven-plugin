@@ -3,9 +3,7 @@ package com.jfehr.combiner.combiner;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -13,7 +11,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 
 public class JSObjectCombinerTest {
 
@@ -42,24 +39,18 @@ public class JSObjectCombinerTest {
 	
 	@Test
 	public void testNoObjectNameSetting() {
-		final List<Setting> settings = new ArrayList<Setting>();
-		final Setting objectNameSetting = new Setting();
+		final Map<String, String> settings = new HashMap<String, String>();
 		
-		objectNameSetting.setKey("foo");
-		objectNameSetting.setValue("bar");
-		settings.add(objectNameSetting);
+		settings.put("foo", "bar");
 
 		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, settings, null)));
 	}
 	
 	@Test
 	public void testObjectNameInSettings() {
-		final List<Setting> settings = new ArrayList<Setting>();
-		final Setting objectNameSetting = new Setting();
+		final Map<String, String> settings = new HashMap<String, String>();
 		
-		objectNameSetting.setKey("jsObjectName");
-		objectNameSetting.setValue(TEST_OBJECT_NAME);
-		settings.add(objectNameSetting);
+		settings.put("jsObjectName", TEST_OBJECT_NAME);
 		
 		assertEquals(EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME, this.compressResults(fixture.combine(testContents, settings, null)));
 	}

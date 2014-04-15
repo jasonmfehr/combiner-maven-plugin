@@ -1,6 +1,7 @@
 package com.jfehr.combiner.mojo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -11,6 +12,15 @@ import com.jfehr.combiner.transformer.ResourceTransformer;
 
 public class Combination {
 
+	/**
+	 * String that uniquely identifies this particular combination.  This 
+	 * parameter is optional and only used in log messages.  Specifying 
+	 * a value is recommended when using more than one combination as it  
+	 * will be much easier to identify which combination set has the problem.
+	 */
+	@Parameter
+	private String id;
+	
 	/**
 	 * List of resources that will be used as the inputs to the combiner.
 	 */
@@ -63,11 +73,39 @@ public class Combination {
 	 * List of key-value pairs that are used to provide additional 
 	 * configuration to the combining pipeline.  There are no restrictions on 
 	 * what can be put here.  Each pipeline stage implementation chooses what 
-	 * settings it needs (if any).
+	 * settings it needs (if any).  Format is &lt;key&gt;value&lt;/key&gt;
 	 */
 	@Parameter
-	private List<Setting> settings;
+	private Map<String, String> settings;
 
+	public String getId() {
+		return this.id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	/**
+	 * An alternative to {@link Combination#getId()} the returns an empty {@link String} if 
+	 * the {@code id} field is {@code null}.  Returns the value of the {@code id} field otherwise.
+	 * 
+	 * @return {@link String}
+	 */
+	public String getIdSafe() {
+		return (this.id == null ? "" : this.id);
+	}
+	
+	/**
+	 * Method to check whether or not the {@code id} parameter was specified for this 
+	 * combination.
+	 * 
+	 * @return {@link Boolean} {@code true} if the {@code id} parameter is not {@code null} 
+	 * and not an empty {@link String}, otherwise returns {@code false}
+	 */
+	public Boolean hasId() {
+		return this.id != null && this.id.length() > 0;
+	}
+	
 	public InputSources getInputSources() {
 		return inputSources;
 	}
@@ -117,10 +155,10 @@ public class Combination {
 		this.encoding = encoding;
 	}
 
-	public List<Setting> getSettings() {
+	public Map<String, String> getSettings() {
 		return settings;
 	}
-	public void setSettings(List<Setting> settings) {
+	public void setSettings(Map<String, String> settings) {
 		this.settings = settings;
 	}
 	

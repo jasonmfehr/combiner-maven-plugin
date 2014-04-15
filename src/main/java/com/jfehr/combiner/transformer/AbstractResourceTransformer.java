@@ -1,27 +1,25 @@
 package com.jfehr.combiner.transformer;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 
 public abstract class AbstractResourceTransformer implements ResourceTransformer {
 
 	private final ParameterizedLogger logger;
 	private Map<String, String> resourceContents;
-	private List<Setting> settings;
+	private Map<String, String> settings;
 	private MavenProject mavenProject;
 	
 	public AbstractResourceTransformer(final ParameterizedLogger logger) {
 		this.logger = logger;
 	}
 
-	public Map<String, String> transform(final Map<String, String> resourceContents, final List<Setting> settings, final MavenProject mavenProject) {
+	public Map<String, String> transform(final Map<String, String> resourceContents, final Map<String, String> settings, final MavenProject mavenProject) {
 		logger.debugWithParams("Executing resource transformer {0}", this.getClass().getName());
 		
 		this.resourceContents = resourceContents;
@@ -47,7 +45,7 @@ public abstract class AbstractResourceTransformer implements ResourceTransformer
 		return this.resourceContents;
 	}
 	
-	protected List<Setting> getSettings() {
+	protected Map<String, String> getSettings() {
 		return this.settings;
 	}
 	

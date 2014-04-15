@@ -5,10 +5,8 @@ import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.combiner.mojo.Setting;
-
 public interface InputSourceReader {
 
-	public Map<String, String> read(final String encoding, final List<String> includes, final List<String> excludes, final List<Setting> settings, final MavenProject mavenProject);
+	public Map<String, String> read(final String encoding, final List<String> includes, final List<String> excludes, final Map<String, String> settings, final MavenProject mavenProject);
 	
 }

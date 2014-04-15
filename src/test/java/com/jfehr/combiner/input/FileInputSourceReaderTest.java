@@ -22,7 +22,6 @@ import org.mockito.Mock;
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 
 public class FileInputSourceReaderTest {
 
@@ -54,7 +53,7 @@ public class FileInputSourceReaderTest {
 		when(mockLocator.locateFiles(TMP_TEST_DIR, includes, excludes)).thenReturn(locatedFiles);
 		when(mockReader.readInputFiles(TEST_CHARSET, locatedFiles)).thenReturn(readFiles);
 		
-		assertEquals(readFiles, fixture.read(TEST_CHARSET_STR, includes, excludes, new ArrayList<Setting>(), mockMavenProject));
+		assertEquals(readFiles, fixture.read(TEST_CHARSET_STR, includes, excludes, new HashMap<String, String>(), mockMavenProject));
 	}
 
 }

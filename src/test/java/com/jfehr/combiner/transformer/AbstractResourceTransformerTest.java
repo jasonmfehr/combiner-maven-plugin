@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
@@ -15,12 +14,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 
 public class AbstractResourceTransformerTest {
 
 	@Mock Map<String, String> mockResoureContents;
-	@Mock List<Setting> mockSettings;
+	@Mock Map<String, String> mockSettings;
 	@Mock MavenProject mockMavenProject;
 	@Mock private ParameterizedLogger mockLogger;
 	private AbstractResourceTransformer fixture;

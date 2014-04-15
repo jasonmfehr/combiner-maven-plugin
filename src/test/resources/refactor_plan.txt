@@ -19,10 +19,7 @@ file locator    stripNewlines
 <outputSourceWriter>FileOutputSourceWriter</outputSourceWriter>
 <outputDestination>target/myfile.js</outputDestination>
 <settings>
-    <setting>
-        <key>jsObjectName</key>
-        <value>test.foo</value>
-    </setting>
+    <jsObjectName>test.foo</jsObjectName>
 </settings>
 <skip>false</skip>
 <encoding>UTF-8</encoding>

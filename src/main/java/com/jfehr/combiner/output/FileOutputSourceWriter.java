@@ -3,13 +3,12 @@ package com.jfehr.combiner.output;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
 
 import com.google.common.io.Files;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.Setting;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
@@ -25,7 +24,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 	}
 	
 	//TODO the unit tests for this method never assert that the correct fullOutputDestination is created
-	public void write(final String encoding, final String outputDestination, final String combinedResources, final List<Setting> settings, final MavenProject mavenProject) {
+	public void write(final String encoding, final String outputDestination, final String combinedResources, final Map<String, String> settings, final MavenProject mavenProject) {
 		final Charset charSet;
 		final File outputFile;
 		final String fullOutputDestination;
