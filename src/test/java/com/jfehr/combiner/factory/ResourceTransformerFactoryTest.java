@@ -10,21 +10,18 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.transformer.MockResourceTransformer;
 import com.jfehr.combiner.transformer.ResourceTransformer;
 
 public class ResourceTransformerFactoryTest {
 
-	@Mock private ParameterizedLogger mockLogger;
 	private ResourceTransformerFactory fixture;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
-		fixture = new ResourceTransformerFactory(mockLogger);
+		fixture = new ResourceTransformerFactory();
 	}
 	
 	@Test

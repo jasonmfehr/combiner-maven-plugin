@@ -1,5 +1,7 @@
 package com.jfehr.combiner.factory;
 
+import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,18 +9,11 @@ import java.util.List;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
 public class ObjectFactory {
 
-	private final ParameterizedLogger logger;
-	
-	public ObjectFactory(final ParameterizedLogger logger) {
-		this.logger = logger;
-	}
-	
 	public <T> T buildObject(final String className, final String defaultPackage, Class<T> superInterface) {
 		T obj;
 		final String fullClassName;
@@ -26,10 +21,10 @@ public class ObjectFactory {
 		
 		if(className.contains(".")){
 			fullClassName = className;
-			logger.debugWithParams("Instantiation class {0}", fullClassName);
+			getParamLogger().debugWithParams("Instantiation class {0}", fullClassName);
 		}else{
 			fullClassName = defaultPackage + (defaultPackage.endsWith(".") ? "" : ".") + className;
-			logger.debugWithParams("Instantiating class {0} after adding default package of {1}", fullClassName, defaultPackage);
+			getParamLogger().debugWithParams("Instantiating class {0} after adding default package of {1}", fullClassName, defaultPackage);
 		}
 		
 		try {
@@ -43,7 +38,7 @@ public class ObjectFactory {
 		}
 		
 		try{
-			obj = this.instantiateObject(constructionClass, this.logger);
+			obj = this.instantiateObject(constructionClass, getParamLogger());
 		}catch(NoSuchMethodException e){
 			try {
 				obj = this.instantiateObject(constructionClass);

@@ -1,8 +1,9 @@
 package com.jfehr.combiner.file;
 
+import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+
 import java.io.File;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
@@ -10,12 +11,6 @@ import com.jfehr.tojs.exception.NotWriteableException;
 
 public class FileValidator {
 
-	private final ParameterizedLogger logger;
-	
-	public FileValidator(ParameterizedLogger logger) {
-		this.logger = logger;
-	}
-	
 	public void existsAndReadable(final String location) {
 		final File file;
 		
@@ -54,14 +49,14 @@ public class FileValidator {
 		if(!file.exists()){
 			throw new FileSystemLocationNotFound(location);
 		}
-		this.logger.debugWithParams("{0} - location {1} exists", this.getClass().getSimpleName(), location);
+		getParamLogger().debugWithParams("{0} - location {1} exists", this.getClass().getSimpleName(), location);
 		
 		return file;
 	}
 	
 	private void logValid(final String location, final String type) {
-		this.logger.debugWithParams("{0} - location {1} is {2}", this.getClass().getSimpleName(), location, type);
-		this.logger.debugWithParams("{0} - location {1} is valid", this.getClass().getSimpleName(), location);
+		getParamLogger().debugWithParams("{0} - location {1} is {2}", this.getClass().getSimpleName(), location, type);
+		getParamLogger().debugWithParams("{0} - location {1} is valid", this.getClass().getSimpleName(), location);
 	}
 
 }

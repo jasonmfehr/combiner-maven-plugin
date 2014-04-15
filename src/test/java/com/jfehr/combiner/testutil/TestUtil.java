@@ -58,7 +58,7 @@ public final class TestUtil {
 	}
 	
 	public static Object getPrivateField(Object targetObj, String fieldName) {
-		final Field targetField = locateField(targetObj, fieldName);
+		final Field targetField = locateField(targetObj.getClass(), fieldName);
 		final Object retrievedValue;
 		
 		try {
@@ -72,10 +72,22 @@ public final class TestUtil {
 	}
 	
 	public static void setPrivateField(Object targetObj, String fieldName, Object value) {
-		final Field targetField = locateField(targetObj, fieldName);
+		final Field targetField = locateField(targetObj.getClass(), fieldName);
 
 		try {
 			targetField.set(targetObj, value);
+		} catch (IllegalArgumentException e) {
+			throw new TestUtilException(e);
+		} catch (IllegalAccessException e) {
+			throw new TestUtilException(e);
+		}
+	}
+	
+	public static void setPrivateStaticField(Class<?> targetClass, String fieldName, Object value) {
+		final Field targetField = locateField(targetClass, fieldName);
+		
+		try {
+			targetField.set(targetClass, value);
 		} catch (IllegalArgumentException e) {
 			throw new TestUtilException(e);
 		} catch (IllegalAccessException e) {
@@ -124,11 +136,11 @@ public final class TestUtil {
 		}	
 	}
 	
-	private static Field locateField(Object targetObj, String fieldName) {
+	private static Field locateField(Class<?> targetClass, String fieldName) {
 		final Field targetField;
 		
 		try {
-			targetField = targetObj.getClass().getDeclaredField(fieldName);
+			targetField = targetClass.getDeclaredField(fieldName);
 			targetField.setAccessible(true);
 			return targetField;
 		} catch (SecurityException e) {

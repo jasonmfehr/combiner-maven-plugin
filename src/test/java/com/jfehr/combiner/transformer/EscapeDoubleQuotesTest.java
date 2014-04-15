@@ -5,21 +5,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class EscapeDoubleQuotesTest {
 
 	private static final String TEST_KEY = "testKey";
 	
-	@Mock private ParameterizedLogger mockLogger;
 	private EscapeDoubleQuotes fixture;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
-		fixture = new EscapeDoubleQuotes(mockLogger);
+		fixture = new EscapeDoubleQuotes();
 	}
 	
 	@Test

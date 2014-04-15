@@ -3,17 +3,19 @@ package com.jfehr.combiner.factory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.jfehr.combiner.logging.ParameterizedLogger;
+import com.jfehr.combiner.mojo.LogHolder;
 import com.jfehr.combiner.testutil.MockNonDefaultPackage;
+import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
@@ -28,14 +30,13 @@ public class ObjectFactoryTest {
 	private static final String MOCK_IFACE = "ObjectFactoryTest$MockSubIface";
 	private static final String MOCK_NONEXISTANT = "NonExistant";
 	
-	@Mock private ParameterizedLogger mockLogger;
 	private ObjectFactory fixture;
 	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		
-		fixture = new ObjectFactory(mockLogger);
+		fixture = new ObjectFactory();
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -70,7 +71,13 @@ public class ObjectFactoryTest {
 	
 	@Test
 	public void testLoggerConstructor() {
-		final MockBaseInterface actual = (MockBaseInterface)this.runTest(MOCK_LOGGER_CTOR);
+		final ParameterizedLogger mockLogger;
+		final MockBaseInterface actual;;
+		
+		mockLogger = mock(ParameterizedLogger.class);
+		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
+		
+		actual = (MockBaseInterface)this.runTest(MOCK_LOGGER_CTOR);
 		
 		assertTrue(actual instanceof MockImplementsIfaceWithLogger);
 		assertEquals(mockLogger, ((MockImplementsIfaceWithLogger)actual).getLogger());

@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.google.common.io.Files;
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 
 public class MultiFileReaderTest {
@@ -27,14 +26,13 @@ public class MultiFileReaderTest {
 	private static final String TEST_FILE_2 = TMP_TEST_DIR + "multifilereader.2";
 	
 	@Mock private FileValidator mockValidator;
-	@Mock private ParameterizedLogger mockLogger;
 	private MultiFileReader fixture;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
 		
-		fixture = new MultiFileReader(mockLogger);
+		fixture = new MultiFileReader();
 		setPrivateField(fixture, "fileValidator", mockValidator);
 	}
 	

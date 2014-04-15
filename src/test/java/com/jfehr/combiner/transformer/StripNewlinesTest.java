@@ -5,21 +5,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 
 public class StripNewlinesTest {
 	private static final String TEST_KEY = "testKey";
 	
-	@Mock private ParameterizedLogger mockLogger;
 	private StripNewlines fixture;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
-		fixture = new StripNewlines(mockLogger);
+		fixture = new StripNewlines();
 	}
 	
 	@Test

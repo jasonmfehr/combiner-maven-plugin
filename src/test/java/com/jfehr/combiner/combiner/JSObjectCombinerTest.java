@@ -8,9 +8,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class JSObjectCombinerTest {
 
@@ -19,17 +16,16 @@ public class JSObjectCombinerTest {
 	private static final String EXPECTED_COMPRESSED_RESULTS = "(function(w){w.combiner={\"file2\"=\"two\";\"file1\"=\"one\";};})(window);";
 	private static final String EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME = "(function(w){w." + TEST_OBJECT_NAME + "={\"file2\"=\"two\";\"file1\"=\"one\";};})(window);";
 	
-	@Mock private ParameterizedLogger mockLogger;
 	private JSObjectCombiner fixture;
 	private Map<String, String> testContents = new HashMap<String, String>();
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		initMocks(this);
 		testContents.put("/somedir/file1.dat", "one");
 		testContents.put("/somedir/file2.dat", "two");
 		
-		fixture = new JSObjectCombiner(mockLogger);
+		fixture = new JSObjectCombiner();
 	}
 	
 	@Test

@@ -13,21 +13,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
-
 public class AbstractResourceTransformerTest {
 
 	@Mock Map<String, String> mockResoureContents;
 	@Mock Map<String, String> mockSettings;
 	@Mock MavenProject mockMavenProject;
-	@Mock private ParameterizedLogger mockLogger;
 	private AbstractResourceTransformer fixture;
 	
 	@Before
 	public void setUp() {
 		initMocks(this);
 		
-		fixture = new AbstractResourceTransformer(mockLogger) {
+		fixture = new AbstractResourceTransformer() {
 			@Override
 			protected String doTransform(String resourceKey, String resourceValue) {
 				return resourceKey + ":" + resourceValue;
@@ -62,7 +59,6 @@ public class AbstractResourceTransformerTest {
 		assertEquals(mockResoureContents, fixture.getResourceContents());
 		assertEquals(mockSettings, fixture.getSettings());
 		assertEquals(mockMavenProject, fixture.getMavenProject());
-		assertEquals(mockLogger, fixture.getLogger());
 	}
 
 }

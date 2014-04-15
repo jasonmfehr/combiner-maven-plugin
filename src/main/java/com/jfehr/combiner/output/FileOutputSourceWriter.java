@@ -1,5 +1,7 @@
 package com.jfehr.combiner.output;
 
+import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -8,7 +10,6 @@ import java.util.Map;
 import org.apache.maven.project.MavenProject;
 
 import com.google.common.io.Files;
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
@@ -17,12 +18,6 @@ import com.jfehr.tojs.exception.NotWriteableException;
 
 public class FileOutputSourceWriter implements OutputSourceWriter {
 
-	private final ParameterizedLogger logger;
-	
-	public FileOutputSourceWriter(final ParameterizedLogger logger) {
-		this.logger = logger;
-	}
-	
 	//TODO the unit tests for this method never assert that the correct fullOutputDestination is created
 	public void write(final String encoding, final String outputDestination, final String combinedResources, final Map<String, String> settings, final MavenProject mavenProject) {
 		final Charset charSet;
@@ -30,7 +25,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		final String fullOutputDestination;
 		
 		fullOutputDestination = mavenProject.getBuild().getDirectory() + "/" + outputDestination;
-		logger.debugWithParams("{0} starting execution with charset {1} and output destination {2}", this.getClass().getName(), encoding, fullOutputDestination);
+		getParamLogger().debugWithParams("{0} starting execution with charset {1} and output destination {2}", this.getClass().getName(), encoding, fullOutputDestination);
 		
 		charSet = this.buildCharset(encoding);
 		outputFile = this.createOutputFile(fullOutputDestination);
@@ -81,7 +76,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		final Charset cs;
 		
 		cs = Charset.forName(fileEncoding);
-		this.logger.infoWithParams("FileInputSource using charset {0} to read files", cs.displayName());
+		getParamLogger().infoWithParams("FileInputSource using charset {0} to read files", cs.displayName());
 		
 		return cs;
 	}

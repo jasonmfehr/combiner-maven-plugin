@@ -1,12 +1,7 @@
 package com.jfehr.combiner.transformer;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class EscapeDoubleQuotes extends AbstractResourceTransformer {
-
-	public EscapeDoubleQuotes(final ParameterizedLogger logger) {
-		super(logger);
-	}
 
 	@Override
 	protected String doTransform(String resourceKey, String resourceValue) {

@@ -1,11 +1,11 @@
 package com.jfehr.combiner.file;
 
+import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+
 import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.plexus.util.DirectoryScanner;
-
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 /**
  * Searches through a base directory locating files that match a 
@@ -19,14 +19,12 @@ import com.jfehr.combiner.logging.ParameterizedLogger;
  */
 public class FileLocator {
 
-	private final ParameterizedLogger logger;
 	private final DirectoryScanner directoryScanner;
 	private final FileValidator fileValidator;
 	
-	public FileLocator(final ParameterizedLogger logger) {
-		this.logger = logger;
+	public FileLocator() {
 		this.directoryScanner = new DirectoryScanner();
-		this.fileValidator = new FileValidator(logger);
+		this.fileValidator = new FileValidator();
 	}
 	
 	/**
@@ -52,7 +50,7 @@ public class FileLocator {
 		
 		fileValidator.existsAndReadable(baseDir);
 		
-		logger.debugWithParams("FileLocator scanning directory {0} for input files", baseDir);
+		getParamLogger().debugWithParams("FileLocator scanning directory {0} for input files", baseDir);
 		
 		directoryScanner.addDefaultExcludes();
 		directoryScanner.setBasedir(baseDir);
@@ -66,10 +64,10 @@ public class FileLocator {
 		
 		filesList = Arrays.asList(directoryScanner.getIncludedFiles());
 		
-		logger.infoWithParams("FileLocator located {0} files", filesList.size());
-		if(logger.isDebugEnabled()){
+		getParamLogger().infoWithParams("FileLocator located {0} files", filesList.size());
+		if(getParamLogger().isDebugEnabled()){
 			for(final String s : filesList){
-				logger.debug("  " + s);
+				getParamLogger().debug("  " + s);
 			}
 		}
 		

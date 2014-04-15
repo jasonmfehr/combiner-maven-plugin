@@ -21,11 +21,9 @@ import org.mockito.Mock;
 
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
-import com.jfehr.combiner.logging.ParameterizedLogger;
 
 public class FileInputSourceReaderTest {
 
-	@Mock private ParameterizedLogger mockLogger;
 	@Mock private FileLocator mockLocator;
 	@Mock private MultiFileReader mockReader;
 	@Mock private MavenProject mockMavenProject;
@@ -36,7 +34,7 @@ public class FileInputSourceReaderTest {
 	public void setUp() {
 		initMocks(this);
 		
-		fixture = new FileInputSourceReader(mockLogger);
+		fixture = new FileInputSourceReader();
 		setPrivateField(fixture, "fileLocator", mockLocator);
 		setPrivateField(fixture, "multiFileReader", mockReader);
 	}

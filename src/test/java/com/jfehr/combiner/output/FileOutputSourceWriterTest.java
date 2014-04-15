@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.NotWriteableException;
@@ -31,7 +30,6 @@ public class FileOutputSourceWriterTest {
 	private static final String TEST_FILE_PATH = TEST_PARENT_SUBDIR_PATH + "/testfile.out";
 	private static final String TEST_CONTENTS = "these are the test file contents to write";
 	
-	@Mock private ParameterizedLogger mockLogger;
 	@Mock private MavenProject mockMavenProject;
 	@Mock private Build mockBuild;
 	private FileOutputSourceWriter fixture;
@@ -43,7 +41,7 @@ public class FileOutputSourceWriterTest {
 
 		when(mockMavenProject.getBuild()).thenReturn(mockBuild);
 		when(mockBuild.getDirectory()).thenReturn(TEST_PARENT_DIR_PATH);
-		fixture = new FileOutputSourceWriter(mockLogger);
+		fixture = new FileOutputSourceWriter();
 	}
 	
 	@After
