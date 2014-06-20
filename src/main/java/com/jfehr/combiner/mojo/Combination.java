@@ -25,7 +25,7 @@ public class Combination {
 	 * List of resources that will be used as the inputs to the combiner.
 	 */
 	@Parameter(required=true)
-	private InputSources inputSources;
+	private InputResources inputResources;
 	
 	/**
 	 * {@link InputSourceReader} class to use when reading the inputSources.  If no package is specified, 
@@ -106,11 +106,11 @@ public class Combination {
 		return this.id != null && this.id.length() > 0;
 	}
 	
-	public InputSources getInputSources() {
-		return inputSources;
+	public InputResources getInputSources() {
+		return inputResources;
 	}
-	public void setInputSources(InputSources inputSources) {
-		this.inputSources = inputSources;
+	public void setInputSources(InputResources inputSources) {
+		this.inputResources = inputSources;
 	}
 
 	public String getInputSourceReader() {

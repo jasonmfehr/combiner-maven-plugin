@@ -91,19 +91,30 @@ public class CombinerMojo extends AbstractMojo {
 	
 	//TODO start here by moving functionality from executeCombinationOld into this function
 	private void executeCombination(final Combination combo) {
-		this.debugLogInputs( combo);
+		final String combinedResources;
+		Map<String, String> sources;
+		
+		getParamLogger().debugWithParams("Executing pipeline{0}", this.idString(combo));
+		
+		this.debugLogInputs(combo);
 		this.setDefaults(combo);
 		this.validateRequiredInputs(combo);
+		
+		sources = this.readInputSources(combo);
+		sources = this.executeTransformers(combo, sources);
+		combinedResources = this.combineResources(combo, sources);
+		this.outputResources(combo, combinedResources);
+		
+		getParamLogger().debugWithParams("Completed executing pipeline{0}", this.idString(combo));
 	}
 	
 	//TODO obviously this method has to be broken apart
 	private void executeCombinationOld(final Combination combo) {
 		final String combinedSources;
-		Map<String, String> sources;
-		
-		
 		final InputSourceReaderFactory isFactory = new InputSourceReaderFactory();
 		final InputSourceReader isReader;
+		Map<String, String> sources;
+		
 		isReader = isFactory.buildObject(combo.getInputSourceReader());
 		sources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), this.mavenProject);
 		
@@ -123,6 +134,87 @@ public class CombinerMojo extends AbstractMojo {
 		final OutputSourceWriter osWriter;
 		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
 		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedSources, combo.getSettings(), this.mavenProject);
+	}
+
+	/**
+	 * Executes stage one of the pipeline which reads all the input sources.
+	 * 
+	 * @param combo executes the read input stage of the pipeline on this {@link Combination} 
+	 * @return {@link Map} with a key of the resource name and a value of the resource contents
+	 */
+	private Map<String, String> readInputSources(final Combination combo) {
+		final InputSourceReaderFactory isFactory;
+		final InputSourceReader isReader;
+		final Map<String, String> resources;
+		
+		getParamLogger().debug("Executing pipeline stage one - read input sources");
+		
+		isFactory = new InputSourceReaderFactory();
+		isReader = isFactory.buildObject(combo.getInputSourceReader());
+		resources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), this.mavenProject);
+		
+		getParamLogger().debug("Completed execution of pipeline stage one - read input sources");
+		
+		return resources;
+	}
+	
+	/**
+	 * Executes stage two of the pipeline which applies transformers to the resources.
+	 * 
+	 * @param combo executes the transform stage of the pipeline on this {@link Combination}
+	 * @param sources in-out parameter that <b>will be modified</b> containing the sources that were 
+	 *                read in the first stage of the pipeline
+	 * @return {@link Map} with a key of the resource name and a value of the resource contents that were transformed
+	 */
+	private Map<String, String> executeTransformers(final Combination combo, Map<String, String> sources) {
+		final ResourceTransformerFactory transformerFactory;
+		final List<ResourceTransformer> tranformers;
+		Map<String, String> transformedSources;
+		
+		getParamLogger().debug("Executing pipeline stage two - transform resources");
+		
+		transformerFactory = new ResourceTransformerFactory();
+		tranformers = transformerFactory.buildObjectList(combo.getTransformers());
+		transformedSources = sources;
+		
+		for(ResourceTransformer rt : tranformers){
+			getParamLogger().debugWithParams("Executing resource transformer with class {0}", rt.getClass().getName());
+			transformedSources = rt.transform(transformedSources, combo.getSettings(), this.mavenProject);
+			getParamLogger().debugWithParams("Finished executing resource transformer with class {0}", rt.getClass().getName());
+		}
+		
+		getParamLogger().debug("Completed execution of pipeline stage two - transform resources");
+		
+		return transformedSources;
+	}
+	
+	private String combineResources(final Combination combo, final Map<String, String> resources) {
+		final ResourceCombinerFactory combinerFactory;
+		final ResourceCombiner combiner;
+		final String combinedResources;
+		
+		getParamLogger().debug("Executing pipeline stage three - combined resources");
+		
+		combinerFactory = new ResourceCombinerFactory();
+		combiner = combinerFactory.buildObject(combo.getCombiner());
+		combinedResources = combiner.combine(resources, combo.getSettings(), this.mavenProject);
+		
+		getParamLogger().debug("Completed execution of pipeline stage three - combined resources");
+		
+		return combinedResources;
+	}
+	
+	private void outputResources(final Combination combo, final String combinedResources) {
+		final OutputSourceWriterFactory osFactory;;
+		final OutputSourceWriter osWriter;
+		
+		getParamLogger().debug("Executing pipeline stage four - output resources");
+		
+		osFactory = new OutputSourceWriterFactory();
+		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
+		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedResources, combo.getSettings(), this.mavenProject);
+		
+		getParamLogger().debug("Completed execution of pipeline stage four - output resources");
 	}
 	
 	//TODO figure out how to use the defaultValue from the Parameter annotation instead of directly setting fields
@@ -162,6 +254,7 @@ public class CombinerMojo extends AbstractMojo {
 	 * 
 	 * @param combo {@link Combination} combo that will have its required fields checked
 	 */
+	//TODO this should not check default parameters, the unit tests should guard against their accidental removal
 	private void validateRequiredInputs(final Combination combo) {
 		getParamLogger().debugWithParams("Validating that required input parameters are present");
 		

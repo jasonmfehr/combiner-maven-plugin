@@ -76,7 +76,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		final Charset cs;
 		
 		cs = Charset.forName(fileEncoding);
-		getParamLogger().infoWithParams("FileInputSource using charset {0} to read files", cs.displayName());
+		getParamLogger().infoWithParams("{0} using charset {1} to read files", this.getClass().getSimpleName(), cs.displayName());
 		
 		return cs;
 	}

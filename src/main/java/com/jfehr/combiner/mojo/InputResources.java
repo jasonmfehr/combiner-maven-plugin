@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
-public class InputSources {
+public class InputResources {
 
 	/**
 	 * list of patterns that will determine what resources are put into 
