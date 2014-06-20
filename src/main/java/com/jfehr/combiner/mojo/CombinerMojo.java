@@ -108,34 +108,6 @@ public class CombinerMojo extends AbstractMojo {
 		getParamLogger().debugWithParams("Completed executing pipeline{0}", this.idString(combo));
 	}
 	
-	//TODO obviously this method has to be broken apart
-	private void executeCombinationOld(final Combination combo) {
-		final String combinedSources;
-		final InputSourceReaderFactory isFactory = new InputSourceReaderFactory();
-		final InputSourceReader isReader;
-		Map<String, String> sources;
-		
-		isReader = isFactory.buildObject(combo.getInputSourceReader());
-		sources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), this.mavenProject);
-		
-		final ResourceTransformerFactory transformerFactory = new ResourceTransformerFactory();
-		final List<ResourceTransformer> tranformers;
-		tranformers = transformerFactory.buildObjectList(combo.getTransformers());
-		for(ResourceTransformer rt : tranformers){
-			sources = rt.transform(sources, combo.getSettings(), this.mavenProject);
-		}
-		
-		final ResourceCombinerFactory combinerFactory = new ResourceCombinerFactory();
-		final ResourceCombiner combiner;
-		combiner = combinerFactory.buildObject(combo.getCombiner());
-		combinedSources = combiner.combine(sources, combo.getSettings(), this.mavenProject);
-		
-		final OutputSourceWriterFactory osFactory = new OutputSourceWriterFactory();
-		final OutputSourceWriter osWriter;
-		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
-		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedSources, combo.getSettings(), this.mavenProject);
-	}
-
 	/**
 	 * Executes stage one of the pipeline which reads all the input sources.
 	 * 
