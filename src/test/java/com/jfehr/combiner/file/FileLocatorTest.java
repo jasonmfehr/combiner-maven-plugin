@@ -25,7 +25,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.base.MockitoAssertionError;
 
+import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
+import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 
@@ -65,7 +67,7 @@ public class FileLocatorTest {
 		ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
 		List<String> foundFilesList;
 		String[] foundFilesArr = new String[FOUND_FILES_LENGTH];
-
+		
 		for(int i=0; i<INCLUDE_LENGTH; i++){
 			includes.add(INCLUDE_PREFIX + Integer.toString(i));
 		}
@@ -80,6 +82,7 @@ public class FileLocatorTest {
 		
 		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		when(mockLogger.isDebugEnabled()).thenReturn(true);
+		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
 		
 		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, excludes);
 		

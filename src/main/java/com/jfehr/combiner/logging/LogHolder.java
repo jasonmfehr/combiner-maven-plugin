@@ -1,4 +1,4 @@
-package com.jfehr.combiner.mojo;
+package com.jfehr.combiner.logging;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
@@ -15,6 +15,7 @@ import com.jfehr.combiner.logging.ParameterizedLogger;
  * 
  * @author jasonfehr
  * @since 1.0.0
+ * 
  */
 public final class LogHolder {
 
@@ -23,7 +24,7 @@ public final class LogHolder {
 	private LogHolder() {
 	}
 	
-	static void setLog(Log log) {
+	public static void setLog(Log log) {
 		logger = new ParameterizedLogger(log);
 	}
 	

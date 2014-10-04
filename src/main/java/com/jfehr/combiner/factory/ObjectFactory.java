@@ -1,6 +1,6 @@
 package com.jfehr.combiner.factory;
 
-import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

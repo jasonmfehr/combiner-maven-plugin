@@ -13,8 +13,8 @@ public class JSObjectCombinerTest {
 
 	private static final String LINE_SEPARATOR = "\n";
 	private static final String TEST_OBJECT_NAME = "set.object.name";
-	private static final String EXPECTED_COMPRESSED_RESULTS = "(function(w){w.combiner={\"file2\"=\"two\";\"file1\"=\"one\";};})(window);";
-	private static final String EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME = "(function(w){w." + TEST_OBJECT_NAME + "={\"file2\"=\"two\";\"file1\"=\"one\";};})(window);";
+	private static final String EXPECTED_COMPRESSED_RESULTS = "(function(w){w.combiner={\"file2\"=\"two\",\"file1\"=\"one\"};})(window);";
+	private static final String EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME = "(function(w){w." + TEST_OBJECT_NAME + "={\"file2\"=\"two\",\"file1\"=\"one\"};})(window);";
 	
 	private JSObjectCombiner fixture;
 	private Map<String, String> testContents = new HashMap<String, String>();

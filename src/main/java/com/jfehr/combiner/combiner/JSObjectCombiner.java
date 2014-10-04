@@ -1,11 +1,14 @@
 package com.jfehr.combiner.combiner;
 
-import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.project.MavenProject;
 
 public class JSObjectCombiner implements ResourceCombiner {
@@ -37,13 +40,16 @@ public class JSObjectCombiner implements ResourceCombiner {
 	
 	private String doCombine(final String jsObjectName, final Map<String, String> contents) {
 		final StringBuilder sb = new StringBuilder();
+		final List<String> concatedLines = new ArrayList<String>(contents.size());
 		
 		sb.append("(function(w){").append(LINE_SEPARATOR);
 		sb.append("    w.").append(jsObjectName).append(" = {").append(LINE_SEPARATOR);
 		
 		for(Entry<String, String> contentsEntry : contents.entrySet()){
-			sb.append("        \"").append(this.findFieldName(contentsEntry.getKey())).append("\" = \"").append(contentsEntry.getValue()).append("\";").append(LINE_SEPARATOR);
+			//sb.append("        \"").append(this.findFieldName(contentsEntry.getKey())).append("\" = \"").append(contentsEntry.getValue()).append("\";").append(LINE_SEPARATOR);
+			concatedLines.add("        \"" + this.findFieldName(contentsEntry.getKey()) + "\" = \"" + contentsEntry.getValue() + "\"");
 		}
+		sb.append(StringUtils.join(concatedLines, "," + LINE_SEPARATOR)).append(LINE_SEPARATOR);
 		
 		sb.append("    };").append(LINE_SEPARATOR);
 		sb.append("})(window);").append(LINE_SEPARATOR).append(LINE_SEPARATOR);

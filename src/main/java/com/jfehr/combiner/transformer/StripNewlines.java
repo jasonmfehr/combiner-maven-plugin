@@ -1,11 +1,14 @@
 package com.jfehr.combiner.transformer;
 
+import java.util.Map;
 
-public class StripNewlines extends AbstractResourceTransformer {
+import org.apache.maven.project.MavenProject;
 
-	@Override
-	protected String doTransform(final String resourceKey, final String resourceValue) {
-		return resourceValue.replaceAll("\r|\n", "");
+
+public class StripNewlines implements ResourceTransformer {
+
+	public String transform(final String resourceName, String resourceContents, Map<String, String> settings, MavenProject mavenProject) {
+		return resourceContents.replaceAll("\r|\n", "");
 	}
 
 }

@@ -6,7 +6,7 @@ import org.apache.maven.project.MavenProject;
 
 public class MockResourceTransformer implements ResourceTransformer {
 
-	public Map<String, String> transform(final Map<String, String> resourceContents, final Map<String, String> settings, final MavenProject mavenProject) {
+	public String transform(final String resourceName, final String resourceContents, final Map<String, String> settings, final MavenProject mavenProject) {
 		return null;
 	}
 

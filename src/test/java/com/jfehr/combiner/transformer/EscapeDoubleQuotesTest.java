@@ -20,17 +20,17 @@ public class EscapeDoubleQuotesTest {
 	
 	@Test
 	public void testEscapeQuotes() {
-		assertEquals("this \\\"word\\\" is in escaped double quotes", fixture.doTransform(TEST_KEY, "this \"word\" is in escaped double quotes"));
+		assertEquals("this \\\"word\\\" is in escaped double quotes", fixture.transform(TEST_KEY, "this \"word\" is in escaped double quotes", null, null));
 	}
 	
 	@Test
 	public void testNoEscapeQuotes() {
-		assertEquals("this word is not in double quotes", fixture.doTransform(TEST_KEY, "this word is not in double quotes"));
+		assertEquals("this word is not in double quotes", fixture.transform(TEST_KEY, "this word is not in double quotes", null, null));
 	}
 	
 	@Test
 	public void testSkipAlreadyEscapedQuotes() {
-		assertEquals("this \\\"word\\\" is not double escaped", fixture.doTransform(TEST_KEY, "this \\\"word\\\" is not double escaped"));
+		assertEquals("this \\\"word\\\" is not double escaped", fixture.transform(TEST_KEY, "this \\\"word\\\" is not double escaped", null, null));
 	}
 
 }

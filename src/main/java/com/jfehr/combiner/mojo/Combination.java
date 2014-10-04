@@ -85,27 +85,6 @@ public class Combination {
 		this.id = id;
 	}
 	
-	/**
-	 * An alternative to {@link Combination#getId()} the returns an empty {@link String} if 
-	 * the {@code id} field is {@code null}.  Returns the value of the {@code id} field otherwise.
-	 * 
-	 * @return {@link String}
-	 */
-	public String getIdSafe() {
-		return (this.id == null ? "" : this.id);
-	}
-	
-	/**
-	 * Method to check whether or not the {@code id} parameter was specified for this 
-	 * combination.
-	 * 
-	 * @return {@link Boolean} {@code true} if the {@code id} parameter is not {@code null} 
-	 * and not an empty {@link String}, otherwise returns {@code false}
-	 */
-	public Boolean hasId() {
-		return this.id != null && this.id.length() > 0;
-	}
-	
 	public InputResources getInputSources() {
 		return inputResources;
 	}

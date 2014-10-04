@@ -1,6 +1,6 @@
 package com.jfehr.combiner.file;
 
-import static com.jfehr.combiner.mojo.LogHolder.getParamLogger;
+import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 
 import java.io.File;
 import java.io.IOException;

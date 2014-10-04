@@ -124,20 +124,23 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>0.32</version>
+                <version>1.0.0</version>
                 <configuration>
                     <targetClasses>
-                        <param>org.jham.*</param>
+                        <param>com.jfehr.combiner.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>org.jham.*</param>
+                        <param>com.jfehr.combiner.*</param>
                     </targetTests>
                     <excludedClasses>
-                        <excludedClass>org.jham.heroku.*</excludedClass>
-                        <excludedClass>org.jham.transferobjects.*</excludedClass>
+                        <param>com.jfehr.combiner.mojo.Combination</param>
+                        <param>com.jfehr.combiner.mojo.InputResources</param>
                     </excludedClasses>
+                    <excludedMethods>
+                        <param>*debugWith*</param>
+                    </excludedMethods>
                     <timestampedReports>false</timestampedReports>
-                    <mutationThreshold>85</mutationThreshold>
+                    <mutationThreshold>45</mutationThreshold>
                 </configuration>
             </plugin>
             <plugin>
@@ -145,6 +148,10 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.6.4.201312101107</version>
                 <configuration>
+                    <excludes>
+                        <exclude>com/jfehr/combiner/mojo/Combination.class</exclude>
+                        <exclude>com/jfehr/combiner/mojo/InputResources.class</exclude>
+                    </excludes>
                     <rules>
                         <rule implementation="org.jacoco.maven.RuleConfiguration">
                             <element>BUNDLE</element>
@@ -197,20 +204,6 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>0.33</version>
-                        <configuration>
-                            <targetClasses>
-                                <param>com.jfehr.tojs.*</param>
-                            </targetClasses>
-                            <targetTests>
-                                <param>com.jfehr.tojs.*</param>
-                            </targetTests>
-                            <excludedClasses>
-		                        <excludedClass>com.jfehr.tojs.config.*</excludedClass>
-		                    </excludedClasses>
-                            <timestampedReports>false</timestampedReports>
-                            <mutationThreshold>85</mutationThreshold>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>run-pit</id>

@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
+import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.mojo.LogHolder;
 import com.jfehr.combiner.testutil.MockNonDefaultPackage;
 import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.NotAssignableException;
