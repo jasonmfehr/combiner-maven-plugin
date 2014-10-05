@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.CombinerMojo;
 
@@ -29,27 +28,26 @@ public class CombinationDefaultsManager {
 	 */
 	public void setupDefaults(final Combination combo, final MavenProject mavenProject) {
 		final String encoding;
-		final ParameterizedLogger logger = getParamLogger();
 		
-		logger.debug("Setting default values");
+		getParamLogger().debug("Setting default values");
 		
 		if(!this.isFieldValid(combo.getInputSourceReader())){
-			logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_INPUT_SOURCE_READER, DEFAULT_INPUT_SOURCE_READER);
+			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_INPUT_SOURCE_READER, DEFAULT_INPUT_SOURCE_READER);
 			combo.setInputSourceReader(DEFAULT_INPUT_SOURCE_READER);
 		}
 		
 		if(!this.isFieldValid(combo.getOutputSourceWriter())){
-			logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_OUTPUT_SOURCE_WRITER, DEFAULT_OUTPUT_SOURCE_WRITER);
+			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_OUTPUT_SOURCE_WRITER, DEFAULT_OUTPUT_SOURCE_WRITER);
 			combo.setOutputSourceWriter(DEFAULT_OUTPUT_SOURCE_WRITER);
 		}
 		
 		if(!this.isFieldValid(combo.getEncoding())){
 			encoding = mavenProject.getProperties().getProperty(DEFAULT_ENCODING_PROPERTY);
-			logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);
+			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);
 			combo.setEncoding(encoding);
 		}
 		
-		logger.debug("Finished setting default values");
+		getParamLogger().debug("Finished setting default values");
 	}
 	
 	/**

@@ -91,7 +91,6 @@ public class PipelineExecutor {
 	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
 	 * @return {@link Map} with a key of the resource name and a value of the resource contents that were transformed
 	 */
-	//TODO figure out the mess with the map of sources being manipulated
 	private Map<String, String> executeTransformers(final Combination combo, Map<String, String> sources, final MavenProject mavenProject) {
 		final ResourceTransformerFactory transformerFactory;
 		final List<ResourceTransformer> tranformers;

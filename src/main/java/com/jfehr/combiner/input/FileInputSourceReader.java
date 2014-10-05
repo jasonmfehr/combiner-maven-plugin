@@ -24,9 +24,11 @@ public class FileInputSourceReader implements InputSourceReader {
 	public Map<String, String> read(final String encoding, final List<String> includes, final List<String> excludes, final Map<String, String> settings, final MavenProject mavenProject) {
 		final Map<String, String> fileContents;
 		final List<String> files;
+		final Charset encodingCharset;
 		
+		encodingCharset = this.buildCharset(encoding);
 		files = fileLocator.locateFiles(mavenProject.getBasedir().getAbsolutePath(), includes, excludes);
-		fileContents = multiFileReader.readInputFiles(this.buildCharset(encoding), files);
+		fileContents = multiFileReader.readInputFiles(encodingCharset, files);
 		getParamLogger().debugWithParams("FileInputSource read {0} files", fileContents.size());
 		
 		return fileContents;

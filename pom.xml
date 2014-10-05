@@ -213,6 +213,11 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <avoidCallsTo>
+                                <param>com.jfehr.combiner.logging.LogHolder</param>
+                            </avoidCallsTo>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

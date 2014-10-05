@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.CombinerMojo;
 
@@ -46,16 +45,14 @@ public class CombinationValidator {
 	 * @param combo {@link Combination} combo that will have its required fields checked
 	 */
 	private void validateRequiredInputs(final Combination combo) {
-		final ParameterizedLogger logger = getParamLogger();
-		
-		logger.debugWithParams("Validating that required input parameters are present");
+		getParamLogger().debugWithParams("Validating that required input parameters are present");
 		
 		try{
 			this.validateField(INPUT_PARAM_ENCODING, combo.getEncoding(), combo);
 			Charset.isSupported(combo.getEncoding());
-			logger.debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG + " and is a valid charset", INPUT_PARAM_ENCODING);
+			getParamLogger().debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG + " and is a valid charset", INPUT_PARAM_ENCODING);
 		}catch(IllegalCharsetNameException icne){
-			logger.debugWithParams("Provided charset of {0} is not a valid charset name according to the rules specified in the javadoc of the Charset class", combo.getEncoding());
+			getParamLogger().debugWithParams("Provided charset of {0} is not a valid charset name according to the rules specified in the javadoc of the Charset class", combo.getEncoding());
 			throw new IllegalArgumentException("The specified encoding [" + combo.getEncoding() + "] is invalid", icne);
 		}
 		
@@ -66,7 +63,7 @@ public class CombinationValidator {
 		this.validateField(INPUT_PARAM_OUTPUT_SOURCE_WRITER, combo.getOutputSourceWriter(), combo);
 		this.validateField(INPUT_PARAM_TRANSFORMERS, combo.getTransformers(), combo);
 		
-		logger.debugWithParams("Finished validating required input parameters.  All parameters are present.");
+		getParamLogger().debugWithParams("Finished validating required input parameters.  All parameters are present.");
 	}
 	
 	private void validateField(final String fieldName, final Object fieldValue, final Combination combo) {
