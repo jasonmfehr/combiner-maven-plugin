@@ -5,6 +5,8 @@ import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 import java.util.Arrays;
 import java.util.List;
 
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
@@ -17,14 +19,15 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * @since 1.0.0
  * 
  */
+@Component(role=FileLocator.class)
 public class FileLocator {
 
+	@Requirement
+	private FileValidator fileValidator;
 	private final DirectoryScanner directoryScanner;
-	private final FileValidator fileValidator;
 	
 	public FileLocator() {
 		this.directoryScanner = new DirectoryScanner();
-		this.fileValidator = new FileValidator();
 	}
 	
 	/**

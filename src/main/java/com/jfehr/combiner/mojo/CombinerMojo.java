@@ -37,7 +37,7 @@ public class CombinerMojo extends AbstractMojo {
 	/**
 	 * determines if the plugin execution should be skipped
 	 */
-	@Parameter(property="tojs.skip", defaultValue="false")
+	@Parameter(property="combiner.skip", defaultValue="false")
 	private Boolean skip;
 	
 	@Component
@@ -46,12 +46,16 @@ public class CombinerMojo extends AbstractMojo {
 	@Component
 	private MojoExecution mojoExecution;
 	
+	@Component
+	private PipelineExecutor pipelineExecutor;
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		LogHolder.setLog(new ParameterizedLogger(this.getLog()));
 		
 		if(!Boolean.TRUE.equals(this.skip)){
 			getParamLogger().debugWithParams("Entering {0} goal", mojoExecution.getGoal());
-			new PipelineExecutor().execute(this.combinations, this.mavenProject);
+			//new PipelineExecutor().execute(this.combinations, this.mavenProject);
+			pipelineExecutor.execute(this.combinations, this.mavenProject);
 			getParamLogger().debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
 		}else{
 			getParamLogger().info("skipping combiner-maven-plugin execution");

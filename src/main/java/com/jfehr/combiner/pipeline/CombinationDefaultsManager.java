@@ -7,10 +7,12 @@ import java.util.Map;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
 
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.CombinerMojo;
 
+@Component(role=CombinationDefaultsManager.class)
 public class CombinationDefaultsManager {
 
 	private static final String INPUT_PARAM_USING_DEFAULT_VALUE_MSG = "{0} parameter not specified, using default of {1}";

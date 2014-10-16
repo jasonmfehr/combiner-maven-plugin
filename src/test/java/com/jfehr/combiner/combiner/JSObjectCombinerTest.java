@@ -1,7 +1,6 @@
 package com.jfehr.combiner.combiner;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,6 @@ public class JSObjectCombinerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		initMocks(this);
 		testContents.put("/somedir/file1.dat", "one");
 		testContents.put("/somedir/file2.dat", "two");
 		

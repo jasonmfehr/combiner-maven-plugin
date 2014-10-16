@@ -7,7 +7,6 @@ import static com.jfehr.combiner.testutil.TestUtil.createDirectory;
 import static com.jfehr.combiner.testutil.TestUtil.readFile;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 import java.nio.charset.UnsupportedCharsetException;
@@ -17,12 +16,16 @@ import org.apache.maven.project.MavenProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.NotWriteableException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FileOutputSourceWriterTest {
 
 	private static final String TEST_PARENT_DIR_PATH = TMP_TEST_DIR + "file_output_source_dir";
@@ -32,16 +35,15 @@ public class FileOutputSourceWriterTest {
 	
 	@Mock private MavenProject mockMavenProject;
 	@Mock private Build mockBuild;
-	private FileOutputSourceWriter fixture;
+	
+	@InjectMocks private FileOutputSourceWriter fixture;
 	
 	@Before
 	public void setUp() {
 		cleanTmpTestDir();
-		initMocks(this);
 
 		when(mockMavenProject.getBuild()).thenReturn(mockBuild);
 		when(mockBuild.getDirectory()).thenReturn(TEST_PARENT_DIR_PATH);
-		fixture = new FileOutputSourceWriter();
 	}
 	
 	@After

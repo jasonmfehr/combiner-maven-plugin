@@ -8,7 +8,6 @@ import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,7 +29,6 @@ public class FileValidatorTest {
 	@Before
 	public void setUp() {
 		cleanTmpTestDir();
-		initMocks(this);
 		fixture = new FileValidator();
 	}
 	

@@ -9,16 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+
 import com.google.common.io.Files;
 import com.jfehr.tojs.exception.FileReadException;
 
+@Component(role=MultiFileReader.class)
 public class MultiFileReader {
 
-	private final FileValidator fileValidator;
-	
-	public MultiFileReader() {
-		fileValidator = new FileValidator();
-	}
+	@Requirement
+	private FileValidator fileValidator;
 	
 	public Map<String, String> readInputFiles(final Charset charSet, final List<String> inputFiles) {
 		final Map<String, String> filesContents = new HashMap<String, String>();

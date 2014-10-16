@@ -1,19 +1,22 @@
 package com.jfehr.combiner.factory;
 
-import java.util.List;
+import org.codehaus.plexus.component.annotations.Component;
 
 import com.jfehr.combiner.transformer.ResourceTransformer;
 
+@Component(role=ResourceTransformerFactory.class)
 public class ResourceTransformerFactory extends ObjectFactory {
 
 	private static final String DEFAULT_PACKAGE = "com.jfehr.combiner.transformer";
-	
-	public ResourceTransformer buildObject(final String className) {
-		return super.buildObject(className, DEFAULT_PACKAGE, ResourceTransformer.class);
-	}
-	
-	public List<ResourceTransformer> buildObjectList(final List<String> classNames) {
-		return super.buildObjectList(classNames, DEFAULT_PACKAGE, ResourceTransformer.class);
+
+	@Override
+	protected Class<?> getObjectClass() {
+		return ResourceTransformer.class;
 	}
 
+	@Override
+	protected String getDefaultPackage() {
+		return DEFAULT_PACKAGE;
+	}
+	
 }

@@ -1,11 +1,9 @@
 package com.jfehr.combiner.transformer;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
-
 
 public class StripNewlinesTest {
 	private static final String TEST_KEY = "testKey";
@@ -14,7 +12,6 @@ public class StripNewlinesTest {
 	
 	@Before
 	public void setUp() {
-		initMocks(this);
 		fixture = new StripNewlines();
 	}
 	

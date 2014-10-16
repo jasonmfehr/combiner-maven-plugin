@@ -2,129 +2,167 @@ package com.jfehr.combiner.factory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.testutil.MockNonDefaultPackage;
 import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ObjectFactoryTest {
 
-	private static final String DEFAULT_PACKAGE_NAME = ObjectFactoryTest.class.getPackage().getName();
-	private static final String MOCK_DEFAULT_PKG = "ObjectFactoryTest$MockImplementsIface";
+	private static final String MOCK_PACKAGE = "com.jfehr.combiner.factory";
+	
+	private static final String MOCK_IMPLEMENTS_IFACE_CLASSNAME = "ObjectFactoryTest$MockImplementsIface";
+	private static final String MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED = MOCK_PACKAGE + "." + MOCK_IMPLEMENTS_IFACE_CLASSNAME;
+	
 	private static final String MOCK_LOGGER_CTOR = "ObjectFactoryTest$MockImplementsIfaceWithLogger";
-	private static final String MOCK_INVALID = "ObjectFactoryTest$MockInvalid";
-	private static final String MOCK_INHERITS_IFACE = "ObjectFactoryTest$MockInheritsIface";
-	private static final String MOCK_NON_DEFAULT_PKG = "com.jfehr.combiner.testutil.MockNonDefaultPackage";
-	private static final String MOCK_IFACE = "ObjectFactoryTest$MockSubIface";
-	private static final String MOCK_NONEXISTANT = "NonExistant";
+	private static final String MOCK_LOGGER_CTOR_FULLY_QUALIFIED = MOCK_PACKAGE + "." + "ObjectFactoryTest$MockImplementsIfaceWithLogger";
 	
-	private ObjectFactory fixture;
+	private static final String MOCK_IFACE_NAME = "ObjectFactoryTest$MockBaseInterface";
 	
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+	private static final String MOCK_NAME_DOES_NOT_IMPL_IFACE = "ObjectFactoryTest$MockInvalid";
+	
+	@Mock private PlexusContainer mockContainer;
+	
+	@InjectMocks private TestObjectFactoryFixture fixture;
+	
+	@Test(expected=NullPointerException.class)
+	public void testNullClassOrRoleName() {
+		fixture.buildObject(null);
 		
-		fixture = new ObjectFactory();
+		verifyZeroInteractions(mockContainer);
 	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testNullClassName() {
-		this.runTest(null, null);
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testNullDefaultPackage() {
-		this.runTest(MOCK_DEFAULT_PKG, null);
-	}
-	
-	@Test(expected=NotAssignableException.class)
-	public void testNullImplementsInterface() {
-		fixture.buildObject(MockImplementsIface.class.getName(), MOCK_DEFAULT_PKG, null);
+
+	@Test
+	public void testRetrieveFromPlexusContainer() throws ComponentLookupException {
+		final MockImplementsIface expected = new MockImplementsIface();
+
+		when(mockContainer.lookup(expected.getClass().getName())).thenReturn(expected);
+		
+		assertSame(expected, fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME));
+		
+		verify(mockContainer).lookup(expected.getClass().getName());
 	}
 	
 	@Test
-	public void testFullPackage() {
-		assertTrue(this.runTest(MOCK_NON_DEFAULT_PKG, "test") instanceof MockNonDefaultPackage);
+	public void testRetrieveFromPlexusContainerInvalid() throws ComponentLookupException {
+		final MockInvalid plexusComponent = new MockInvalid();
+		final MockBaseInterface actual;
+		
+		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenReturn(plexusComponent);
+		
+		actual = fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME);
+		assertNotSame(plexusComponent, actual);
+		assertTrue(actual instanceof MockImplementsIface);
+		
+		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
 	
 	@Test
-	public void testDefaultPackage() {
-		assertTrue(this.runTest(MOCK_DEFAULT_PKG) instanceof MockImplementsIface);
+	public void testFullPackage() throws ComponentLookupException {
+		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
+		
+		assertTrue(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED) instanceof MockBaseInterface);
+		
+		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
 	
 	@Test
-	public void testDefaultPackageEndsWithDot() {
-		assertTrue(this.runTest(MOCK_DEFAULT_PKG, DEFAULT_PACKAGE_NAME + ".") instanceof MockImplementsIface);
+	public void testClassOnly() throws ComponentLookupException {
+		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
+		
+		assertTrue(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME) instanceof MockBaseInterface);
+		
+		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
 	
 	@Test
-	public void testLoggerConstructor() {
+	public void testLoggerConstructor() throws ComponentLookupException {
 		final ParameterizedLogger mockLogger;
-		final MockBaseInterface actual;;
+		final MockBaseInterface actual;
+		
+		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
 		
 		mockLogger = mock(ParameterizedLogger.class);
 		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
 		
-		actual = (MockBaseInterface)this.runTest(MOCK_LOGGER_CTOR);
+		actual = fixture.buildObject(MOCK_LOGGER_CTOR);
 		
 		assertTrue(actual instanceof MockImplementsIfaceWithLogger);
-		assertEquals(mockLogger, ((MockImplementsIfaceWithLogger)actual).getLogger());
-	}
-	
-	@Test
-	public void testParserInheritsIface() {
-		assertTrue(this.runTest(MOCK_INHERITS_IFACE) instanceof MockInheritsIface);
+		assertSame(mockLogger, ((MockImplementsIfaceWithLogger)actual).getLogger());
+		
+		verify(mockContainer).lookup(MOCK_LOGGER_CTOR_FULLY_QUALIFIED);
 	}
 	
 	@Test(expected=ObjectInstantiationException.class)
-	public void testParserIface() {
-		this.runTest(MOCK_IFACE);
+	public void testInstantiateIface() throws ComponentLookupException {
+		when(mockContainer.lookup(anyString())).thenThrow(new ComponentLookupException("", "", ""));
+		
+		fixture.buildObject(MOCK_IFACE_NAME);
 	}
 	
 	@Test(expected=NotAssignableException.class)
-	public void testParserInvalid() {
-		this.runTest(MOCK_INVALID);
-	}
-	
-	@Test(expected=ObjectInstantiationException.class)
-	public void testParserNonExistant() {
-		this.runTest(MOCK_NONEXISTANT);
+	public void testDoeNotImplementIface() throws ComponentLookupException {
+		when(mockContainer.lookup(anyString())).thenThrow(new ComponentLookupException("", "", ""));
+		
+		fixture.buildObject(MOCK_NAME_DOES_NOT_IMPL_IFACE);
 	}
 	
 	@Test
-	public void testList() {
+	public void testListCreate() throws ComponentLookupException {
 		final List<String> inputList = new ArrayList<String>();
+		final MockImplementsIface expected = new MockImplementsIface();
 		final List<MockBaseInterface> actualList;
 		
-		inputList.add(MOCK_DEFAULT_PKG);
-		inputList.add(MOCK_LOGGER_CTOR);
+		inputList.add("plexus.Component");
+		inputList.add(MOCK_IMPLEMENTS_IFACE_CLASSNAME);
 		
-		actualList = fixture.buildObjectList(inputList, DEFAULT_PACKAGE_NAME, MockBaseInterface.class);
+		when(mockContainer.lookup("plexus.Component")).thenReturn(expected);
+		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
+		
+		actualList = fixture.buildObjectList(inputList);
 		
 		assertNotNull(actualList);
 		assertEquals(2, actualList.size());
-		assertTrue(actualList.get(0) instanceof MockImplementsIface);
-		assertTrue(actualList.get(1) instanceof MockImplementsIfaceWithLogger);
+		assertSame(expected, actualList.get(0));
+		assertTrue(actualList.get(1) instanceof MockImplementsIface);
+		
+		verify(mockContainer).lookup("plexus.Component");
+		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
 	
-	private Object runTest(final String className, final String defaultPackage) {
-		return fixture.buildObject(className, defaultPackage, MockBaseInterface.class);
-	}
-	
-	private Object runTest(final String className) {
-		return this.runTest(className, DEFAULT_PACKAGE_NAME);
+	//=== test concrete class instances ===\\
+	public static class TestObjectFactoryFixture extends ObjectFactory {
+		@Override
+		protected Class<?> getObjectClass() {
+			return MockBaseInterface.class;
+		}
+
+		@Override
+		protected String getDefaultPackage() {
+			return MockBaseInterface.class.getPackage().getName();
+		}
 	}
 	
 	//=== Mock classes for testing ===\\
@@ -151,11 +189,5 @@ public class ObjectFactoryTest {
 	}
 	
 	public static class MockInvalid {}
-	
-	public static interface MockSubIface extends MockBaseInterface {}
-	
-	public static class MockInheritsIface implements MockSubIface {
-		public String doNothing(final String someInput) { return null; }
-	}
 
 }

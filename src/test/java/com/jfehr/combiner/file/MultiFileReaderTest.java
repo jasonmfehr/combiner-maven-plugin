@@ -3,38 +3,31 @@ package com.jfehr.combiner.file;
 import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET;
 import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.combiner.testutil.TestUtil.buildFailMsg;
-import static com.jfehr.combiner.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.io.Files;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MultiFileReaderTest {
 
 	private static final String TEST_FILE_1 = TMP_TEST_DIR + "multifilereader.1";
 	private static final String TEST_FILE_2 = TMP_TEST_DIR + "multifilereader.2";
 	
 	@Mock private FileValidator mockValidator;
-	private MultiFileReader fixture;
-	
-	@Before
-	public void setUp() {
-		initMocks(this);
-		
-		fixture = new MultiFileReader();
-		setPrivateField(fixture, "fileValidator", mockValidator);
-	}
+	@InjectMocks private MultiFileReader fixture;
 	
 	@Test
 	public void testHappyPath() throws Exception {

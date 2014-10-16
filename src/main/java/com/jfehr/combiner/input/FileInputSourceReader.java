@@ -7,19 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
 
 public class FileInputSourceReader implements InputSourceReader {
 
-	private final FileLocator fileLocator;
-	private final MultiFileReader multiFileReader;
+	@Requirement
+	private FileLocator fileLocator;
 	
-	public FileInputSourceReader() {
-		fileLocator = new FileLocator();
-		multiFileReader = new MultiFileReader();
-	}
+	@Requirement
+	private MultiFileReader multiFileReader;
 	
 	public Map<String, String> read(final String encoding, final List<String> includes, final List<String> excludes, final Map<String, String> settings, final MavenProject mavenProject) {
 		final Map<String, String> fileContents;

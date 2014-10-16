@@ -4,11 +4,13 @@ import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 
 import java.io.File;
 
+import org.codehaus.plexus.component.annotations.Component;
+
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
 
-
+@Component(role=FileValidator.class)
 public class FileValidator {
 
 	public void existsAndReadable(final String location) {

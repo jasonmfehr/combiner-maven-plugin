@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import com.jfehr.combiner.combiner.ResourceCombiner;
 import com.jfehr.combiner.factory.InputSourceReaderFactory;
@@ -21,17 +23,28 @@ import com.jfehr.combiner.mojo.CombinerMojo;
 import com.jfehr.combiner.output.OutputSourceWriter;
 import com.jfehr.combiner.transformer.ResourceTransformer;
 
+@Component(role=PipelineExecutor.class)
 public class PipelineExecutor {
 
 	private static final String ID_PROVIDED_MSG = " for combination with id ";
 	
-	private final CombinationValidator validator;
-	private final CombinationDefaultsManager defaultsManager;
+	@Requirement
+	private CombinationValidator validator;
 	
-	public PipelineExecutor() {
-		this.validator = new CombinationValidator();
-		this.defaultsManager = new CombinationDefaultsManager();
-	}
+	@Requirement
+	private CombinationDefaultsManager defaultsManager;
+	
+	@Requirement
+	private InputSourceReaderFactory inputSourceReaderFactory;
+	
+	@Requirement
+	private ResourceTransformerFactory transformerFactory;
+	
+	@Requirement
+	private ResourceCombinerFactory combinerFactory;
+	
+	@Requirement
+	private OutputSourceWriterFactory osFactory;
 	
 	public void execute(final List<Combination> combinations, final MavenProject mavenProject) {
 		getParamLogger().debugWithParams("{0} combination sets specified", combinations.size());
@@ -68,14 +81,12 @@ public class PipelineExecutor {
 	 * @return {@link Map} with a key of the resource name and a value of the resource contents
 	 */
 	private Map<String, String> readInputSources(final Combination combo, final MavenProject mavenProject) {
-		final InputSourceReaderFactory isFactory;
 		final InputSourceReader isReader;
 		final Map<String, String> resources;
 		
 		getParamLogger().debug("Executing pipeline stage one - read input sources");
 		
-		isFactory = new InputSourceReaderFactory();
-		isReader = isFactory.buildObject(combo.getInputSourceReader());
+		isReader = inputSourceReaderFactory.buildObject(combo.getInputSourceReader());
 		resources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), mavenProject);
 		
 		getParamLogger().debug("Completed execution of pipeline stage one - read input sources");
@@ -92,7 +103,6 @@ public class PipelineExecutor {
 	 * @return {@link Map} with a key of the resource name and a value of the resource contents that were transformed
 	 */
 	private Map<String, String> executeTransformers(final Combination combo, Map<String, String> sources, final MavenProject mavenProject) {
-		final ResourceTransformerFactory transformerFactory;
 		final List<ResourceTransformer> tranformers;
 		Map<String, String> transformedSources;
 		
@@ -101,7 +111,6 @@ public class PipelineExecutor {
 		transformedSources = new HashMap<String, String>();
 		transformedSources.putAll(sources);
 		
-		transformerFactory = new ResourceTransformerFactory();
 		tranformers = transformerFactory.buildObjectList(combo.getTransformers());
 		
 		for(ResourceTransformer rt : tranformers){
@@ -119,13 +128,11 @@ public class PipelineExecutor {
 	}
 	
 	private String combineResources(final Combination combo, final Map<String, String> resources, final MavenProject mavenProject) {
-		final ResourceCombinerFactory combinerFactory;
 		final ResourceCombiner combiner;
 		final String combinedResources;
 		
 		getParamLogger().debug("Executing pipeline stage three - combined resources");
 		
-		combinerFactory = new ResourceCombinerFactory();
 		combiner = combinerFactory.buildObject(combo.getCombiner());
 		combinedResources = combiner.combine(resources, combo.getSettings(), mavenProject);
 		
@@ -135,12 +142,10 @@ public class PipelineExecutor {
 	}
 	
 	private void outputResources(final Combination combo, final String combinedResources, final MavenProject mavenProject) {
-		final OutputSourceWriterFactory osFactory;
 		final OutputSourceWriter osWriter;
 		
 		getParamLogger().debug("Executing pipeline stage four - output resources");
 		
-		osFactory = new OutputSourceWriterFactory();
 		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
 		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedResources, combo.getSettings(), mavenProject);
 		

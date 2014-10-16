@@ -27,11 +27,11 @@ public class CombinationDefaultsManagerTest {
 	@Mock private MavenProject mockMavenProject;
 	@Mock private Properties mockProperties;
 	@InjectMocks private CombinationDefaultsManager fixture;
+	
 	private Combination helperCombo;
 	
 	@Before
 	public void setUp() {
-		fixture = new CombinationDefaultsManager();
 		helperCombo = new Combination();
 		when(mockMavenProject.getProperties()).thenReturn(mockProperties);
 	}

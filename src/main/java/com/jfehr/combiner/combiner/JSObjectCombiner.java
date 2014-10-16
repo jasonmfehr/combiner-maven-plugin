@@ -46,7 +46,6 @@ public class JSObjectCombiner implements ResourceCombiner {
 		sb.append("    w.").append(jsObjectName).append(" = {").append(LINE_SEPARATOR);
 		
 		for(Entry<String, String> contentsEntry : contents.entrySet()){
-			//sb.append("        \"").append(this.findFieldName(contentsEntry.getKey())).append("\" = \"").append(contentsEntry.getValue()).append("\";").append(LINE_SEPARATOR);
 			concatedLines.add("        \"" + this.findFieldName(contentsEntry.getKey()) + "\" = \"" + contentsEntry.getValue() + "\"");
 		}
 		sb.append(StringUtils.join(concatedLines, "," + LINE_SEPARATOR)).append(LINE_SEPARATOR);

@@ -8,53 +8,57 @@ import java.util.List;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
-public class ObjectFactory {
+public abstract class ObjectFactory {
 
-	public <T> T buildObject(final String className, final String defaultPackage, Class<T> superInterface) {
+	@Requirement
+    private PlexusContainer container;
+	
+	protected abstract Class<?> getObjectClass();
+	protected abstract String getDefaultPackage();
+	
+	public <T> T buildObject(final String classOrRole) {
+		final String fullClassOrRoleName;
 		T obj;
-		final String fullClassName;
-		final Class<?> constructionClass;
+		Object plexusObj;
 		
-		if(className.contains(".")){
-			fullClassName = className;
-			getParamLogger().debugWithParams("Instantiation class {0}", fullClassName);
-		}else{
-			fullClassName = defaultPackage + (defaultPackage.endsWith(".") ? "" : ".") + className;
-			getParamLogger().debugWithParams("Instantiating class {0} after adding default package of {1}", fullClassName, defaultPackage);
+		if(classOrRole == null){
+			throw new NullPointerException("classOrRole is null");
 		}
 		
-		try {
-			constructionClass = ClassUtils.getClass(fullClassName);
-		} catch (ClassNotFoundException e) {
-			throw new ObjectInstantiationException(className, e);
-		}
+		fullClassOrRoleName = this.buildFullyQualified(classOrRole);
 		
-		if(!ClassUtils.isAssignable(constructionClass, superInterface)){
-			throw new NotAssignableException(className);
-		}
+		plexusObj = this.attemptPlexusRetrieve(fullClassOrRoleName);
 		
-		try{
-			obj = this.instantiateObject(constructionClass, getParamLogger());
-		}catch(NoSuchMethodException e){
-			try {
-				obj = this.instantiateObject(constructionClass);
-			} catch (NoSuchMethodException e1) {
-				throw new ObjectInstantiationException(fullClassName, e);
+		if(plexusObj != null){
+			//generics in Java are a compile time check, but this class needs to do runtime type checks, thus 
+			//the call to checkAssignability is necessary to ensure the object who's class was determined at 
+			//runtime can be assigned to the class specified by this factory's getObjectClass method
+			if(this.checkAssignability(plexusObj.getClass())){
+				getParamLogger().debugWithParams("Found object with class {0} in the plexus container, returning that object", plexusObj.getClass().getCanonicalName());
+				return (T)plexusObj;
+			}else{
+				getParamLogger().debugWithParams("Could not cast object with class {0} that was retrieved from the plexus container to the expected type {1} of this factory, moving ahead with creating a new object", plexusObj.getClass().getCanonicalName(), this.getObjectClass().getCanonicalName());
 			}
 		}
 		
+		obj = this.constructObject(fullClassOrRoleName);
+
 		return obj;
 	}
 	
-	public <T> List<T> buildObjectList(final List<String> classNames, final String defaultPackage, Class<T> superInterface) {
+	public <T> List<T> buildObjectList(final List<String> classOrRoleNames) {
 		final List<T> objectList = new ArrayList<T>();
 		
-		for(String cN : classNames){
-			objectList.add(this.buildObject(cN, defaultPackage, superInterface));
+		for(String cN : classOrRoleNames){
+			//TODO figure out why this has to be cast
+			objectList.add((T)this.buildObject(cN));
 		}
 		
 		return objectList;
@@ -76,4 +80,71 @@ public class ObjectFactory {
 		
 		return obj;
 	}
+	
+	private String buildFullyQualified(final String classOrRole) {
+		final String fullyQualified;
+		
+		if(classOrRole.contains(".")){
+			getParamLogger().debugWithParams("Provided class or role {0} is already fully qualified", classOrRole);
+			fullyQualified = classOrRole;
+		}else{
+			fullyQualified = this.getDefaultPackage() + "." + classOrRole;
+			getParamLogger().debugWithParams("Instantiating class {0} after adding default package of {1}", fullyQualified, this.getDefaultPackage());
+		}
+		
+		return fullyQualified;
+	}
+	
+	private Object attemptPlexusRetrieve(String fullyQualifiedObjectName) {
+		Object obj = null;
+		
+		try {
+			getParamLogger().debugWithParams("Attempting lookup from plexus container using value {0}", fullyQualifiedObjectName);
+			obj = this.container.lookup(fullyQualifiedObjectName);
+		} catch (ComponentLookupException e) {
+			getParamLogger().debugWithParams("Did not find component {0} in plexus container", fullyQualifiedObjectName);
+		}
+		
+		return obj;
+	}
+	
+	private <T> T constructObject(final String fullyQualifiedName) {
+		final Class<?> constructionClass;
+		T obj;
+		
+		try {
+			constructionClass = ClassUtils.getClass(fullyQualifiedName);
+		} catch (ClassNotFoundException e) {
+			throw new ObjectInstantiationException(fullyQualifiedName, e);
+		}
+		
+		if(!this.checkAssignability(constructionClass)){
+			throw new NotAssignableException(fullyQualifiedName);
+		}
+		
+		try{
+			//try invoking the constructor that has a single org.apache.maven.plugin.logging.Log argument
+			obj = this.instantiateObject(constructionClass, getParamLogger());
+		}catch(NoSuchMethodException e){
+			try {
+				//no single argument constructor was found, try the default no argument constructor
+				obj = this.instantiateObject(constructionClass);
+			} catch (NoSuchMethodException e1) {
+				throw new ObjectInstantiationException(fullyQualifiedName, e);
+			}
+		}
+		
+		return obj;
+	}
+	
+	/**
+	 * Determines if the class of an object with the provided class can be cast to the class specified in the {@link #getObjectClass()} method.
+	 * 
+	 * @param o {@link Class} that will be checked for type compatibility with the class returned from {@link #getObjectClass()}
+	 * @return {@code boolean} with {@code true} indicating an object with the specified class can be cast or {@code false} indicating it cannot be cast
+	 */
+	private boolean checkAssignability(Class<?> clazz) {
+		return ClassUtils.isAssignable(clazz, this.getObjectClass());
+	}
+	
 }

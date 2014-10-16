@@ -19,11 +19,13 @@ import java.util.List;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.base.MockitoAssertionError;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
@@ -31,6 +33,7 @@ import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FileLocatorTest {
 
 	private static final String INCLUDE_PREFIX = "include_";
@@ -40,26 +43,23 @@ public class FileLocatorTest {
 	private static final int EXCLUDE_LENGTH = 2;
 	private static final int FOUND_FILES_LENGTH = 4;
 	
-	private FileLocator fixture;
 	private List<String> includes;
 	private List<String> excludes;
 	
 	@Mock private DirectoryScanner mockScanner;
 	@Mock private FileValidator mockValidator;
 	
+	@InjectMocks private FileLocator fixture;
+	
 	@Captor private ArgumentCaptor<String[]> includesCaptor;
 	@Captor private ArgumentCaptor<String[]> excludesCaptor;
 	
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		
-		fixture = new FileLocator();
 		includes = new ArrayList<String>();
 		excludes = new ArrayList<String>();
 		
 		setPrivateField(fixture, "directoryScanner", mockScanner);
-		setPrivateField(fixture, "fileValidator", mockValidator);
 	}
 	
 	@Test

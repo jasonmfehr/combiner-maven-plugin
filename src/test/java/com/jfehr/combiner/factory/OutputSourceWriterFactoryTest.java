@@ -1,25 +1,30 @@
 package com.jfehr.combiner.factory;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.jfehr.combiner.output.MockOutputSourceWriter;
+import com.jfehr.combiner.output.OutputSourceWriter;
 
 public class OutputSourceWriterFactoryTest {
 
+	private static final String EXPECTED_DEFAULT_PACKAGE = "com.jfehr.combiner.output";
+	
 	private OutputSourceWriterFactory fixture;
 	
 	@Before
 	public void setUp() {
-		initMocks(this);
 		fixture = new OutputSourceWriterFactory();
 	}
-	@Test
-	public void testHappyPath() {
-		assertTrue(fixture.buildObject("MockOutputSourceWriter") instanceof MockOutputSourceWriter);
-	}
 
+	@Test
+	public void testDefaultPackage() {
+		assertEquals(EXPECTED_DEFAULT_PACKAGE, fixture.getDefaultPackage());
+	}
+	
+	@Test
+	public void testObjectInterface() {
+		assertEquals(OutputSourceWriter.class, fixture.getObjectClass());
+	}
 }
