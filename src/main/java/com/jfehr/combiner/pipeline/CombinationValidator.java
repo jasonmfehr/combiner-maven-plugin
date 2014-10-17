@@ -7,11 +7,9 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 import com.jfehr.combiner.mojo.Combination;
-import com.jfehr.combiner.mojo.CombinerMojo;
 
 @Component(role=CombinationValidator.class)
 public class CombinationValidator {
@@ -34,9 +32,8 @@ public class CombinationValidator {
 	 * Missing or invalid  parameters will result in an exception being thrown.
 	 * 
 	 * @param combo {@link Combination} combo that will have its default values set
-	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
 	 */
-	public void validate(final Combination combo, final MavenProject mavenProject) {
+	public void validate(final Combination combo) {
 		this.validateRequiredInputs(combo);
 	}
 	

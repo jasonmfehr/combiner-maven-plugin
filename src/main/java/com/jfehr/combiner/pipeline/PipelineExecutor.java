@@ -63,7 +63,7 @@ public class PipelineExecutor {
 		this.defaultsManager.setupDefaults(combo, mavenProject);
 		this.debugLogInputs(combo, mavenProject);
 
-		this.validator.validate(combo, mavenProject);
+		this.validator.validate(combo);
 		
 		sources = this.readInputSources(combo, mavenProject);
 		sources = this.executeTransformers(combo, sources, mavenProject);
