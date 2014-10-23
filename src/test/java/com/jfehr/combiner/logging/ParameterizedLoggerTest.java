@@ -1,5 +1,6 @@
 package com.jfehr.combiner.logging;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.mojo.Combination;
+
 //TODO could this be implemented with JUnit's paramaterized runner
 @RunWith(MockitoJUnitRunner.class)
 public class ParameterizedLoggerTest {
@@ -24,6 +27,7 @@ public class ParameterizedLoggerTest {
 	
 	@Mock private Log mockLogger;
 	@Mock private Exception mockException;
+	@Mock private Combination mockCombo;
 	
 	@InjectMocks private ParameterizedLogger fixture;
 	
@@ -209,4 +213,26 @@ public class ParameterizedLoggerTest {
 		verify(mockLogger, never()).error(toString());
 	}
 	//=== END ERROR LEVEL TESTS ===\\
+	
+	//=== BEGIN BUILD COMBINATION ID TESTS ===\\
+	@Test
+	public void testNullComboId() {
+		when(mockCombo.getId()).thenReturn(null);
+		assertEquals("", fixture.buildCombinationIDString(mockCombo));
+	}
+	
+	@Test
+	public void testEmptyComboId() {
+		when(mockCombo.getId()).thenReturn("");
+		assertEquals("", fixture.buildCombinationIDString(mockCombo));
+		
+	}
+	
+	@Test
+	public void testValidComboId() {
+		when(mockCombo.getId()).thenReturn("foo");
+		assertEquals(" for combination with id foo", fixture.buildCombinationIDString(mockCombo));
+		
+	}
+	//=== END BUILD COMBINATION ID TESTS ===\\
 }

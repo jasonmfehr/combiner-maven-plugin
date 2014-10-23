@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 
 import org.apache.maven.plugin.logging.Log;
 
+import com.jfehr.combiner.mojo.Combination;
+
 public class ParameterizedLogger implements Log {
 
 	private Log decoratedLogger;
@@ -104,6 +106,18 @@ public class ParameterizedLogger implements Log {
 		if(this.isErrorEnabled()){
 			this.decoratedLogger.error(this.formatMessage(content, parameters));
 		}
+	}
+	
+	/**
+	 * Determines if the {@code id} field within the provided {@link Combination} exists or not.  If it exists, then a {@link String} is created 
+	 * by concatenating an id provided message String with the {@link Combination#getId()} field.  If it does not exist, 
+	 * then an empty {@link String} is returned.
+	 *  
+	 * @param combo {@link Combination} to check if its {@code id} field has been specified
+	 * @return {@link String}
+	 */
+	public String buildCombinationIDString(final Combination combo) {
+		return combo.getId() != null && combo.getId().length() > 0 ? " for combination with id " + combo.getId() : "";
 	}
 
 	private String charSeqToStr(final CharSequence charSequence) {

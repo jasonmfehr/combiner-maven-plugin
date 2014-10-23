@@ -26,8 +26,6 @@ import com.jfehr.combiner.transformer.ResourceTransformer;
 @Component(role=PipelineExecutor.class)
 public class PipelineExecutor {
 
-	private static final String ID_PROVIDED_MSG = " for combination with id ";
-	
 	@Requirement
 	private CombinationValidator validator;
 	
@@ -58,7 +56,7 @@ public class PipelineExecutor {
 		final String combinedResources;
 		Map<String, String> sources;
 		
-		getParamLogger().debugWithParams("Executing pipeline{0}", this.idString(combo));
+		getParamLogger().debugWithParams("Executing pipeline{0}", getParamLogger().buildCombinationIDString(combo));
 		
 		this.defaultsManager.setupDefaults(combo, mavenProject);
 		this.debugLogInputs(combo, mavenProject);
@@ -70,7 +68,7 @@ public class PipelineExecutor {
 		combinedResources = this.combineResources(combo, sources, mavenProject);
 		this.outputResources(combo, combinedResources, mavenProject);
 		
-		getParamLogger().debugWithParams("Completed executing pipeline{0}", this.idString(combo));
+		getParamLogger().debugWithParams("Completed executing pipeline{0}", getParamLogger().buildCombinationIDString(combo));
 	}
 	
 	/**
@@ -177,15 +175,4 @@ public class PipelineExecutor {
 		}
 	}
 	
-	/**
-	 * Determines if the {@code id} field within the provided {@link Combination} exists or not.  If it exists, then a {@link String} is created 
-	 * by concatenating the {@link CombinerMojo#ID_PROVIDED_MSG} with the {@link Combination#getId()} field.  If it does not exist, 
-	 * then an empty {@link String} is returned.
-	 *  
-	 * @param combo {@link Combination} to check if its {@code id} field has been specified
-	 * @return {@link String}
-	 */
-	private String idString(final Combination combo) {
-		return combo.getId() != null && combo.getId().length() > 0 ? ID_PROVIDED_MSG + combo.getId() : "";
-	}
 }

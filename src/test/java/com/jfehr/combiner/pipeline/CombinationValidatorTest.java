@@ -153,7 +153,7 @@ public class CombinationValidatorTest {
 	private Combination buildValidCombo() {
 		final Combination combo = new Combination();
 		
-		combo.setEncoding("UTF-]8");
+		combo.setEncoding("UTF-8");
 		combo.setInputSourceReader("inputSourceReader");
 		
 		combo.setInputSources(new InputResources());
