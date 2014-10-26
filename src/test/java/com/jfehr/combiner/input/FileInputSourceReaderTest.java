@@ -4,6 +4,7 @@ import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET;
 import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET_STR;
 import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,8 +48,8 @@ public class FileInputSourceReaderTest {
 		
 		assertEquals(readFiles, fixture.read(TEST_CHARSET_STR, includes, excludes, new HashMap<String, String>(), mockMavenProject));
 		
-		verify(mockMavenProject).getBasedir();
-		verify(mockBaseDir).getAbsolutePath();
+		verify(mockMavenProject, times(2)).getBasedir();
+		verify(mockBaseDir, times(2)).getAbsolutePath();
 		verify(mockLocator).locateFiles(TMP_TEST_DIR, includes, excludes);
 		verify(mockReader).readInputFiles(TEST_CHARSET, locatedFiles);
 		

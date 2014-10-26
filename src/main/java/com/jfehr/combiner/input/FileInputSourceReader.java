@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
 
+@Component(role=FileInputSourceReader.class)
 public class FileInputSourceReader implements InputSourceReader {
 
 	@Requirement
@@ -26,6 +28,7 @@ public class FileInputSourceReader implements InputSourceReader {
 		final Charset encodingCharset;
 		
 		encodingCharset = this.buildCharset(encoding);
+		getParamLogger().debugWithParams("using base directory {0}", mavenProject.getBasedir().getAbsolutePath());
 		files = fileLocator.locateFiles(mavenProject.getBasedir().getAbsolutePath(), includes, excludes);
 		fileContents = multiFileReader.readInputFiles(encodingCharset, files);
 		getParamLogger().debugWithParams("FileInputSource read {0} files", fileContents.size());

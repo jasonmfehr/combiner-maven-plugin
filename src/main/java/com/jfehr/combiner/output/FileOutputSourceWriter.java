@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
 
 import com.google.common.io.Files;
 import com.jfehr.tojs.exception.DirectoryCreationException;
@@ -16,6 +17,7 @@ import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.FileWriteException;
 import com.jfehr.tojs.exception.NotWriteableException;
 
+@Component(role=FileOutputSourceWriter.class)
 public class FileOutputSourceWriter implements OutputSourceWriter {
 
 	//TODO the unit tests for this method never assert that the correct fullOutputDestination is created

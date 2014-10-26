@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,7 @@ public class PipelineExecutorTest {
 	@Mock private ResourceCombinerFactory mockCombinerFactory;
 	@Mock private OutputSourceWriterFactory mockOutputSourceWriterFactory;
 	@Mock private MavenProject mockMavenProject;
+	@Mock private Build mockMavenBuild;
 	@Mock private InputSourceReader mockInputSourceReader;
 	@Mock private ResourceTransformer mockResourceTransformer1;
 	@Mock private ResourceTransformer mockResourceTransformer2;
@@ -82,6 +84,7 @@ public class PipelineExecutorTest {
 		
 		combos.add(one);
 		
+		when(mockMavenProject.getBuild()).thenReturn(mockMavenBuild);
 		when(mockInputSourceReaderFactory.buildObject("inputSourceReader1")).thenReturn(mockInputSourceReader);
 		when(mockInputSourceReader.read("UTF-8", inputResourceIncludes, null, settings, mockMavenProject)).thenReturn(resources);
 		when(mockResourceTransformerFactory.buildObjectList(resourceTransformerStrings)).thenReturn(resourceTransformerObjects);
