@@ -56,7 +56,6 @@ public class JSObjectCombiner implements ResourceCombiner {
 		return sb.toString();
 	}
 
-	//TODO assumes the resource is a file, figure out what to do for non-file resources
 	private String findFieldName(final String resourceKey) {
 		return new File(resourceKey).getName().replaceFirst("\\.[^\\.]*?$", "");
 	}
