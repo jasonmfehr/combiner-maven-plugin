@@ -1,0 +1,9 @@
+language: java
+
+jdk:
+  - openjdk7
+
+notification:
+  email: false
+
+script: mvn clean install -Prun-pit,run-its -Dinvoker.debug
