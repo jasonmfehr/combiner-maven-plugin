@@ -124,6 +124,7 @@ public class CombinationValidatorTest {
 		fixture.validate(combo);
 	}
 	
+	/*
 	@Test(expected=IllegalArgumentException.class)
 	public void testNullTransformers() {
 		final Combination combo = this.buildValidCombo();
@@ -141,6 +142,7 @@ public class CombinationValidatorTest {
 		
 		fixture.validate(combo);
 	}
+	*/
 	
 	private void executeCharsetTest(String testVal) {
 		final Combination combo = this.buildValidCombo();

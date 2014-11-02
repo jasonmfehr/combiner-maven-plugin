@@ -5,7 +5,7 @@
 
     <groupId>com.jfehr.combiner</groupId>
     <artifactId>combiner-maven-plugin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>${project.artifactId}</name>
 
@@ -212,7 +212,7 @@
     
     <profiles>
         <profile>
-            <id>pit-full</id>
+            <id>run-pit</id>
             <build>
                 <plugins>
                     <plugin>
@@ -232,6 +232,33 @@
                                 <param>com.jfehr.combiner.logging.LogHolder</param>
                             </avoidCallsTo>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>run-its</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <version>1.9</version>
+                        <configuration>
+                            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                            <settingsFile>src/it/settings.xml</settingsFile>
+                            <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                            <postBuildHookScript>verify.groovy</postBuildHookScript>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>invoker-run-its</id>
+                                <goals>
+                                    <goal>install</goal>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

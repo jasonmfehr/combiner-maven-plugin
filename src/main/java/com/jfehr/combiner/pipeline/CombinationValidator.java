@@ -17,11 +17,11 @@ public class CombinationValidator {
 	protected static final String INPUT_PARAM_INPUT_SOURCE_READER = "inputSourceReader";
 	protected static final String INPUT_PARAM_OUTPUT_SOURCE_WRITER = "outputSourceWriter";
 	protected static final String INPUT_PARAM_ENCODING = "encoding";
+	protected static final String INPUT_PARAM_TRANSFORMERS = "transformers";
 	
 	private static final String INPUT_PARAM_INPUT_SOURCES = "inputSources";
 	private static final String INPUT_PARAM_INPUT_SOURCES_INCLUDES = "includes";
 	private static final String INPUT_PARAM_OUTPUT_DESTINATION = "outputDestination";
-	private static final String INPUT_PARAM_TRANSFORMERS = "transformers";
 	
 	private static final String REQUIRED_PARAM_SPECIFIED_MSG = "The {0} parameter was specified";
 	private static final String REQUIRED_PARAM_CHECKING_MSG = "Checking if the required {0} parameter was specified";
@@ -60,7 +60,7 @@ public class CombinationValidator {
 		this.validateField(INPUT_PARAM_INPUT_SOURCES_INCLUDES, combo.getInputSources().getIncludes(), combo);
 		this.validateField(INPUT_PARAM_OUTPUT_DESTINATION, combo.getOutputDestination(), combo);
 		this.validateField(INPUT_PARAM_OUTPUT_SOURCE_WRITER, combo.getOutputSourceWriter(), combo);
-		this.validateField(INPUT_PARAM_TRANSFORMERS, combo.getTransformers(), combo);
+		//this.validateField(INPUT_PARAM_TRANSFORMERS, combo.getTransformers(), combo);
 		
 		getParamLogger().debugWithParams("Finished validating required input parameters.  All parameters are present.");
 	}

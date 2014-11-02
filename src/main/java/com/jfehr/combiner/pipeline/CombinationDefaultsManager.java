@@ -2,6 +2,8 @@ package com.jfehr.combiner.pipeline;
 
 import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,16 @@ public class CombinationDefaultsManager {
 			combo.setOutputSourceWriter(DEFAULT_OUTPUT_SOURCE_WRITER);
 		}
 		
+		if(!this.isFieldValid(combo.getTransformers())){
+			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_TRANSFORMERS, "empty list");
+			combo.setTransformers(new ArrayList<String>());
+		}
+		
+		if(!this.isFieldValid(combo.getSettings())){
+			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, "settings", "empty map");
+			combo.setSettings(new HashMap<String, String>());
+		}
+		
 		if(!this.isFieldValid(combo.getEncoding())){
 			encoding = mavenProject.getProperties().getProperty(DEFAULT_ENCODING_PROPERTY);
 			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);
@@ -70,7 +82,6 @@ public class CombinationDefaultsManager {
 			return Boolean.FALSE;
 		}
 		
-		/*
 		if(value instanceof List<?> && ((List<?>)value).size() == 0){
 			return Boolean.FALSE;
 		}
@@ -78,7 +89,6 @@ public class CombinationDefaultsManager {
 		if(value instanceof Map<?, ?> && ((Map<?, ?>)value).size() == 0){
 			return Boolean.FALSE;
 		}
-		*/
 		
 		return Boolean.TRUE;
 	}
