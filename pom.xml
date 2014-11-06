@@ -99,6 +99,8 @@
                         <settingsFile>src/it/settings.xml</settingsFile>
                         <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
                         <postBuildHookScript>verify.groovy</postBuildHookScript>
+                        <parallelThreads>5</parallelThreads>
+                        <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
                     </configuration>
                 </plugin>
                 <plugin>

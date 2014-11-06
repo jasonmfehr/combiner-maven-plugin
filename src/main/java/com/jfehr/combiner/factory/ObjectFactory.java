@@ -112,6 +112,7 @@ public abstract class ObjectFactory {
 		final Class<?> constructionClass;
 		T obj;
 		
+		getParamLogger().debugWithParams("Attempting to load class {0}", fullyQualifiedName);
 		try {
 			constructionClass = ClassUtils.getClass(fullyQualifiedName);
 		} catch (ClassNotFoundException e) {
@@ -123,16 +124,20 @@ public abstract class ObjectFactory {
 		}
 		
 		try{
+			getParamLogger().debugWithParams("Attempting to instantiate an object with class {0} using a constructor that takes only a org.apache.maven.plugin.logging.Log parameter", fullyQualifiedName);
 			//try invoking the constructor that has a single org.apache.maven.plugin.logging.Log argument
 			obj = this.instantiateObject(constructionClass, getParamLogger());
 		}catch(NoSuchMethodException e){
 			try {
 				//no single argument constructor was found, try the default no argument constructor
+				getParamLogger().debugWithParams("Could not find a single argument constructor that takes a org.apache.maven.plugin.logging.Log parameter, attempting to use the default constructor to instantiate an object with class {0}", fullyQualifiedName);
 				obj = this.instantiateObject(constructionClass);
 			} catch (NoSuchMethodException e1) {
 				throw new ObjectInstantiationException(fullyQualifiedName, e);
 			}
 		}
+		
+		getParamLogger().debugWithParams("Successfully instantiated an object with class {0}", fullyQualifiedName);
 		
 		return obj;
 	}
