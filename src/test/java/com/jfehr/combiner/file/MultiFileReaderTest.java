@@ -1,17 +1,18 @@
 package com.jfehr.combiner.file;
 
 import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET;
-import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.combiner.testutil.TestUtil.buildFailMsg;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,24 +24,26 @@ import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 @RunWith(MockitoJUnitRunner.class)
 public class MultiFileReaderTest {
 
-	private static final String TEST_FILE_1 = TMP_TEST_DIR + "multifilereader.1";
-	private static final String TEST_FILE_2 = TMP_TEST_DIR + "multifilereader.2";
+	private static final String TEST_FILE_1 = "multifilereader.1";
+	private static final String TEST_FILE_2 = "multifilereader.2";
 	
 	@Mock private FileValidator mockValidator;
 	@InjectMocks private MultiFileReader fixture;
 	
+	@Rule public TemporaryFolder tmpFolder = new TemporaryFolder();
+	
 	@Test
 	public void testHappyPath() throws Exception {
-		final File file1 = this.setupFile(TEST_FILE_1);
-		final File file2 = this.setupFile(TEST_FILE_2);
+		final File file1 = tmpFolder.newFile(TEST_FILE_1);
+		final File file2 = tmpFolder.newFile(TEST_FILE_2);
 		final Map<String, String> actual;
 		
 		Files.write(TEST_FILE_1, file1, TEST_CHARSET);
 		Files.write(TEST_FILE_2, file2, TEST_CHARSET);
 
-		actual = fixture.readInputFiles(TEST_CHARSET, Arrays.asList(TEST_FILE_1, TEST_FILE_2));
+		actual = fixture.readInputFiles(TEST_CHARSET, Arrays.asList(file1.getAbsolutePath(), file2.getAbsolutePath()));
 		
-		assertEquals(2, actual.size());
+		assertThat(actual.size(), equalTo(2));
 		this.assertFile(file1, TEST_FILE_1, actual);
 		this.assertFile(file2, TEST_FILE_2, actual);
 	}
@@ -52,20 +55,9 @@ public class MultiFileReaderTest {
 		fixture.readInputFiles(TEST_CHARSET, Arrays.asList(TEST_FILE_1, TEST_FILE_2));
 	}
 	
-	private File setupFile(final String filePath) {
-		final File fileObj = new File(filePath);
-		
-		if(fileObj.exists()){
-			assertTrue(buildFailMsg("could not delete file " + filePath), fileObj.delete());
-		}
-		fileObj.deleteOnExit();
-		
-		return fileObj;
-	}
-	
 	private void assertFile(final File expectedFile, final String expectedContents, Map<String, String> actual) {
-		assertTrue("File " + expectedFile.getAbsolutePath() + " not found in actual results Map", actual.containsKey(expectedFile.getAbsolutePath()));
-		assertEquals(expectedContents, actual.get(expectedFile.getAbsolutePath()));
+		assertThat(actual.keySet(), hasItem(expectedFile.getAbsolutePath()));
+		assertThat(actual.get(expectedFile.getAbsolutePath()), equalTo(expectedContents));
 	}
 
 }
