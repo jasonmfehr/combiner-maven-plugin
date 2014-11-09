@@ -136,8 +136,6 @@
 	                    </rules>
 	                </configuration>
 	            </plugin>
-	            
-	            
 	            <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -188,9 +186,6 @@
                         </lifecycleMappingMetadata>
                     </configuration>
 	            </plugin>
-	            
-	            
-	            
             </plugins>
         </pluginManagement>
         
@@ -274,7 +269,7 @@
                         <id>jacoco-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                            <goal>check</goal>
+                            <!--<goal>check</goal>-->
                             <goal>report</goal>
                         </goals>
                     </execution>
