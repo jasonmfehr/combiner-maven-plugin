@@ -2,7 +2,6 @@ package com.jfehr.combiner.input;
 
 import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET;
 import static com.jfehr.combiner.testutil.TestUtil.TEST_CHARSET_STR;
-import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,6 +26,8 @@ import com.jfehr.combiner.file.MultiFileReader;
 @RunWith(MockitoJUnitRunner.class)
 public class FileInputSourceReaderTest {
 
+	private static final String TMP_TEST_DIR = "tmpdir";
+	
 	@Mock private FileLocator mockLocator;
 	@Mock private MultiFileReader mockReader;
 	@Mock private MavenProject mockMavenProject;

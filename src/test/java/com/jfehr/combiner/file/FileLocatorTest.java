@@ -1,6 +1,5 @@
 package com.jfehr.combiner.file;
 
-import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
 import static com.jfehr.combiner.testutil.TestUtil.setPrivateField;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +41,7 @@ public class FileLocatorTest {
 	private static final int INCLUDE_LENGTH = 3;
 	private static final int EXCLUDE_LENGTH = 2;
 	private static final int FOUND_FILES_LENGTH = 4;
+	private static final String TMP_TEST_DIR = "tmpdir";
 	
 	private List<String> includes;
 	private List<String> excludes;

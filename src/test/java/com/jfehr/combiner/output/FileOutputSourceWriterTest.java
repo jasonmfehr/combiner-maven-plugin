@@ -61,8 +61,8 @@ public class FileOutputSourceWriterTest {
 	public void testMakeParentDirFails() throws Exception {
 		final File parentFolder = this.buildParentFolder();
 		
-		parentFolder.setReadable(true);
-		parentFolder.setWritable(false);
+		assertThat(parentFolder.setReadable(true), equalTo(true));
+		assertThat(parentFolder.setWritable(false), equalTo(true));
 		
 		fixture.write(TEST_CHARSET_STR, TEST_FILE_FULL_PATH, TEST_CONTENTS, null, mockMavenProject);
 	}
@@ -83,8 +83,8 @@ public class FileOutputSourceWriterTest {
 		final File subFolder = this.buildSubFolder();
 		
 		subFolder.mkdirs();
-		subFolder.setReadable(true);
-		subFolder.setWritable(false);
+		assertThat(subFolder.setReadable(true), equalTo(true));
+		assertThat(subFolder.setWritable(false), equalTo(true));
 		
 		fixture.write(TEST_CHARSET_STR, TEST_FILE_FULL_PATH, TEST_CONTENTS, null, mockMavenProject);
 	}
@@ -125,7 +125,7 @@ public class FileOutputSourceWriterTest {
 	private File buildParentFolder() {
 		final File parentFolder = new File(buildRootDir.getAbsolutePath() + "/" + TEST_PARENT_DIR_PATH);
 		
-		parentFolder.mkdirs();
+		assertThat(parentFolder.mkdirs(), equalTo(true));
 		
 		return parentFolder;
 	}
@@ -133,7 +133,7 @@ public class FileOutputSourceWriterTest {
 	private File buildSubFolder() {
 		final File subFolder = new File(buildRootDir.getAbsolutePath() + "/" + TEST_PARENT_DIR_PATH + TEST_PARENT_SUBDIR_PATH);
 		
-		subFolder.mkdirs();
+		assertThat(subFolder.mkdirs(), equalTo(true));
 		
 		return subFolder;
 	}

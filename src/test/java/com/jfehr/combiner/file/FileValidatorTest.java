@@ -1,17 +1,19 @@
 package com.jfehr.combiner.file;
 
-import static com.jfehr.combiner.testutil.TestUtil.TMP_TEST_DIR;
-import static com.jfehr.combiner.testutil.TestUtil.cleanTmpTestDir;
-import static com.jfehr.combiner.testutil.TestUtil.createFile;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.After;
+import java.io.File;
+
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
@@ -26,15 +28,11 @@ public class FileValidatorTest {
 	
 	private FileValidator fixture;
 	
+	@Rule public TemporaryFolder tmpFolder = new TemporaryFolder();
+	
 	@Before
 	public void setUp() {
-		cleanTmpTestDir();
 		fixture = new FileValidator();
-	}
-	
-	@After
-	public void deleteTmpTestDir() {
-		cleanTmpTestDir();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -48,23 +46,27 @@ public class FileValidatorTest {
 	}
 	
 	@Test(expected=FileSystemLocationNotFound.class)
-	public void testReadableNotExists() {
-		fixture.existsAndReadable(TMP_TEST_DIR + TEST_LOCATION);
+	public void testReadableNotExists() throws Exception {
+		fixture.existsAndReadable(tmpFolder.newFolder().getAbsolutePath() + "/" + TEST_LOCATION);
 	}
 	
 	@Test(expected=NotReadableException.class)
-	public void testReadableExistsNotReadable() {
-		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
-		fixture.existsAndReadable(TMP_TEST_DIR + TEST_LOCATION);
+	public void testReadableExistsNotReadable() throws Exception {
+		final File notReadableFile = tmpFolder.newFile();
+		
+		assertThat(notReadableFile.setReadable(false), equalTo(true));
+		assertThat(notReadableFile.setWritable(false), equalTo(true));
+
+		fixture.existsAndReadable(notReadableFile.getAbsolutePath());
 	}
 	
 	@Test
-	public void testExistsReadable() {
+	public void testExistsReadable() throws Exception {
 		final ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
+		final File tmpFile = tmpFolder.newFile();
 		
-		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.TRUE);
 		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
-		fixture.existsAndReadable(TMP_TEST_DIR + TEST_LOCATION);
+		fixture.existsAndReadable(tmpFile.getAbsolutePath());
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());
 		verify(mockLogger).debugWithParams(any(String.class), any(), any(), eq("readable"));
@@ -82,23 +84,27 @@ public class FileValidatorTest {
 	}
 	
 	@Test(expected=FileSystemLocationNotFound.class)
-	public void testWriteableNotExists() {
-		fixture.existsAndWriteable(TMP_TEST_DIR + TEST_LOCATION);
+	public void testWriteableNotExists() throws Exception {
+		fixture.existsAndWriteable(tmpFolder.newFolder().getAbsolutePath() + "/" + TEST_LOCATION);
 	}
 	
 	@Test(expected=NotWriteableException.class)
-	public void testWriteableExistsNotWriteable() {
-		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.FALSE, Boolean.FALSE);
-		fixture.existsAndWriteable(TMP_TEST_DIR + TEST_LOCATION);
+	public void testWriteableExistsNotWriteable() throws Exception {
+		final File notWriteableFile = tmpFolder.newFile();
+		
+		assertThat(notWriteableFile.setReadable(false), equalTo(true));
+		assertThat(notWriteableFile.setWritable(false), equalTo(true));
+		
+		fixture.existsAndWriteable(notWriteableFile.getAbsolutePath());
 	}
 	
 	@Test
-	public void testExistsWriteable() {
+	public void testExistsWriteable() throws Exception {
 		final ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
+		final File tmpFile = tmpFolder.newFile();
 		
 		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
-		createFile(TMP_TEST_DIR + TEST_LOCATION, Boolean.TRUE, Boolean.FALSE);
-		fixture.existsAndWriteable(TMP_TEST_DIR + TEST_LOCATION);
+		fixture.existsAndWriteable(tmpFile.getAbsolutePath());
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());
 		verify(mockLogger).debugWithParams(any(String.class), any(), any(), eq("writeable"));
