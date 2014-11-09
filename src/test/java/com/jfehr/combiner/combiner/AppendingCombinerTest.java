@@ -1,6 +1,7 @@
 package com.jfehr.combiner.combiner;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -27,7 +28,7 @@ public class AppendingCombinerTest {
 		inputResource.put("1", "one");
 		inputResource.put("2", "two");
 		
-		assertEquals("onetwo", fixture.combine(inputResource, new HashMap<String, String>(), null));
+		assertThat(fixture.combine(inputResource, new HashMap<String, String>(), null), equalTo("onetwo"));
 	}
 	
 	@Test
@@ -40,7 +41,7 @@ public class AppendingCombinerTest {
 		
 		settings.put(NUMBER_NEWLINES_SETTING_KEY, "2");
 		
-		assertEquals("one" + NEWLINE_CHAR + NEWLINE_CHAR + "two" + NEWLINE_CHAR + NEWLINE_CHAR, fixture.combine(inputResource, settings, null));
+		assertThat(fixture.combine(inputResource, settings, null), equalTo("one" + NEWLINE_CHAR + NEWLINE_CHAR + "two" + NEWLINE_CHAR + NEWLINE_CHAR));
 	}
 	
 	@Test(expected=NumberFormatException.class)

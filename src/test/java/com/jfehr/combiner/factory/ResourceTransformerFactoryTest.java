@@ -1,6 +1,8 @@
 package com.jfehr.combiner.factory;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class ResourceTransformerFactoryTest {
 	
 	@Test
 	public void testDefaultPackage() {
-		assertEquals(EXPECTED_DEFAULT_PACKAGE, fixture.getDefaultPackage());
+		assertThat(fixture.getDefaultPackage(), equalTo(EXPECTED_DEFAULT_PACKAGE));
 	}
 	
 	@Test

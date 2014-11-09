@@ -1,10 +1,11 @@
 package com.jfehr.combiner.factory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -60,7 +62,7 @@ public class ObjectFactoryTest {
 
 		when(mockContainer.lookup(expected.getClass().getName())).thenReturn(expected);
 		
-		assertSame(expected, fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME));
+		assertThat((MockImplementsIface)fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME), sameInstance(expected));
 		
 		verify(mockContainer).lookup(expected.getClass().getName());
 	}
@@ -74,7 +76,7 @@ public class ObjectFactoryTest {
 		
 		actual = fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME);
 		assertNotSame(plexusComponent, actual);
-		assertTrue(actual instanceof MockImplementsIface);
+		assertThat(actual, CoreMatchers.instanceOf(MockImplementsIface.class));
 		
 		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
@@ -83,7 +85,7 @@ public class ObjectFactoryTest {
 	public void testFullPackage() throws ComponentLookupException {
 		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
 		
-		assertTrue(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED) instanceof MockBaseInterface);
+		assertThat(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED), instanceOf(MockBaseInterface.class));
 		
 		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
@@ -92,7 +94,7 @@ public class ObjectFactoryTest {
 	public void testClassOnly() throws ComponentLookupException {
 		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
 		
-		assertTrue(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME) instanceof MockBaseInterface);
+		assertThat(fixture.buildObject(MOCK_IMPLEMENTS_IFACE_CLASSNAME), instanceOf(MockBaseInterface.class));
 		
 		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);
 	}
@@ -109,8 +111,10 @@ public class ObjectFactoryTest {
 		
 		actual = fixture.buildObject(MOCK_LOGGER_CTOR);
 		
-		assertTrue(actual instanceof MockImplementsIfaceWithLogger);
-		assertSame(mockLogger, ((MockImplementsIfaceWithLogger)actual).getLogger());
+		//assertTrue(actual instanceof MockImplementsIfaceWithLogger);
+		assertThat(actual, instanceOf(MockImplementsIfaceWithLogger.class));
+		
+		assertThat(((MockImplementsIfaceWithLogger)actual).getLogger(), sameInstance(mockLogger));
 		
 		verify(mockContainer).lookup(MOCK_LOGGER_CTOR_FULLY_QUALIFIED);
 	}
@@ -143,10 +147,10 @@ public class ObjectFactoryTest {
 		
 		actualList = fixture.buildObjectList(inputList);
 		
-		assertNotNull(actualList);
-		assertEquals(2, actualList.size());
-		assertSame(expected, actualList.get(0));
-		assertTrue(actualList.get(1) instanceof MockImplementsIface);
+		assertThat(actualList, notNullValue());
+		assertThat(actualList.size(), equalTo(2));
+		assertThat(actualList, CoreMatchers.hasItem(expected));
+		assertThat(actualList.get(1), CoreMatchers.instanceOf(MockImplementsIface.class));
 		
 		verify(mockContainer).lookup("plexus.Component");
 		verify(mockContainer).lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED);

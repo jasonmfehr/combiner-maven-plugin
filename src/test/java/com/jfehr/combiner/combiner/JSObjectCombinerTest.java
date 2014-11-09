@@ -1,6 +1,7 @@
 package com.jfehr.combiner.combiner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class JSObjectCombinerTest {
 	
 	@Test
 	public void testNullSettings() {
-		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, null, null)));
+		assertThat(this.compressResults(fixture.combine(testContents, null, null)), equalTo(EXPECTED_COMPRESSED_RESULTS));
 	}
 	
 	@Test
@@ -37,7 +38,7 @@ public class JSObjectCombinerTest {
 		
 		settings.put("foo", "bar");
 
-		assertEquals(EXPECTED_COMPRESSED_RESULTS, this.compressResults(fixture.combine(testContents, settings, null)));
+		assertThat(this.compressResults(fixture.combine(testContents, settings, null)), equalTo(EXPECTED_COMPRESSED_RESULTS));
 	}
 	
 	@Test
@@ -46,7 +47,7 @@ public class JSObjectCombinerTest {
 		
 		settings.put("jsObjectName", TEST_OBJECT_NAME);
 		
-		assertEquals(EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME, this.compressResults(fixture.combine(testContents, settings, null)));
+		assertThat(this.compressResults(fixture.combine(testContents, settings, null)), equalTo(EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME));
 	}
 	
 	private String compressResults(final String results) {
