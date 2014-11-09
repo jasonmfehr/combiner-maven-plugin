@@ -136,6 +136,61 @@
 	                    </rules>
 	                </configuration>
 	            </plugin>
+	            
+	            
+	            <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-plugin-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>descriptor</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.plexus</groupId>
+                                        <artifactId>plexus-component-metadata</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>generate-metadata</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>jacoco-maven-plugin</artifactId>
+                                        <versionRange>[0.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+	            </plugin>
+	            
+	            
+	            
             </plugins>
         </pluginManagement>
         
@@ -219,7 +274,7 @@
                         <id>jacoco-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                            <!--<goal>check</goal>-->
+                            <goal>check</goal>
                             <goal>report</goal>
                         </goals>
                     </execution>
