@@ -26,6 +26,9 @@
                                 <include>src/main/resources/file*.txt</include>
                             </includes>
                         </inputResources>
+                        <transformers>
+	                        <transformer>StripNewlines</transformer>
+                        </transformers>
                         <combiner>AppendingCombiner</combiner>
                         <outputDestination>actual-result.txt</outputDestination>
                     </combination>
