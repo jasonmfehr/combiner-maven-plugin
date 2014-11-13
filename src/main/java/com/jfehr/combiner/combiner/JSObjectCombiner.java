@@ -1,7 +1,5 @@
 package com.jfehr.combiner.combiner;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.project.MavenProject;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
+
 public class JSObjectCombiner implements ResourceCombiner {
 
 	private static final String JS_OBJECT_NAME_KEY = "jsObjectName";
@@ -18,12 +18,18 @@ public class JSObjectCombiner implements ResourceCombiner {
 	
 	private static final char LINE_SEPARATOR = '\n';
 	
+	private final ParameterizedLogger logger;
+	
+	public JSObjectCombiner(final ParameterizedLogger logger) {
+		this.logger = logger;
+	}
+	
 	public String combine(final Map<String, String> transformedResourceContents, final Map<String, String> settings, final MavenProject mavenProject) {
 		final String combined;
 		
-		getParamLogger().debugWithParams("{0} starting execution", this.getClass().getName());
+		this.logger.debugWithParams("{0} starting execution", this.getClass().getName());
 		combined = this.doCombine(this.determineJSObjectName(settings), transformedResourceContents);
-		getParamLogger().debugWithParams("{0} finished with a combined contents having length {1}", this.getClass().getName(), combined.length());
+		this.logger.debugWithParams("{0} finished with a combined contents having length {1}", this.getClass().getName(), combined.length());
 		
 		return combined;
 	}

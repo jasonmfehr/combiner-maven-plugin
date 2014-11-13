@@ -1,7 +1,5 @@
 package com.jfehr.combiner.pipeline;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +8,9 @@ import java.util.Map;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.CombinerMojo;
 
@@ -21,6 +21,9 @@ public class CombinationDefaultsManager {
 	private static final String DEFAULT_INPUT_SOURCE_READER = "FileInputSourceReader";
 	private static final String DEFAULT_OUTPUT_SOURCE_WRITER = "FileOutputSourceWriter";
 	private static final String DEFAULT_ENCODING_PROPERTY = "project.build.sourceEncoding";
+	
+	@Requirement
+	private ParameterizedLogger logger;
 	
 	//TODO figure out how to use the defaultValue from the Parameter annotation instead of directly setting fields
 	/**
@@ -33,35 +36,35 @@ public class CombinationDefaultsManager {
 	public void setupDefaults(final Combination combo, final MavenProject mavenProject) {
 		final String encoding;
 		
-		getParamLogger().debug("Setting default values");
+		this.logger.debug("Setting default values");
 		
 		if(!this.isFieldValid(combo.getInputSourceReader())){
-			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_INPUT_SOURCE_READER, DEFAULT_INPUT_SOURCE_READER);
+			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_INPUT_SOURCE_READER, DEFAULT_INPUT_SOURCE_READER);
 			combo.setInputSourceReader(DEFAULT_INPUT_SOURCE_READER);
 		}
 		
 		if(!this.isFieldValid(combo.getOutputSourceWriter())){
-			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_OUTPUT_SOURCE_WRITER, DEFAULT_OUTPUT_SOURCE_WRITER);
+			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_OUTPUT_SOURCE_WRITER, DEFAULT_OUTPUT_SOURCE_WRITER);
 			combo.setOutputSourceWriter(DEFAULT_OUTPUT_SOURCE_WRITER);
 		}
 		
 		if(!this.isFieldValid(combo.getTransformers())){
-			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_TRANSFORMERS, "empty list");
+			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_TRANSFORMERS, "empty list");
 			combo.setTransformers(new ArrayList<String>());
 		}
 		
 		if(!this.isFieldValid(combo.getSettings())){
-			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, "settings", "empty map");
+			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, "settings", "empty map");
 			combo.setSettings(new HashMap<String, String>());
 		}
 		
 		if(!this.isFieldValid(combo.getEncoding())){
 			encoding = mavenProject.getProperties().getProperty(DEFAULT_ENCODING_PROPERTY);
-			getParamLogger().debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);
+			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);
 			combo.setEncoding(encoding);
 		}
 		
-		getParamLogger().debug("Finished setting default values");
+		this.logger.debug("Finished setting default values");
 	}
 	
 	/**

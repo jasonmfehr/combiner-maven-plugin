@@ -1,7 +1,5 @@
 package com.jfehr.combiner.pipeline;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +42,12 @@ public class PipelineExecutor {
 	@Requirement
 	private OutputSourceWriterFactory osFactory;
 	
+	@Requirement
+	private ParameterizedLogger logger;
+	
 	public void execute(final List<Combination> combinations, final MavenProject mavenProject) {
-		getParamLogger().debugWithParams("{0} combination sets specified", combinations.size());
+		logger.warnWithParams("this is a parameterized warning in {0}", PipelineExecutor.class);
+		this.logger.debugWithParams("{0} combination sets specified", combinations.size());
 		
 		for(Combination c : combinations){
 			this.executeCombination(c, mavenProject);
@@ -56,7 +58,7 @@ public class PipelineExecutor {
 		final String combinedResources;
 		Map<String, String> sources;
 		
-		getParamLogger().debugWithParams("Executing pipeline{0}", getParamLogger().buildCombinationIDString(combo));
+		this.logger.debugWithParams("Executing pipeline{0}", this.logger.buildCombinationIDString(combo));
 		
 		this.defaultsManager.setupDefaults(combo, mavenProject);
 		this.debugLogInputs(combo, mavenProject);
@@ -68,7 +70,7 @@ public class PipelineExecutor {
 		combinedResources = this.combineResources(combo, sources, mavenProject);
 		this.outputResources(combo, combinedResources, mavenProject);
 		
-		getParamLogger().debugWithParams("Completed executing pipeline{0}", getParamLogger().buildCombinationIDString(combo));
+		this.logger.debugWithParams("Completed executing pipeline{0}", this.logger.buildCombinationIDString(combo));
 	}
 	
 	/**
@@ -82,12 +84,12 @@ public class PipelineExecutor {
 		final InputSourceReader isReader;
 		final Map<String, String> resources;
 		
-		getParamLogger().debug("Executing pipeline stage one - read input sources");
+		this.logger.debug("Executing pipeline stage one - read input sources");
 		
 		isReader = inputSourceReaderFactory.buildObject(combo.getInputSourceReader());
 		resources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), mavenProject);
 		
-		getParamLogger().debug("Completed execution of pipeline stage one - read input sources");
+		this.logger.debug("Completed execution of pipeline stage one - read input sources");
 		
 		return resources;
 	}
@@ -104,7 +106,7 @@ public class PipelineExecutor {
 		final List<ResourceTransformer> tranformers;
 		Map<String, String> transformedSources;
 		
-		getParamLogger().debug("Executing pipeline stage two - transform resources");
+		this.logger.debug("Executing pipeline stage two - transform resources");
 		
 		transformedSources = new HashMap<String, String>();
 		transformedSources.putAll(sources);
@@ -112,15 +114,15 @@ public class PipelineExecutor {
 		tranformers = transformerFactory.buildObjectList(combo.getTransformers());
 		
 		for(ResourceTransformer rt : tranformers){
-			getParamLogger().debugWithParams("Executing resource transformer with class {0}", rt.getClass().getName());
+			this.logger.debugWithParams("Executing resource transformer with class {0}", rt.getClass().getName());
 			for(Entry<String, String> resource : transformedSources.entrySet()){
-				getParamLogger().debugWithParams("Executing transformer on resource {0}", resource.getKey());
+				this.logger.debugWithParams("Executing transformer on resource {0}", resource.getKey());
 				transformedSources.put(resource.getKey(), rt.transform(resource.getKey(), resource.getValue(), combo.getSettings(), mavenProject));
 			}
-			getParamLogger().debugWithParams("Finished executing resource transformer with class {0}", rt.getClass().getName());
+			this.logger.debugWithParams("Finished executing resource transformer with class {0}", rt.getClass().getName());
 		}
 		
-		getParamLogger().debug("Completed execution of pipeline stage two - transform resources");
+		this.logger.debug("Completed execution of pipeline stage two - transform resources");
 		
 		return transformedSources;
 	}
@@ -129,12 +131,12 @@ public class PipelineExecutor {
 		final ResourceCombiner combiner;
 		final String combinedResources;
 		
-		getParamLogger().debug("Executing pipeline stage three - combined resources");
+		this.logger.debug("Executing pipeline stage three - combined resources");
 		
 		combiner = combinerFactory.buildObject(combo.getCombiner());
 		combinedResources = combiner.combine(resources, combo.getSettings(), mavenProject);
 		
-		getParamLogger().debug("Completed execution of pipeline stage three - combined resources");
+		this.logger.debug("Completed execution of pipeline stage three - combined resources");
 		
 		return combinedResources;
 	}
@@ -142,12 +144,12 @@ public class PipelineExecutor {
 	private void outputResources(final Combination combo, final String combinedResources, final MavenProject mavenProject) {
 		final OutputSourceWriter osWriter;
 		
-		getParamLogger().debug("Executing pipeline stage four - output resources");
+		this.logger.debug("Executing pipeline stage four - output resources");
 		
 		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());
 		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedResources, combo.getSettings(), mavenProject);
 		
-		getParamLogger().debug("Completed execution of pipeline stage four - output resources");
+		this.logger.debug("Completed execution of pipeline stage four - output resources");
 	}
 	
 	/**
@@ -157,7 +159,6 @@ public class PipelineExecutor {
 	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
 	 */
 	private void debugLogInputs(final Combination combination, final MavenProject mavenProject) {
-		ParameterizedLogger logger = getParamLogger();
 		if(logger.isDebugEnabled()){
 			logger.debug("--- Begin Combination Configuration ---");
 			logger.debug("all defaults have been applied to parameters that were not specified in the pom");

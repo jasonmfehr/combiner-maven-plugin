@@ -1,7 +1,5 @@
 package com.jfehr.combiner.factory;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
@@ -19,6 +18,9 @@ public abstract class ObjectFactory {
 
 	@Requirement
     private PlexusContainer container;
+	
+	@Requirement
+	private ParameterizedLogger logger;
 	
 	protected abstract Class<?> getObjectClass();
 	protected abstract String getDefaultPackage();
@@ -41,10 +43,10 @@ public abstract class ObjectFactory {
 			//the call to checkAssignability is necessary to ensure the object who's class was determined at 
 			//runtime can be assigned to the class specified by this factory's getObjectClass method
 			if(this.checkAssignability(plexusObj.getClass())){
-				getParamLogger().debugWithParams("Found object with class {0} in the plexus container, returning that object", plexusObj.getClass().getCanonicalName());
+				this.logger.debugWithParams("Found object with class {0} in the plexus container, returning that object", plexusObj.getClass().getCanonicalName());
 				return (T)plexusObj;
 			}else{
-				getParamLogger().debugWithParams("Could not cast object with class {0} that was retrieved from the plexus container to the expected type {1} of this factory, moving ahead with creating a new object", plexusObj.getClass().getCanonicalName(), this.getObjectClass().getCanonicalName());
+				this.logger.debugWithParams("Could not cast object with class {0} that was retrieved from the plexus container to the expected type {1} of this factory, moving ahead with creating a new object", plexusObj.getClass().getCanonicalName(), this.getObjectClass().getCanonicalName());
 			}
 		}
 		
@@ -85,11 +87,11 @@ public abstract class ObjectFactory {
 		final String fullyQualified;
 		
 		if(classOrRole.contains(".")){
-			getParamLogger().debugWithParams("Provided class or role {0} is already fully qualified", classOrRole);
+			this.logger.debugWithParams("Provided class or role {0} is already fully qualified", classOrRole);
 			fullyQualified = classOrRole;
 		}else{
 			fullyQualified = this.getDefaultPackage() + "." + classOrRole;
-			getParamLogger().debugWithParams("Instantiating class {0} after adding default package of {1}", fullyQualified, this.getDefaultPackage());
+			this.logger.debugWithParams("Instantiating class {0} after adding default package of {1}", fullyQualified, this.getDefaultPackage());
 		}
 		
 		return fullyQualified;
@@ -99,10 +101,10 @@ public abstract class ObjectFactory {
 		Object obj = null;
 		
 		try {
-			getParamLogger().debugWithParams("Attempting lookup from plexus container using value {0}", fullyQualifiedObjectName);
+			this.logger.debugWithParams("Attempting lookup from plexus container using value {0}", fullyQualifiedObjectName);
 			obj = this.container.lookup(fullyQualifiedObjectName);
 		} catch (ComponentLookupException e) {
-			getParamLogger().debugWithParams("Did not find component {0} in plexus container", fullyQualifiedObjectName);
+			this.logger.debugWithParams("Did not find component {0} in plexus container", fullyQualifiedObjectName);
 		}
 		
 		return obj;
@@ -112,7 +114,7 @@ public abstract class ObjectFactory {
 		final Class<?> constructionClass;
 		T obj;
 		
-		getParamLogger().debugWithParams("Attempting to load class {0}", fullyQualifiedName);
+		this.logger.debugWithParams("Attempting to load class {0}", fullyQualifiedName);
 		try {
 			constructionClass = ClassUtils.getClass(fullyQualifiedName);
 		} catch (ClassNotFoundException e) {
@@ -124,20 +126,20 @@ public abstract class ObjectFactory {
 		}
 		
 		try{
-			getParamLogger().debugWithParams("Attempting to instantiate an object with class {0} using a constructor that takes only a org.apache.maven.plugin.logging.Log parameter", fullyQualifiedName);
+			this.logger.debugWithParams("Attempting to instantiate an object with class {0} using a constructor that takes only a org.apache.maven.plugin.logging.Log parameter", fullyQualifiedName);
 			//try invoking the constructor that has a single org.apache.maven.plugin.logging.Log argument
-			obj = this.instantiateObject(constructionClass, getParamLogger());
+			obj = this.instantiateObject(constructionClass, this.logger);
 		}catch(NoSuchMethodException e){
 			try {
 				//no single argument constructor was found, try the default no argument constructor
-				getParamLogger().debugWithParams("Could not find a single argument constructor that takes a org.apache.maven.plugin.logging.Log parameter, attempting to use the default constructor to instantiate an object with class {0}", fullyQualifiedName);
+				this.logger.debugWithParams("Could not find a single argument constructor that takes a org.apache.maven.plugin.logging.Log parameter, attempting to use the default constructor to instantiate an object with class {0}", fullyQualifiedName);
 				obj = this.instantiateObject(constructionClass);
 			} catch (NoSuchMethodException e1) {
 				throw new ObjectInstantiationException(fullyQualifiedName, e);
 			}
 		}
 		
-		getParamLogger().debugWithParams("Successfully instantiated an object with class {0}", fullyQualifiedName);
+		this.logger.debugWithParams("Successfully instantiated an object with class {0}", fullyQualifiedName);
 		
 		return obj;
 	}

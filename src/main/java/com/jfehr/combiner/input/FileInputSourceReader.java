@@ -1,7 +1,5 @@
 package com.jfehr.combiner.input;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +10,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
 @Component(role=FileInputSourceReader.class)
 public class FileInputSourceReader implements InputSourceReader {
@@ -22,16 +21,19 @@ public class FileInputSourceReader implements InputSourceReader {
 	@Requirement
 	private MultiFileReader multiFileReader;
 	
+	@Requirement
+	private ParameterizedLogger logger;
+	
 	public Map<String, String> read(final String encoding, final List<String> includes, final List<String> excludes, final Map<String, String> settings, final MavenProject mavenProject) {
 		final Map<String, String> fileContents;
 		final List<String> files;
 		final Charset encodingCharset;
 		
 		encodingCharset = this.buildCharset(encoding);
-		getParamLogger().debugWithParams("using base directory {0}", mavenProject.getBasedir().getAbsolutePath());
+		this.logger.debugWithParams("using base directory {0}", mavenProject.getBasedir().getAbsolutePath());
 		files = fileLocator.locateFiles(mavenProject.getBasedir().getAbsolutePath(), includes, excludes);
 		fileContents = multiFileReader.readInputFiles(encodingCharset, files);
-		getParamLogger().debugWithParams("FileInputSource read {0} files", fileContents.size());
+		this.logger.debugWithParams("FileInputSource read {0} files", fileContents.size());
 		
 		return fileContents;
 	}
@@ -40,7 +42,7 @@ public class FileInputSourceReader implements InputSourceReader {
 		final Charset cs;
 		
 		cs = Charset.forName(fileEncoding);
-		getParamLogger().infoWithParams("{0} using charset {1} to read files", this.getClass().getSimpleName(), cs.displayName());
+		this.logger.infoWithParams("{0} using charset {1} to read files", this.getClass().getSimpleName(), cs.displayName());
 		
 		return cs;
 	}

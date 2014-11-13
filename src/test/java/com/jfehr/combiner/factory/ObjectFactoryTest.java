@@ -7,7 +7,6 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -24,9 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.NotAssignableException;
 import com.jfehr.tojs.exception.ObjectInstantiationException;
 
@@ -46,6 +43,7 @@ public class ObjectFactoryTest {
 	private static final String MOCK_NAME_DOES_NOT_IMPL_IFACE = "ObjectFactoryTest$MockInvalid";
 	
 	@Mock private PlexusContainer mockContainer;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private TestObjectFactoryFixture fixture;
 	
@@ -101,17 +99,12 @@ public class ObjectFactoryTest {
 	
 	@Test
 	public void testLoggerConstructor() throws ComponentLookupException {
-		final ParameterizedLogger mockLogger;
 		final MockBaseInterface actual;
 		
 		when(mockContainer.lookup(MOCK_IMPLEMENTS_IFACE_FULLY_QUALIFIED)).thenThrow(new ComponentLookupException("", "", ""));
 		
-		mockLogger = mock(ParameterizedLogger.class);
-		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
-		
 		actual = fixture.buildObject(MOCK_LOGGER_CTOR);
 		
-		//assertTrue(actual instanceof MockImplementsIfaceWithLogger);
 		assertThat(actual, instanceOf(MockImplementsIfaceWithLogger.class));
 		
 		assertThat(((MockImplementsIfaceWithLogger)actual).getLogger(), sameInstance(mockLogger));

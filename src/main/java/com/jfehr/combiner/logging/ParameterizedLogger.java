@@ -3,108 +3,118 @@ package com.jfehr.combiner.logging;
 import java.text.MessageFormat;
 
 import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.component.annotations.Component;
 
 import com.jfehr.combiner.mojo.Combination;
 
+@Component(role=ParameterizedLogger.class)
 public class ParameterizedLogger implements Log {
 
 	private Log decoratedLogger;
+	
+	public ParameterizedLogger() {
+		this.decoratedLogger = null;
+	}
 	
 	public ParameterizedLogger(final Log decoratedLogger) {
 		this.decoratedLogger = decoratedLogger;
 	}
 	
+	public void setLogger(final Log logger) {
+		this.decoratedLogger = logger;
+	}
+	
 	public boolean isDebugEnabled() {
-		return this.decoratedLogger.isDebugEnabled();
+		return this.internalGetLogger().isDebugEnabled();
 	}
 
 	public void debug(final CharSequence content) {
-		this.decoratedLogger.debug(content);
+		this.internalGetLogger().debug(content);
 	}
 
 	public void debug(final CharSequence content, final Throwable error) {
-		this.decoratedLogger.debug(content, error);
+		this.internalGetLogger().debug(content, error);
 	}
 
 	public void debug(final Throwable error) {
-		this.decoratedLogger.debug(error);
+		this.internalGetLogger().debug(error);
 	}
 	
 	public void debugWithParams(final CharSequence content, final Object... parameters) {
 		if(this.isDebugEnabled()){
-			this.decoratedLogger.debug(this.formatMessage(content, parameters));
+			this.internalGetLogger().debug(this.formatMessage(content, parameters));
 		}
 	}
 	
 	public void debugWithParams(final CharSequence content, final Throwable error, final Object... parameters) {
 		if(this.isDebugEnabled()){
-			this.decoratedLogger.debug(this.formatMessage(content, parameters), error);
+			this.internalGetLogger().debug(this.formatMessage(content, parameters), error);
 		}
 	}
 
 	public boolean isInfoEnabled() {
-		return this.decoratedLogger.isInfoEnabled();
+		return this.internalGetLogger().isInfoEnabled();
 	}
 
 	public void info(final CharSequence content) {
-		this.decoratedLogger.info(content);
+		this.internalGetLogger().info(content);
 	}
 
 	public void info(final CharSequence content, final Throwable error) {
-		this.decoratedLogger.info(content, error);
+		this.internalGetLogger().info(content, error);
 	}
 
 	public void info(final Throwable error) {
-		this.decoratedLogger.info(error);
+		this.internalGetLogger().info(error);
 	}
 	
 	public void infoWithParams(final CharSequence content, final Object... parameters) {
 		if(this.isInfoEnabled()){
-			this.decoratedLogger.info(this.formatMessage(content, parameters));
+			this.internalGetLogger().info(this.formatMessage(content, parameters));
 		}
 	}
 
 	public boolean isWarnEnabled() {
-		return this.decoratedLogger.isWarnEnabled();
+		return this.internalGetLogger().isWarnEnabled();
 	}
 
 	public void warn(final CharSequence content) {
-		this.decoratedLogger.warn(content);
+		this.internalGetLogger().warn(content);
 	}
 
 	public void warn(final CharSequence content, final Throwable error) {
-		this.decoratedLogger.warn(content, error);
+		this.internalGetLogger().warn(content, error);
 	}
 
 	public void warn(final Throwable error) {
-		this.decoratedLogger.warn(error);
+		this.internalGetLogger().warn(error);
 	}
 	
 	public void warnWithParams(final CharSequence content, final Object... parameters) {
 		if(this.isWarnEnabled()){
-			this.decoratedLogger.warn(this.formatMessage(content, parameters));
+			this.internalGetLogger().warn(this.formatMessage(content, parameters));
 		}
 	}
 
 	public boolean isErrorEnabled() {
-		return this.decoratedLogger.isErrorEnabled();
+		return this.internalGetLogger().isErrorEnabled();
 	}
 
 	public void error(final CharSequence content) {
-		this.decoratedLogger.error(content);
+		this.internalGetLogger().error(content);
 	}
 
 	public void error(final CharSequence content, final Throwable error) {
-		this.decoratedLogger.error(content, error);
+		this.internalGetLogger().error(content, error);
 	}
 
 	public void error(final Throwable error) {
-		this.decoratedLogger.error(error);
+		this.internalGetLogger().error(error);
 	}
 	
 	public void errorWithParams(final CharSequence content, final Object... parameters) {
 		if(this.isErrorEnabled()){
-			this.decoratedLogger.error(this.formatMessage(content, parameters));
+			this.internalGetLogger().error(this.formatMessage(content, parameters));
 		}
 	}
 	
@@ -128,6 +138,14 @@ public class ParameterizedLogger implements Log {
 	
 	private String formatMessage(final CharSequence content, final Object... params) {
 		return MessageFormat.format(this.charSeqToStr(content), params);
+	}
+	
+	private Log internalGetLogger() {
+		if(this.decoratedLogger == null){
+			throw new NullPointerException("Internal logger not set.  This exception may be caused by attempting to use the plexus component before the CombinerMojo class sets the decorated logger");
+		}else{
+			return this.decoratedLogger;
+		}
 	}
 
 }

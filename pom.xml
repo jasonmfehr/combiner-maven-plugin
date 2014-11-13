@@ -86,14 +86,10 @@
 	                        <param>com.jfehr.combiner.mojo.Combination</param>
 	                        <param>com.jfehr.combiner.mojo.InputResources</param>
 	                    </excludedClasses>
-	                    <excludedMethods>
-	                        <param>*debugWith*</param>
-	                        <param>debugLogInputs</param>
-	                    </excludedMethods>
 	                    <timestampedReports>false</timestampedReports>
 	                    <mutationThreshold>95</mutationThreshold>
 	                    <avoidCallsTo>
-                            <param>com.jfehr.combiner.logging.LogHolder</param>
+                            <param>com.jfehr.combiner.logging.ParameterizedLogger</param>
                         </avoidCallsTo>
 	                </configuration>
 	            </plugin>

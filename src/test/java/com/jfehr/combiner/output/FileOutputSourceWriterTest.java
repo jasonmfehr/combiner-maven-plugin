@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
 import com.jfehr.tojs.exception.NotWriteableException;
@@ -38,6 +39,7 @@ public class FileOutputSourceWriterTest {
 	
 	@Mock private MavenProject mockMavenProject;
 	@Mock private Build mockBuild;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private FileOutputSourceWriter fixture;
 	

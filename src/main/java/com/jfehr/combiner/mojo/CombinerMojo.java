@@ -1,7 +1,5 @@
 package com.jfehr.combiner.mojo;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -14,7 +12,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.pipeline.PipelineExecutor;
 
@@ -49,16 +46,20 @@ public class CombinerMojo extends AbstractMojo {
 	@Component
 	private PipelineExecutor pipelineExecutor;
 	
+	@Component
+	private ParameterizedLogger logger;
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		LogHolder.setLog(new ParameterizedLogger(this.getLog()));
+		logger.setLogger(this.getLog());
 		
+		logger.warnWithParams("this is a parameterized warning in {0}", CombinerMojo.class);
 		if(!Boolean.TRUE.equals(this.skip)){
-			getParamLogger().debugWithParams("Entering {0} goal", mojoExecution.getGoal());
+			this.logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
 			//new PipelineExecutor().execute(this.combinations, this.mavenProject);
 			pipelineExecutor.execute(this.combinations, this.mavenProject);
-			getParamLogger().debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
+			this.logger.debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
 		}else{
-			getParamLogger().info("skipping combiner-maven-plugin execution");
+			this.logger.info("skipping combiner-maven-plugin execution");
 		}
 	}
 

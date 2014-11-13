@@ -33,7 +33,14 @@ public class ParameterizedLoggerTest {
 	
 	@Before
 	public void setUp() {
-		fixture = new ParameterizedLogger(mockLogger);
+		fixture = new ParameterizedLogger();
+		fixture.setLogger(mockLogger);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testLoggerNotSet() {
+		fixture = new ParameterizedLogger();
+		fixture.debug("foo");
 	}
 	
 	//=== BEGIN DEBUG LEVEL TESTS ===\\

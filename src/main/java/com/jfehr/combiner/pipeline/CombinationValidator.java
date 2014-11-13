@@ -1,14 +1,14 @@
 package com.jfehr.combiner.pipeline;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.List;
 import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 
 @Component(role=CombinationValidator.class)
@@ -27,6 +27,9 @@ public class CombinationValidator {
 	private static final String REQUIRED_PARAM_CHECKING_MSG = "Checking if the required {0} parameter was specified";
 	private static final String REQUIRED_PARAM_NOT_SPECIFIED_MSG = "Required {0} parameter was not specified";
 	
+	@Requirement
+	private ParameterizedLogger logger;
+	
 	/**
 	 * Validates that all required parameters have been specified (or appropriate defaults have been set) in the pom.  
 	 * Missing or invalid  parameters will result in an exception being thrown.
@@ -44,14 +47,14 @@ public class CombinationValidator {
 	 * @param combo {@link Combination} combo that will have its required fields checked
 	 */
 	private void validateRequiredInputs(final Combination combo) {
-		getParamLogger().debugWithParams("Validating that required input parameters are present");
+		this.logger.debugWithParams("Validating that required input parameters are present");
 		
 		try{
 			this.validateField(INPUT_PARAM_ENCODING, combo.getEncoding(), combo);
 			Charset.isSupported(combo.getEncoding());
-			getParamLogger().debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG + " and is a valid charset", INPUT_PARAM_ENCODING);
+			this.logger.debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG + " and is a valid charset", INPUT_PARAM_ENCODING);
 		}catch(IllegalCharsetNameException icne){
-			getParamLogger().debugWithParams("Provided charset of {0} is not a valid charset name according to the rules specified in the javadoc of the Charset class", combo.getEncoding());
+			this.logger.debugWithParams("Provided charset of {0} is not a valid charset name according to the rules specified in the javadoc of the Charset class", combo.getEncoding());
 			throw new IllegalArgumentException("The specified encoding [" + combo.getEncoding() + "] is invalid", icne);
 		}
 		
@@ -62,13 +65,13 @@ public class CombinationValidator {
 		this.validateField(INPUT_PARAM_OUTPUT_SOURCE_WRITER, combo.getOutputSourceWriter(), combo);
 		//this.validateField(INPUT_PARAM_TRANSFORMERS, combo.getTransformers(), combo);
 		
-		getParamLogger().debugWithParams("Finished validating required input parameters.  All parameters are present.");
+		this.logger.debugWithParams("Finished validating required input parameters.  All parameters are present.");
 	}
 	
 	private void validateField(final String fieldName, final Object fieldValue, final Combination combo) {
 		final Integer length;
 		
-		getParamLogger().debugWithParams(REQUIRED_PARAM_CHECKING_MSG, fieldName);
+		this.logger.debugWithParams(REQUIRED_PARAM_CHECKING_MSG, fieldName);
 		
 		if(fieldValue instanceof String){
 			length = fieldValue.toString().length();
@@ -82,9 +85,9 @@ public class CombinationValidator {
 		}
 		
 		if(fieldValue == null || length == 0){
-			getParamLogger().debugWithParams(REQUIRED_PARAM_NOT_SPECIFIED_MSG, fieldName);
+			this.logger.debugWithParams(REQUIRED_PARAM_NOT_SPECIFIED_MSG, fieldName);
 			throw new IllegalArgumentException("The " + fieldName + " parameter is required");
 		}
-		getParamLogger().debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG, fieldValue);
+		this.logger.debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG, fieldValue);
 	}
 }

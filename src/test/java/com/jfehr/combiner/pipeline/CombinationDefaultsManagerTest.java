@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,6 +33,8 @@ public class CombinationDefaultsManagerTest {
 
 	@Mock private MavenProject mockMavenProject;
 	@Mock private Properties mockProperties;
+	@Mock private ParameterizedLogger mockLogger;
+	
 	@InjectMocks private CombinationDefaultsManager fixture;
 	
 	private Combination helperCombo;

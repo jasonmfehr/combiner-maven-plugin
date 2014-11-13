@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,9 +25,7 @@ import org.mockito.Mock;
 import org.mockito.exceptions.base.MockitoAssertionError;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 
@@ -48,6 +45,7 @@ public class FileLocatorTest {
 	
 	@Mock private DirectoryScanner mockScanner;
 	@Mock private FileValidator mockValidator;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private FileLocator fixture;
 	
@@ -64,7 +62,6 @@ public class FileLocatorTest {
 	
 	@Test
 	public void testHappyPathWithExcludes() {
-		ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
 		List<String> foundFilesList;
 		String[] foundFilesArr = new String[FOUND_FILES_LENGTH];
 		
@@ -82,7 +79,6 @@ public class FileLocatorTest {
 		
 		when(mockScanner.getIncludedFiles()).thenReturn(foundFilesArr);
 		when(mockLogger.isDebugEnabled()).thenReturn(true);
-		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
 		
 		foundFilesList = fixture.locateFiles(TMP_TEST_DIR, includes, excludes);
 		

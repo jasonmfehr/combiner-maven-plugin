@@ -5,35 +5,33 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import com.jfehr.combiner.logging.LogHolder;
 import com.jfehr.combiner.logging.ParameterizedLogger;
-import com.jfehr.combiner.testutil.TestUtil;
 import com.jfehr.tojs.exception.FileSystemLocationNotFound;
 import com.jfehr.tojs.exception.NotReadableException;
 import com.jfehr.tojs.exception.NotWriteableException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FileValidatorTest {
 
 	private static final String TEST_LOCATION = "filevalidatortest";
 	
-	private FileValidator fixture;
+	@Mock private ParameterizedLogger mockLogger;
+	
+	@InjectMocks private FileValidator fixture;
 	
 	@Rule public TemporaryFolder tmpFolder = new TemporaryFolder();
-	
-	@Before
-	public void setUp() {
-		fixture = new FileValidator();
-	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testReadableNullInput() {
@@ -62,10 +60,8 @@ public class FileValidatorTest {
 	
 	@Test
 	public void testExistsReadable() throws Exception {
-		final ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
 		final File tmpFile = tmpFolder.newFile();
 		
-		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
 		fixture.existsAndReadable(tmpFile.getAbsolutePath());
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());
@@ -100,10 +96,8 @@ public class FileValidatorTest {
 	
 	@Test
 	public void testExistsWriteable() throws Exception {
-		final ParameterizedLogger mockLogger = mock(ParameterizedLogger.class);
 		final File tmpFile = tmpFolder.newFile();
 		
-		TestUtil.setPrivateStaticField(LogHolder.class, "logger", mockLogger);
 		fixture.existsAndWriteable(tmpFile.getAbsolutePath());
 		
 		verify(mockLogger).debugWithParams(contains("exists"), any(), any());

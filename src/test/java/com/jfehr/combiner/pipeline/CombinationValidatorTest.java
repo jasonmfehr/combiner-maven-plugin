@@ -3,20 +3,22 @@ package com.jfehr.combiner.pipeline;
 import java.util.ArrayList;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.InputResources;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CombinationValidatorTest {
 
-	private CombinationValidator fixture;
+	@Mock private ParameterizedLogger mockLogger;
 	
-	@Before
-	public void setUp() {
-		fixture = new CombinationValidator();
-	}
+	@InjectMocks private CombinationValidator fixture;
 	
 	@After
 	public void tearDown() {

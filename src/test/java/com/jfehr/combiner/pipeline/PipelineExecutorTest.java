@@ -28,6 +28,7 @@ import com.jfehr.combiner.factory.OutputSourceWriterFactory;
 import com.jfehr.combiner.factory.ResourceCombinerFactory;
 import com.jfehr.combiner.factory.ResourceTransformerFactory;
 import com.jfehr.combiner.input.InputSourceReader;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.mojo.Combination;
 import com.jfehr.combiner.mojo.InputResources;
 import com.jfehr.combiner.output.OutputSourceWriter;
@@ -49,6 +50,7 @@ public class PipelineExecutorTest {
 	@Mock private ResourceTransformer mockResourceTransformer2;
 	@Mock private ResourceCombiner mockResourceCombiner;
 	@Mock private OutputSourceWriter mockOutputSourceWriter;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private PipelineExecutor fixture;
 	

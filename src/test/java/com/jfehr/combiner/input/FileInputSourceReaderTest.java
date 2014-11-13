@@ -22,6 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jfehr.combiner.file.FileLocator;
 import com.jfehr.combiner.file.MultiFileReader;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileInputSourceReaderTest {
@@ -32,6 +33,7 @@ public class FileInputSourceReaderTest {
 	@Mock private MultiFileReader mockReader;
 	@Mock private MavenProject mockMavenProject;
 	@Mock private File mockBaseDir;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private FileInputSourceReader fixture;
 	

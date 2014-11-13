@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.combiner.pipeline.PipelineExecutor;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -19,6 +20,7 @@ public class CombinerMojoTest {
 
 	@Mock private PipelineExecutor mockPipelineExecutor;
 	@Mock private MojoExecution mockMojoExecution;
+	@Mock private ParameterizedLogger mockLogger;
 	
 	@InjectMocks private CombinerMojo fixture;
 	

@@ -1,7 +1,5 @@
 package com.jfehr.combiner.output;
 
-import static com.jfehr.combiner.logging.LogHolder.getParamLogger;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,8 +7,10 @@ import java.util.Map;
 
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import com.google.common.io.Files;
+import com.jfehr.combiner.logging.ParameterizedLogger;
 import com.jfehr.tojs.exception.DirectoryCreationException;
 import com.jfehr.tojs.exception.FileCreationException;
 import com.jfehr.tojs.exception.FileExistsException;
@@ -19,6 +19,9 @@ import com.jfehr.tojs.exception.NotWriteableException;
 
 @Component(role=FileOutputSourceWriter.class)
 public class FileOutputSourceWriter implements OutputSourceWriter {
+	
+	@Requirement
+	private ParameterizedLogger logger;
 
 	//TODO the unit tests for this method never assert that the correct fullOutputDestination is created
 	public void write(final String encoding, final String outputDestination, final String combinedResources, final Map<String, String> settings, final MavenProject mavenProject) {
@@ -27,7 +30,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		final String fullOutputDestination;
 		
 		fullOutputDestination = mavenProject.getBuild().getDirectory() + "/" + outputDestination;
-		getParamLogger().debugWithParams("{0} starting execution with charset {1} and output destination {2}", this.getClass().getName(), encoding, fullOutputDestination);
+		this.logger.debugWithParams("{0} starting execution with charset {1} and output destination {2}", this.getClass().getName(), encoding, fullOutputDestination);
 		
 		charSet = this.buildCharset(encoding);
 		outputFile = this.createOutputFile(fullOutputDestination);
@@ -78,7 +81,7 @@ public class FileOutputSourceWriter implements OutputSourceWriter {
 		final Charset cs;
 		
 		cs = Charset.forName(fileEncoding);
-		getParamLogger().infoWithParams("{0} using charset {1} to read files", this.getClass().getSimpleName(), cs.displayName());
+		this.logger.infoWithParams("{0} using charset {1} to read files", this.getClass().getSimpleName(), cs.displayName());
 		
 		return cs;
 	}

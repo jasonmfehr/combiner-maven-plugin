@@ -8,7 +8,13 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.combiner.logging.ParameterizedLogger;
+
+@RunWith(MockitoJUnitRunner.class)
 public class JSObjectCombinerTest {
 
 	private static final String LINE_SEPARATOR = "\n";
@@ -16,15 +22,17 @@ public class JSObjectCombinerTest {
 	private static final String EXPECTED_COMPRESSED_RESULTS = "(function(w){w.combiner={\"file2\"=\"two\",\"file1\"=\"one\"};})(window);";
 	private static final String EXPECTED_COMPRESSED_RESULTS_SET_OBJECT_NAME = "(function(w){w." + TEST_OBJECT_NAME + "={\"file2\"=\"two\",\"file1\"=\"one\"};})(window);";
 	
-	private JSObjectCombiner fixture;
 	private Map<String, String> testContents = new HashMap<String, String>();
+	
+	@Mock private ParameterizedLogger mockLogger;
+	private JSObjectCombiner fixture;
 	
 	@Before
 	public void setUp() throws Exception {
 		testContents.put("/somedir/file1.dat", "one");
 		testContents.put("/somedir/file2.dat", "two");
 		
-		fixture = new JSObjectCombiner();
+		fixture = new JSObjectCombiner(mockLogger);
 	}
 	
 	@Test
