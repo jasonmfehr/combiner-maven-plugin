@@ -107,19 +107,19 @@
 	                <configuration>
 	                   <mutationThreshold>97</mutationThreshold>
 	                    <targetClasses>
-	                        <param>com.jfehr.combiner.*</param>
+	                        <param>com.github.jasonmfehr.combiner.*</param>
 	                    </targetClasses>
 	                    <targetTests>
-	                        <param>com.jfehr.combiner.*</param>
+	                        <param>com.github.jasonmfehr.combiner.*</param>
 	                    </targetTests>
 	                    <excludedClasses>
-	                        <param>com.jfehr.combiner.mojo.Combination</param>
-	                        <param>com.jfehr.combiner.mojo.InputResources</param>
+	                        <param>com.github.jasonmfehr.combiner.mojo.Combination</param>
+	                        <param>com.github.jasonmfehr.combiner.mojo.InputResources</param>
 	                    </excludedClasses>
 	                    <timestampedReports>false</timestampedReports>
 	                    <mutationThreshold>95</mutationThreshold>
 	                    <avoidCallsTo>
-                            <param>com.jfehr.combiner.logging.ParameterizedLogger</param>
+                            <param>com.github.jasonmfehr.combiner.logging.ParameterizedLogger</param>
                         </avoidCallsTo>
 	                </configuration>
 	            </plugin>
@@ -141,8 +141,8 @@
 	                <version>0.6.4.201312101107</version>
 	                <configuration>
 	                    <excludes>
-	                        <exclude>com/jfehr/combiner/mojo/Combination.class</exclude>
-	                        <exclude>com/jfehr/combiner/mojo/InputResources.class</exclude>
+	                        <exclude>com/github/jasonmfehr/combiner/mojo/Combination.class</exclude>
+	                        <exclude>com/github/jasonmfehr/combiner/mojo/InputResources.class</exclude>
 	                    </excludes>
 	                    <rules>
 	                        <rule implementation="org.jacoco.maven.RuleConfiguration">
