@@ -38,6 +38,23 @@
         <url>https://github.com/jasonmfehr/combiner-maven-plugin</url>
     </scm>
     
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/jasonmfehr/combiner-maven-plugin</url>
+    </ciManagement>
+    
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/jasonmfehr/combiner-maven-plugin/issues</url>
+    </issueManagement>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -361,6 +378,12 @@
         </profile>
         <profile>
             <id>release</id>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
             <build>
                 <plugins>
                     <plugin>
