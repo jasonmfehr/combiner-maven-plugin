@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.jasonmfehr</groupId>
-    <artifactId>combiner-maven-plugin</artifactId>
+    <artifactId>combiner-maven-plugin-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
+    <packaging>pom</packaging>
     
     <name>${project.artifactId}</name>
     <url>https://github.com/jasonmfehr/combiner-maven-plugin</url>
     <description>
-        The ${project.name} is used to take multiple different resources (typically files) and merge 
+        The combiner-maven-plugin is used to take multiple different resources (typically files) and merge 
         them into a single resource.
     </description>
 
@@ -60,6 +60,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.5</java.version>
     </properties>
+    
+    <modules>
+        <module>combiner-maven-plugin-api</module>
+        <module>combiner-maven-plugin</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -67,22 +72,6 @@
             <artifactId>maven-core</artifactId>
             <version>3.2.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>16.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.3.1</version>
-        </dependency>
-        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -100,75 +89,12 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-	                <groupId>org.pitest</groupId>
-	                <artifactId>pitest-maven</artifactId>
-	                <version>1.1.0</version>
-	                <configuration>
-	                   <mutationThreshold>97</mutationThreshold>
-	                    <targetClasses>
-	                        <param>com.github.jasonmfehr.combiner.*</param>
-	                    </targetClasses>
-	                    <targetTests>
-	                        <param>com.github.jasonmfehr.combiner.*</param>
-	                    </targetTests>
-	                    <excludedClasses>
-	                        <param>com.github.jasonmfehr.combiner.mojo.Combination</param>
-	                        <param>com.github.jasonmfehr.combiner.mojo.InputResources</param>
-	                    </excludedClasses>
-	                    <timestampedReports>false</timestampedReports>
-	                    <mutationThreshold>95</mutationThreshold>
-	                    <avoidCallsTo>
-                            <param>com.github.jasonmfehr.combiner.logging.ParameterizedLogger</param>
-                        </avoidCallsTo>
-	                </configuration>
-	            </plugin>
 	            <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-invoker-plugin</artifactId>
-                    <version>1.9</version>
-                    <configuration>
-                        <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                        <settingsFile>src/it/settings.xml</settingsFile>
-                        <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-                        <postBuildHookScript>verify.groovy</postBuildHookScript>
-                        <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
-                    </configuration>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
                 </plugin>
                 <plugin>
-	                <groupId>org.jacoco</groupId>
-	                <artifactId>jacoco-maven-plugin</artifactId>
-	                <version>0.6.4.201312101107</version>
-	                <configuration>
-	                    <excludes>
-	                        <exclude>com/github/jasonmfehr/combiner/mojo/Combination.class</exclude>
-	                        <exclude>com/github/jasonmfehr/combiner/mojo/InputResources.class</exclude>
-	                    </excludes>
-	                    <rules>
-	                        <rule implementation="org.jacoco.maven.RuleConfiguration">
-	                            <element>BUNDLE</element>
-	                            <limits>
-	                                <limit implementation="org.jacoco.report.check.Limit">
-	                                    <counter>CLASS</counter>
-	                                    <value>MISSEDCOUNT</value>
-	                                    <maximum>3</maximum>
-	                                </limit>
-	                                <limit implementation="org.jacoco.report.check.Limit">
-	                                    <counter>METHOD</counter>
-	                                    <value>COVEREDRATIO</value>
-	                                    <minimum>0.86</minimum>
-	                                </limit>
-	                                <limit implementation="org.jacoco.report.check.Limit">
-	                                    <counter>LINE</counter>
-	                                    <value>COVEREDRATIO</value>
-	                                    <minimum>0.88</minimum>
-	                                </limit>
-	                            </limits>
-	                        </rule>
-	                    </rules>
-	                </configuration>
-	            </plugin>
-	            <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
                     <version>1.0.0</version>
@@ -217,32 +143,11 @@
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
-	            </plugin>
-	            <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
         
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.2</version>
-                <configuration>
-                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-descriptor</id>
-                        <goals>
-                            <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-metadata</artifactId>
@@ -311,71 +216,10 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>jacoco-prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                            <goal>check</goal>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>2.1.0</version>
-            </plugin>
-            -->
         </plugins>
     </build>
     
     <profiles>
-        <profile>
-            <id>run-pit</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.pitest</groupId>
-                        <artifactId>pitest-maven</artifactId>
-                        <executions>
-                            <execution>
-                                <id>run-pit</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>mutationCoverage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>run-its</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-invoker-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>invoker-run-its</id>
-                                <goals>
-                                    <goal>install</goal>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>release</id>
             <distributionManagement>
