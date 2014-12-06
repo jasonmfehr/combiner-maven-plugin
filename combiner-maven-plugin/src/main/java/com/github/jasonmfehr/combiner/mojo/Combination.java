@@ -10,6 +10,12 @@ import com.github.jasonmfehr.combiner.input.InputSourceReader;
 import com.github.jasonmfehr.combiner.output.OutputSourceWriter;
 import com.github.jasonmfehr.combiner.transformer.ResourceTransformer;
 
+/**
+ * Specifies a single combination of all configuration required to run a full pipeline cycle.
+ * 
+ * @author jasonmfehr
+ * @since 1.0.0
+ */
 public class Combination {
 
 	/**

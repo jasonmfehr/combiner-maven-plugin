@@ -59,6 +59,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.5</java.version>
+        <jacoco.version>0.7.2.201409121644</jacoco.version>
+        <maven.plugin.plugin.version>3.3</maven.plugin.plugin.version>
     </properties>
     
     <modules>
@@ -144,6 +146,18 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.doxia</groupId>
+                            <artifactId>doxia-module-markdown</artifactId>
+                            <version>1.6</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             </plugins>
         </pluginManagement>
         
@@ -201,20 +215,6 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <executions>
-                    <execution>
-                        <id>generate-javadocs</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

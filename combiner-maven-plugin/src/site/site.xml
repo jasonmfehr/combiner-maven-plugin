@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="combiner-maven-plugin">
+    <publishDate format="dd MMM yyyy" position="left"/>
+    
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.3.1</version>
+    </skin>
+    
+    <body>
+    
+        <menu name="Overview">
+            <item name="Introduction" href="index.html" />
+            <item name="Goals" href="plugin-info.html" />
+            <item name="Usage" href="usage.html"/>
+            <item name="License" href="http://www.opensource.org/licenses/mit-license.php" />
+        </menu>
+        
+        <menu ref="reports" />
+        
+    </body>
+
+</project>

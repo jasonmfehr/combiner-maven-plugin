@@ -16,6 +16,7 @@ import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
 import com.github.jasonmfehr.combiner.pipeline.PipelineExecutor;
 
 /**
+ * <b>combiner-maven-plugin</b>
  * 
  * @author jasonmfehr
  * @since 1.0.0
