@@ -223,7 +223,6 @@
                         <goals>
                             <goal>prepare-agent</goal>
                             <goal>check</goal>
-                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
