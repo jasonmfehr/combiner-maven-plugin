@@ -1,8 +1,15 @@
-------
-Combiner Maven Plugin
-------
-------
+    ---------------------
+    Combiner Maven Plugin
+    ---------------------
+    ---------------------
+    YYYY-MM-DD
+    ---------------------
 
-This is a test.
+Introduction
 
-So what exactly is this plugin?
+  The combiner-maven-plugin is designed for those situations where, for whatever reason, 
+  the combining of resources is neccessary.  The term "resources" is used to indicate that 
+  there may be any number of input sources (i.e. disk, socket, etc).  Currently, the 
+  combiner-maven-plugin only supports resources in the form of files that can be accessed 
+  through the filesystem.  However, extending the plugin is very easy and thus creating a 
+  new input reader for non-filesystem resources would be easy (see below section on customization).

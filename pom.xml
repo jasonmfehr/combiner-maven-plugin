@@ -61,6 +61,7 @@
         <java.version>1.5</java.version>
         <jacoco.version>0.7.2.201409121644</jacoco.version>
         <maven.plugin.plugin.version>3.3</maven.plugin.plugin.version>
+        <maven.invoker.plugin.version>1.9</maven.invoker.plugin.version>
     </properties>
     
     <modules>

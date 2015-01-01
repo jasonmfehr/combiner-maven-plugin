@@ -12,15 +12,7 @@
     
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
-            <item name="Goals" href="plugin-info.html" />
-            <item name="Usage" href="usage.html"/>
             <item name="License" href="http://www.opensource.org/licenses/mit-license.php" />
-        </menu>
-        
-        <menu name="Pipeline Details">
-            <item name="Stage Descriptions" href="pipeline_stage_descriptions.html" />
-            <item name="Stage Construction" href="pipeline_stage_construction.html" />
-            <item name="API" href="../combiner-maven-plugin-api/index.html" />
         </menu>
         
         <menu ref="reports" />
