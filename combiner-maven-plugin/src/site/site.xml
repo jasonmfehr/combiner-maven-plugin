@@ -20,6 +20,7 @@
         <menu name="Pipeline Details">
             <item name="Stage Descriptions" href="pipeline_stage_descriptions.html" />
             <item name="Stage Construction" href="pipeline_stage_construction.html" />
+            <item name="POM Configuration" href="pom_configuration.html" />
             <item name="API" href="../combiner-maven-plugin-api/index.html" />
         </menu>
         
