@@ -9,6 +9,8 @@
 
 ### Input Stage
 
+  The input stage is where all the resources are read.
+
 ##### inputSourceReader
   The `inputSourceReader` element defines what input stage implementation will be used.  
   See the [pipeline stage construction](pipeline_stage_construction.html "pipeline stage construction") page 
@@ -31,7 +33,6 @@
   to define the files on the filesystem that will be combined together
   
 ##### POM Configuration
-    
 ```
 <inputSourceReader>InputReader</inputSourceReader>
 <inputResources>
@@ -45,6 +46,20 @@
 ```
 
 ### Transform Stage
+
+  The transform stage is an optional stage where the resources that were read in can be manipulated 
+  in preparation for being combined.  For example, it may be necessary to remove all newlines or to 
+  apply escaping.
+  
+##### transformers
+  The `transformers` section is a list where all the transformer stage implementations are listed.  
+  This section is the only available configuration for the transformer stage.  See the 
+  [combiner-maven-plugin api](../combiner-maven-plugin-api/index.html "plugin api") documentation for 
+  information on writing a custom transformer stage implementation.  See the 
+  [pipeline stage construction (pipeline_stage_construction.html "pipeline stage construction") page 
+  for details on how to wire in the custom implementation. 
+  
+##### POM Configuration
 ```
 <transformers>
   <transformer>Transformer1</transformer>
@@ -53,17 +68,20 @@
 ```
 
 ### Combine Stage
+##### POM Configuration
 ```
 <combiner>Combiner</combiner>
 ```
 
 ### Output Stage
+##### POM Configuration
 ```
 <outputSourceWriter>OutputWriter</outputSourceWriter>
 <outputDestination>output-file.txt</outputDestination>
 ```
 
 ### Other Settings
+##### POM Configuration
 ```
  <settings>
   <key1>value1</key1>
