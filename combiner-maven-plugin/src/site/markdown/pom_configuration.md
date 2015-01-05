@@ -29,7 +29,7 @@
   [pipeline stage construction](pipeline_stage_construction.html "pipeline stage construction") page 
   for details on how to wire in the custom implementation.
   
-  In the case of the `InputReader`, both the `includes` and `excludes` sections take ant style expressions 
+  In the case of the `FileInputSourceReader`, both the `includes` and `excludes` sections take ant style expressions 
   to define the files on the filesystem that will be combined together
   
 ##### POM Configuration
@@ -68,12 +68,38 @@
 ```
 
 ### Combine Stage
+
+  The combine stage is when all the resources are manipulated into a single resource.  For example, 
+  the appending combiner simply appends each resource together one after the other.  See the 
+  [combiner-maven-plugin api](../combiner-maven-plugin-api/index.html "plugin api") documentation for 
+  information on writing a custom combiner stage implementation.  See the 
+  [pipeline stage construction (pipeline_stage_construction.html "pipeline stage construction") page 
+  for details on how to wire in the custom implementation. 
+
+##### combiner
+  The `combiner` element is a single entry listing the combiner implementation to use.  
+  
 ##### POM Configuration
 ```
 <combiner>Combiner</combiner>
 ```
 
 ### Output Stage
+
+  The output stage is where the single combined resource is written.  The destination resource 
+  can be whatever type of resource the output stage implementation uses.  Typically this will be 
+  a file on the filesystem but could also be a ssh or ftp location.
+
+##### outputSourceWriter
+  The `outputSourceWriter` element defines what output stage implementation will be used.  
+  See the [pipeline stage construction](pipeline_stage_construction.html "pipeline stage construction") page 
+  for details on how the value specified in this parameter translates into a Java object used to write output 
+  resources.
+
+##### outputDestination
+  The `outputDestination` element defines the location where the combined resource will be written.  The value 
+  of this element depends on what output stage implementation was selected in the `outputSourceWriter` element.
+  
 ##### POM Configuration
 ```
 <outputSourceWriter>OutputWriter</outputSourceWriter>
@@ -81,6 +107,12 @@
 ```
 
 ### Other Settings
+
+  The pom configuration for the four stages is very minimal.  There may be other configuration necessary for 
+  the pipeline stage implementations.  For example, if resources are written to a destination via ftp, it 
+  may be necessary to provide a username and password.  The way to pass additional configuration information 
+  is via the `settings` section of the pom configuration.
+
 ##### POM Configuration
 ```
  <settings>
