@@ -13,7 +13,6 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
             <item name="Goals" href="plugin-info.html" />
-            <item name="Usage" href="usage.html"/>
             <item name="License" href="http://www.opensource.org/licenses/mit-license.php" />
         </menu>
         
@@ -26,6 +25,9 @@
         </menu>
         
         <menu name="Examples">
+            <item name="Appending Combiner" href="examples/appending_combiner.html" />
+            <item name="Multiple Combinations" href="examples/multiple_combinations.html" />
+            <item name="Custom Pipeline Stage Implementations" href="examples/custom_pipeline_stage_implementations.html" />
         </menu>
         
         <menu ref="reports" />

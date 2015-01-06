@@ -13,3 +13,14 @@ Introduction
   combiner-maven-plugin only supports resources in the form of files that can be accessed 
   through the filesystem.  However, extending the plugin is very easy and thus creating a 
   new input reader for non-filesystem resources would be easy (see below section on customization).
+
+Feedback
+
+  One of the main goals of this project is to ensure quality documentation is produced and 
+  maintained.  The issue is that having developers write the documentation can easily result 
+  in unclear and incomplete documentations as the developers leave out important information 
+  that they just know and forget that people outside the project do not know.
+  
+  If you run into a place where the documentation is unclear or incomplete, please
+  {{{https://github.com/jasonmfehr/combiner-maven-plugin/issues/new}open an issue}}. 
+  
