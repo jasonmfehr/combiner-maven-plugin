@@ -6,4 +6,4 @@ jdk:
 notification:
   email: false
 
-script: mvn clean install -Prun-pit,run-its -Dinvoker.debug
+script: mvn clean install -B -Prun-pit,run-its -Dinvoker.debug
