@@ -44,7 +44,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
+                <version>${maven.javadoc.plugin.version}</version>
+                <configuration>
+                    <additionalDependencies>
+                        <additionalDependency>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>combiner-maven-plugin-api</artifactId>
+                            <version>${project.version}</version>
+                        </additionalDependency>
+                    </additionalDependencies>
+                </configuration>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -117,7 +126,7 @@
                 <plugin>
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
-                    <version>1.1.0</version>
+                    <version>1.1.3</version>
                     <configuration>
                        <mutationThreshold>97</mutationThreshold>
                         <targetClasses>
@@ -184,6 +193,14 @@
                                 </limits>
                             </rule>
                         </rules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                    <configuration>
+                        <skip>false</skip>
                     </configuration>
                 </plugin>
             </plugins>

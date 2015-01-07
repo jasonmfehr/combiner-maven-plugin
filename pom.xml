@@ -62,6 +62,7 @@
         <jacoco.version>0.7.2.201409121644</jacoco.version>
         <maven.plugin.plugin.version>3.3</maven.plugin.plugin.version>
         <maven.invoker.plugin.version>1.9</maven.invoker.plugin.version>
+        <maven.javadoc.plugin.version>2.10.1</maven.javadoc.plugin.version>
     </properties>
     
     <modules>
@@ -151,6 +152,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.4</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.doxia</groupId>
