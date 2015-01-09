@@ -46,13 +46,10 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.javadoc.plugin.version}</version>
                 <configuration>
-                    <additionalDependencies>
-                        <additionalDependency>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>combiner-maven-plugin-api</artifactId>
-                            <version>${project.version}</version>
-                        </additionalDependency>
-                    </additionalDependencies>
+                    <includeDependencySources>true</includeDependencySources>
+                    <dependencySourceIncludes>
+                        <dependencySourceInclude>com.github.jasonmfehr:combiner-maven-plugin-api</dependencySourceInclude>
+                    </dependencySourceIncludes>
                 </configuration>
                 <reportSets>
                     <reportSet>
