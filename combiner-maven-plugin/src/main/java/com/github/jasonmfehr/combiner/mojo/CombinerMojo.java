@@ -53,7 +53,6 @@ public class CombinerMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		logger.setLogger(this.getLog());
 		
-		logger.warnWithParams("this is a parameterized warning in {0}", CombinerMojo.class);
 		if(!Boolean.TRUE.equals(this.skip)){
 			this.logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
 			//new PipelineExecutor().execute(this.combinations, this.mavenProject);
