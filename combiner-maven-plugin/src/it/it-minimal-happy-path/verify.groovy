@@ -5,5 +5,5 @@ if(actual.contains("\r|\n")) throw new RuntimeException("expected zero newline c
 for(int i=1; i<=3; i++){
     String fileText = new File(basedir.absolutePath + "/src/main/resources/file" + i + ".txt").text.replaceAll("\r|\n", "")
     
-    if(!actual.contains(fileText)) throw new RuntimeException("text from file" + i + " not found in actual-results.txt")
+    if(!actual.contains(fileText)) throw new RuntimeException("text from file" + i + ".txt not found in actual-results.txt")
 }
