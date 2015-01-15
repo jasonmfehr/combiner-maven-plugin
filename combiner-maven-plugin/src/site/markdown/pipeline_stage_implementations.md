@@ -24,7 +24,7 @@ Default Package: ```com.github.jasonmfehr.combiner.combiner```
 
 | Name | Package | Description | Settings |
 |:-----|:----|:---- | ----------- |
-| AppendingCombiner | com.github.jasonmfehr.combiner.combiner | Concatenates each transformed resources one after the other in no particular order | The ```appendingCombinerNewlines``` setting can be used to specify the number of  newline characters that are inserted between each resource.
+| AppendingCombiner | com.github.jasonmfehr.combiner.combiner | Concatenates each transformed resources one after the other in no particular order | The ```appendingCombinerNewlines``` setting can be used to specify the number of  newline characters that are inserted between each resource.  If this setting is not specified, zero newlines are inserted between resources.
 | JSObjectCombiner | com.github.jasonmfehr.combiner.combiner | Combines each resource into a javascript object with a property name matching the resource name and a value containing the contents of the resource. | The ```jsObjectName``` setting specifies the name of the javascript object that is outputted.
 
 ### Output Stage
