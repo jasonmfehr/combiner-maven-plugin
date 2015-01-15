@@ -55,7 +55,6 @@ public class CombinerMojo extends AbstractMojo {
 		
 		if(!Boolean.TRUE.equals(this.skip)){
 			this.logger.debugWithParams("Entering {0} goal", mojoExecution.getGoal());
-			//new PipelineExecutor().execute(this.combinations, this.mavenProject);
 			pipelineExecutor.execute(this.combinations, this.mavenProject);
 			this.logger.debugWithParams("Exiting {0} goal", mojoExecution.getGoal());
 		}else{
