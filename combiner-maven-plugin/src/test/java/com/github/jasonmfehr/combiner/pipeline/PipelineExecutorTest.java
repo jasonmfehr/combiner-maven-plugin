@@ -33,6 +33,7 @@ import com.github.jasonmfehr.combiner.mojo.Combination;
 import com.github.jasonmfehr.combiner.mojo.InputResources;
 import com.github.jasonmfehr.combiner.output.OutputSourceWriter;
 import com.github.jasonmfehr.combiner.transformer.ResourceTransformer;
+import com.github.jasonmfehr.tojs.exception.NoResourcesFoundException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PipelineExecutorTest {
@@ -117,6 +118,20 @@ public class PipelineExecutorTest {
 		assertEquals(2, transformedResourcesCaptor.getValue().size());
 		assertEquals("resource1", transformedResourcesCaptor.getValue().get("one"));
 		assertEquals("resource2", transformedResourcesCaptor.getValue().get("two"));
+	}
+	
+	@Test(expected=NoResourcesFoundException.class)
+	public void testNoInputResourcesFound() {
+		List<Combination> combos = new ArrayList<Combination>();
+		Combination one = new Combination();
+		
+		one.setInputSources(new InputResources());
+		combos.add(one);
+		
+		when(mockInputSourceReaderFactory.buildObject(null)).thenReturn(mockInputSourceReader);
+		when(mockInputSourceReader.read("UTF-8", null, null, null, null)).thenReturn(new HashMap<String, String>());
+		
+		fixture.execute(combos, null);
 	}
 
 }

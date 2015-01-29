@@ -20,6 +20,7 @@ import com.github.jasonmfehr.combiner.mojo.Combination;
 import com.github.jasonmfehr.combiner.mojo.CombinerMojo;
 import com.github.jasonmfehr.combiner.output.OutputSourceWriter;
 import com.github.jasonmfehr.combiner.transformer.ResourceTransformer;
+import com.github.jasonmfehr.tojs.exception.NoResourcesFoundException;
 
 @Component(role=PipelineExecutor.class)
 public class PipelineExecutor {
@@ -88,6 +89,10 @@ public class PipelineExecutor {
 		
 		isReader = inputSourceReaderFactory.buildObject(combo.getInputSourceReader());
 		resources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), mavenProject);
+		
+		if(resources.isEmpty()){
+			throw new NoResourcesFoundException(combo.getId());
+		}
 		
 		this.logger.debug("Completed execution of pipeline stage one - read input sources");
 		
