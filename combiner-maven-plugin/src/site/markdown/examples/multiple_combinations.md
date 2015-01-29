@@ -1,1 +1,95 @@
-documentation placeholder
+## Multiple Combinations
+
+  Each ```<combination>``` element within the plugin's configuration is a self contained definition of how the pipeline should be executed.  In other words, the configuration of each combination does not interact with the other combination configurations.  The order in which each combination is executed has not been defined.  Do not rely on one combination to be executed before another.  [Check maven central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.jasonmfehr%22%20AND%20a%3A%22combiner-maven-plugin-api%22) for the latest version of the plugin.
+
+  The first combination is an exact duplicate of the [appending combiner example](appending_combiner.html)
+  
+```
+<plugin>
+  <groupId>com.github.jasonmfehr</groupId>
+  <artifactId>combiner-maven-plugin</artifactId>
+  <version>LATEST</version>
+  <configuration>
+    <combinations>
+      <combination>
+        <id>append-files</id>
+        <inputResources>
+          <includes>
+            <include>src/main/resources/file*.txt</include>
+          </includes>
+        </inputResources>
+        <transformers>
+          <transformer>StripNewlines</transformer>
+        </transformers>
+        <combiner>AppendingCombiner</combiner>
+        <outputDestination>combined-files.txt</outputDestination>
+        <settings>
+          <appendingCombinerNewlines>2</appendingCombinerNewlines>
+        </settings>
+      </combination>
+      <combination>
+        <id>append-files</id>
+        <inputResources>
+          <includes>
+            <include>src/main/resources/combo2*.txt</include>
+          </includes>
+        </inputResources>
+        <!-- note that there are no transformers defined which means the transformation stage will not do anything -->
+        <combiner>AppendingCombiner</combiner>
+        <outputDestination>combo2-combined-files.txt</outputDestination>
+      </combination>
+    </combinations>
+  </configuration>
+</plugin>
+```
+
+### Example Files for the First Combination
+
+  In these files a \n denotes a line break, not the literal characters.  Also, the order that the resources are actually combined by the plugin may not be the order reflected here.
+  
+#### ${basedir}/src/main/resources/file-foo.txt
+```
+This is the text of file foo.  Let's\n 
+\n
+insert some\n
+\n
+completely random line\n
+\n
+breaks.\n
+\n
+\n
+```
+
+#### ${basedir}/src/main/resources/file-bar.txt
+```
+This file is file bar.  It is all on a single line with no line break at the end
+```
+
+#### target/combined-files.txt
+```
+This is the text of file foo.  Let's insert some completely random line breaks.\n
+\n
+This file is file bar.  It is all on a single line with no line break at the end\n
+\n
+```
+
+### Example Files for the Second Combination
+
+  In these files a \n denotes a line break, not the literal characters.  Also, the order that the resources are actually combined by the plugin may not be the order reflected here.
+
+#### ${basedir}/src/main/resources/combo2-somefile1.txt
+```
+Combo two has a different set of input files.  These examples are a little more interesting since there is not a\n
+newline stripping transformer.
+```
+
+#### ${basedir}/src/main/resources/combo2-someotherfile1.txt
+```
+Also, there are no newlines inserted between resources so the resulting combined file test is not a typo.
+```
+
+#### target/combo2-combined-files.txt
+```
+Combo two has a different set of input files.  These examples are a little more interesting since there is not a\n
+newline stripping transformer.Also, there are no newlines inserted between resources so the resulting combined file test is not a typo.
+```

@@ -1,6 +1,6 @@
 ## Appending Combiner
 
-  This example shows usage of the [appending combiner](apidocs/com/github/jasonmfehr/combiner/combiner/AppendingCombiner.html) to combine resources together into a single file.
+  This example shows usage of the [appending combiner](apidocs/com/github/jasonmfehr/combiner/combiner/AppendingCombiner.html) to combine resources together into a single file.  [Check maven central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.jasonmfehr%22%20AND%20a%3A%22combiner-maven-plugin-api%22) for the latest version of the plugin.
   
   In this example, all files with a name matching file*.txt in the src/main/resources are read.  All the newlines in these files are stripped out and the are files concatenated together with two newlines following the contents of each resource (so the output file will have two newlines at the end of it).  The combination is then written out to the combined-files.txt file in the build directory (target).  See below for the contents of each file
 
