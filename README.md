@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jasonmfehr/combiner-maven-plugin.svg?branch=master)](https://travis-ci.org/jasonmfehr/combiner-maven-plugin)
 
-*TODO -- insert link to site here*
+*TODO -- insert link to site here end remove below information*
 
 ### Sample pom showing all available configuration options:
 ```

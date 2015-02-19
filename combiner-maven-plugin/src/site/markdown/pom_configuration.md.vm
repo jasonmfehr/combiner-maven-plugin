@@ -124,9 +124,9 @@
 ### Sample pom showing all available configuration options:
 ```
 <plugin>
-  <groupId>com.github.jasonmfehr</groupId>
-  <artifactId>combiner-maven-plugin</artifactId>
-  <version>latest</version>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
+  <version>${project.version}</version>
   <configuration>
     <skip>false</skip>
     <encoding>UTF-8</encoding>
