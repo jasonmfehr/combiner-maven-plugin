@@ -1,9 +1,14 @@
-## combiner-maven-plugin API
+## workaround to get markdown headers in a velocity template
+## courtesy of http://illegalexception.schlichtherle.de/2013/06/17/how-to-use-markdown-syntax-with-the-maven-site-plugin/
+#set($h2 = '##')
+#set($h3 = '###')
+
+$h2 combiner-maven-plugin API
 
   Writing a pipeline stage implementation is a fairly straightforward process.  Follow the steps below 
   and you will have a completed and packaged pipeline implementation ready to go!
 
-### 1. Create an empty maven jar project.
+$h3 1. Create an empty maven jar project.
   To make it easier, use an archetype.  Open a command window or terminal and enter the following 
   changing the groupId and artifactId to whatever you want to use.
 
@@ -11,7 +16,7 @@
 mvn archetype:generate -DgroupId=com.mycompany -DartifactId=my-pipeline-stage-impl -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 ```
 
-### 2. Add the combiner-maven-plugin-api dependency.
+$h3 2. Add the combiner-maven-plugin-api dependency.
   In the new pom, add the following dependency.
 
 ```
@@ -22,7 +27,7 @@ mvn archetype:generate -DgroupId=com.mycompany -DartifactId=my-pipeline-stage-im
 </dependency>
 ```
 
-### 3. Implement the pipeline stage.
+$h3 3. Implement the pipeline stage.
   Create a new class that implements one of the four pipeline stage interfaces:
   
   1. [InputSourceReader](apidocs/com/github/jasonmfehr/combiner/input/InputSourceReader.html)
@@ -33,14 +38,14 @@ mvn archetype:generate -DgroupId=com.mycompany -DartifactId=my-pipeline-stage-im
 
   4. [OutputSourceWriter](apidocs/com/github/jasonmfehr/combiner/output/OutputSourceWriter.html)
 
-### 4. Build and deploy the jar to you artifact repository.
+$h3 4. Build and deploy the jar to you artifact repository.
   If you are just running locally, open a command window and type:
   
 ```
 mvn clean install
 ```
 
-###5. Update the pom in your project that uses the combiner-maven-plugin.
+$h3 5. Update the pom in your project that uses the combiner-maven-plugin.
   Add the new jar you built as a dependency within the combiner-maven-plugin configuration.  You can then 
   specify the fully qualified class name (include the package) in the correct place in the plugin configuration.
 

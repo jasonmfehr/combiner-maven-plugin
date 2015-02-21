@@ -1,4 +1,10 @@
-## Appending Combiner
+## workaround to get markdown headers in a velocity template
+## courtesy of http://illegalexception.schlichtherle.de/2013/06/17/how-to-use-markdown-syntax-with-the-maven-site-plugin/
+#set($h2 = '##')
+#set($h3 = '###')
+#set($h4 = '####')
+
+$h2 Appending Combiner
 
   This example shows usage of the [appending combiner](apidocs/com/github/jasonmfehr/combiner/combiner/AppendingCombiner.html) to combine resources together into a single file.
   
@@ -35,12 +41,12 @@
 </plugin>
 ```
 
-### Example Files
+$h3 Example Files
 
   In these files a \n denotes a line break, not the literal characters.  Also, the order that the resources are actually combined by the plugin 
   may not be the order reflected here.
   
-#### ${basedir}/src/main/resources/file-foo.txt
+$h4 ${basedir}/src/main/resources/file-foo.txt
 ```
 This is the text of file foo.  Let's\n 
 \n
@@ -53,12 +59,12 @@ breaks.\n
 \n
 ```
 
-#### ${basedir}/src/main/resources/file-bar.txt
+$h4 ${basedir}/src/main/resources/file-bar.txt
 ```
 This file is file bar.  It is all on a single line with no line break at the end
 ```
 
-#### target/combined-files.txt
+$h4 target/combined-files.txt
 ```
 This is the text of file foo.  Let's insert some completely random line breaks.\n
 \n

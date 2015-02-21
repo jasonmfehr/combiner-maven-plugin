@@ -1,4 +1,8 @@
-## Custom Pipeline Stage Implementations
+## workaround to get markdown headers in a velocity template
+## courtesy of http://illegalexception.schlichtherle.de/2013/06/17/how-to-use-markdown-syntax-with-the-maven-site-plugin/
+#set($h2 = '##')
+
+$h2 Custom Pipeline Stage Implementations
 
   This example assumes you have written a custom InputSourceReader named com.rss.reader.MyRssReader that pulls data 
   from an RSS feed.  See the [developing custom pipeline stage tutorial](../developing_custom_pipeline_stage_tutorial.html) 

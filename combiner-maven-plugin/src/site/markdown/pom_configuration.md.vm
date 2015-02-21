@@ -1,23 +1,34 @@
-## POM Configuration
+## workaround to get markdown headers in a velocity template
+## courtesy of http://illegalexception.schlichtherle.de/2013/06/17/how-to-use-markdown-syntax-with-the-maven-site-plugin/
+#set($h2 = '##')
+#set($h3 = '###')
+#set($h4 = '####')
+#set($h5 = '#####')
 
-### Introduction
+$h2 POM Configuration
+
+$h3 Introduction
   The [combine](combine-mojo.html "combine goal") goal takes a single configuration element.  
   The `combination` element defines a complete set of pipeline stage implementations that, taken 
   together, will result in the combining of a set of inputs into a single output.  How this combining 
   is achieved is determined by what pipeline stage implementations are selected and what parameters 
-  are specified.  Let's break it down section by section.  There is a complete sample pom at the end.
+  are specified.  Not all configuration is required.  In fact, in the grand maven tradition of providing common 
+  sense defaults, most of the configuration has default values that will work in the majority of cases.  
+  Let's break it down section by section.  There is a complete sample pom at the end.
 
-### Input Stage
+$h4 Input Stage
 
   The input stage is where all the resources are read.
 
-##### inputSourceReader
+$h5 inputSourceReader
   The `inputSourceReader` element defines what input stage implementation will be used.  
   See the [pipeline stage construction](pipeline_stage_construction.html "pipeline stage construction") page 
   for details on how the value specified in this parameter translates into a Java object used to read input 
   resources.
 
-##### inputResources
+  Default value:  ```FileInputSourceReader```
+
+$h5 inputResources
   The `inputResources` section defines a list of resources that will be pulled in and combined.  The 
   generic term "resources" is used instead of "file" because the plugin is intended to pull data from 
   any source, not just filesystem files.  That being said, the only input stage implementation that 
@@ -32,7 +43,10 @@
   In the case of the `FileInputSourceReader`, both the `includes` and `excludes` sections take ant style expressions 
   to define the files on the filesystem that will be combined together
   
-##### POM Configuration
+  Default value: depends on the input stage implementation being used, check the documentation for that 
+  implementation to determine what defaults are used
+  
+$h5 POM Configuration
 ```
 <inputSourceReader>InputReader</inputSourceReader>
 <inputResources>
@@ -45,21 +59,23 @@
 </inputResources>
 ```
 
-### Transform Stage
+$h3 Transform Stage
 
   The transform stage is an optional stage where the resources that were read in can be manipulated 
   in preparation for being combined.  For example, it may be necessary to remove all newlines or to 
   apply escaping.
   
-##### transformers
+$h5 transformers
   The `transformers` section is a list where all the transformer stage implementations are listed.  
   This section is the only available configuration for the transformer stage.  See the 
   [combiner-maven-plugin api](../combiner-maven-plugin-api/index.html "plugin api") documentation for 
   information on writing a custom transformer stage implementation.  See the 
   [pipeline stage construction (pipeline_stage_construction.html "pipeline stage construction") page 
-  for details on how to wire in the custom implementation. 
+  for details on how to wire in the custom implementation.
   
-##### POM Configuration
+  Default value: none, if no transformers are specified, then the resources flow through this stage unchanged
+  
+$h5 POM Configuration
 ```
 <transformers>
   <transformer>Transformer1</transformer>
@@ -67,53 +83,72 @@
 </transformers>
 ```
 
-### Combine Stage
+$h3 Combine Stage
 
   The combine stage is when all the resources are manipulated into a single resource.  For example, 
   the appending combiner simply appends each resource together one after the other.  See the 
   [combiner-maven-plugin api](../combiner-maven-plugin-api/index.html "plugin api") documentation for 
   information on writing a custom combiner stage implementation.  See the 
   [pipeline stage construction (pipeline_stage_construction.html "pipeline stage construction") page 
-  for details on how to wire in the custom implementation. 
+  for details on how to wire in the custom implementation.
 
-##### combiner
-  The `combiner` element is a single entry listing the combiner implementation to use.  
+$h5 combiner
+  The `combiner` element is a single entry listing the combiner implementation to use.
+    
+  Default value: none, a combiner must be specified 
   
-##### POM Configuration
+$h5 POM Configuration
 ```
 <combiner>Combiner</combiner>
 ```
 
-### Output Stage
+$h3 Output Stage
 
   The output stage is where the single combined resource is written.  The destination resource 
   can be whatever type of resource the output stage implementation uses.  Typically this will be 
   a file on the filesystem but could also be a ssh or ftp location.
 
-##### outputSourceWriter
+$h5 outputSourceWriter
   The `outputSourceWriter` element defines what output stage implementation will be used.  
   See the [pipeline stage construction](pipeline_stage_construction.html "pipeline stage construction") page 
   for details on how the value specified in this parameter translates into a Java object used to write output 
   resources.
+  
+  Default value:  ```FileOutputSourceWriter```
 
-##### outputDestination
+$h5 outputDestination
   The `outputDestination` element defines the location where the combined resource will be written.  The value 
   of this element depends on what output stage implementation was selected in the `outputSourceWriter` element.
   
-##### POM Configuration
+  Default value: depends on the output stage implementation being used, check the documentation for that 
+  implementation to determine what defaults are used
+  
+$h5 POM Configuration
 ```
 <outputSourceWriter>OutputWriter</outputSourceWriter>
 <outputDestination>output-file.txt</outputDestination>
 ```
 
-### Other Settings
+$h3 Encoding
+
+  The `encoding` element determines the encoding that will be used to both read input resources and write output 
+  resources.
+  
+  Default value:  ${project.build.sourceEncoding}
+
+$h5 POM Configuration
+```
+<encoding>UTF-8</encoding>
+```  
+
+$h3 Other Settings
 
   The pom configuration for the four stages is very minimal.  There may be other configuration necessary for 
   the pipeline stage implementations.  For example, if resources are written to a destination via ftp, it 
   may be necessary to provide a username and password.  The way to pass additional configuration information 
   is via the `settings` section of the pom configuration.
 
-##### POM Configuration
+$h5 POM Configuration
 ```
  <settings>
   <key1>value1</key1>
@@ -121,7 +156,7 @@
 </settings>
 ```
   
-### Sample pom showing all available configuration options:
+$h3 Sample pom showing all available configuration options:
 ```
 <plugin>
   <groupId>${project.groupId}</groupId>

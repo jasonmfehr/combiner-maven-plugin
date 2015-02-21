@@ -17,9 +17,9 @@
         </menu>
         
         <menu name="Pipeline Details">
+            <item name="POM Configuration" href="pom_configuration.html" />
             <item name="Stage Descriptions" href="pipeline_stage_descriptions.html" />
             <item name="Stage Construction" href="pipeline_stage_construction.html" />
-            <item name="POM Configuration" href="pom_configuration.html" />
             <item name="Pipeline Stage Implementations" href="pipeline_stage_implementations.html" />
             <item name="Pipeline Stage Tutorial" href="developing_custom_pipeline_stage_tutorial.html" />
         </menu>
