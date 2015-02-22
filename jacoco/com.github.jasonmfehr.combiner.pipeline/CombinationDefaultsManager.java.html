@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CombinationDefaultsManager.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.pipeline</a> &gt; <span class="el_source">CombinationDefaultsManager.java</span></div><h1>CombinationDefaultsManager.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.pipeline;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+import com.github.jasonmfehr.combiner.mojo.Combination;
+import com.github.jasonmfehr.combiner.mojo.CombinerMojo;
+
+@Component(role=CombinationDefaultsManager.class)
+<span class="fc" id="L18">public class CombinationDefaultsManager {</span>
+
+	private static final String INPUT_PARAM_USING_DEFAULT_VALUE_MSG = &quot;{0} parameter not specified, using default of {1}&quot;;
+	private static final String DEFAULT_INPUT_SOURCE_READER = &quot;FileInputSourceReader&quot;;
+	private static final String DEFAULT_OUTPUT_SOURCE_WRITER = &quot;FileOutputSourceWriter&quot;;
+	private static final String DEFAULT_ENCODING_PROPERTY = &quot;project.build.sourceEncoding&quot;;
+	
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	//TODO figure out how to use the defaultValue from the Parameter annotation instead of directly setting fields
+	/**
+	 * Since maven does not set the default value from the {@link Parameter} annotation any place other than top level parameters, this 
+	 * function sets the default values for it.
+	 * 
+	 * @param combo {@link Combination} combo that will have default values set in its fields
+	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
+	 */
+	public void setupDefaults(final Combination combo, final MavenProject mavenProject) {
+		final String encoding;
+		
+<span class="fc" id="L39">		this.logger.debug(&quot;Setting default values&quot;);</span>
+		
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if(!this.isFieldValid(combo.getInputSourceReader())){</span>
+<span class="fc" id="L42">			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_INPUT_SOURCE_READER, DEFAULT_INPUT_SOURCE_READER);</span>
+<span class="fc" id="L43">			combo.setInputSourceReader(DEFAULT_INPUT_SOURCE_READER);</span>
+		}
+		
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		if(!this.isFieldValid(combo.getOutputSourceWriter())){</span>
+<span class="fc" id="L47">			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_OUTPUT_SOURCE_WRITER, DEFAULT_OUTPUT_SOURCE_WRITER);</span>
+<span class="fc" id="L48">			combo.setOutputSourceWriter(DEFAULT_OUTPUT_SOURCE_WRITER);</span>
+		}
+		
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		if(!this.isFieldValid(combo.getTransformers())){</span>
+<span class="fc" id="L52">			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_TRANSFORMERS, &quot;empty list&quot;);</span>
+<span class="fc" id="L53">			combo.setTransformers(new ArrayList&lt;String&gt;());</span>
+		}
+		
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if(!this.isFieldValid(combo.getSettings())){</span>
+<span class="fc" id="L57">			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, &quot;settings&quot;, &quot;empty map&quot;);</span>
+<span class="fc" id="L58">			combo.setSettings(new HashMap&lt;String, String&gt;());</span>
+		}
+		
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if(!this.isFieldValid(combo.getEncoding())){</span>
+<span class="fc" id="L62">			encoding = mavenProject.getProperties().getProperty(DEFAULT_ENCODING_PROPERTY);</span>
+<span class="fc" id="L63">			this.logger.debugWithParams(INPUT_PARAM_USING_DEFAULT_VALUE_MSG, CombinationValidator.INPUT_PARAM_ENCODING, encoding);</span>
+<span class="fc" id="L64">			combo.setEncoding(encoding);</span>
+		}
+		
+<span class="fc" id="L67">		this.logger.debug(&quot;Finished setting default values&quot;);</span>
+<span class="fc" id="L68">	}</span>
+	
+	/**
+	 * Determines if a provided {@code value} is empty or not using three rules.  If the {@code value} is null, then it is not valid.  
+	 * If the provided {@code value} is a {@link String} and its length is 0, then the {@code value} is not valid.  If the {@code value} 
+	 * is a {@link List} or {@link Map} and it contains zero entries, then the {@code value} is not valid.  Otherwise, the 
+	 * {@code value} is considered valid;
+	 * 
+	 * @param value {@link Object} to check for validity
+	 * @return {@link Boolean#TRUE} is the {@code value} is valid or {@link Boolean#FALSE} if it is not valid
+	 */
+	private Boolean isFieldValid(final Object value) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		if(value == null){</span>
+<span class="fc" id="L81">			return Boolean.FALSE;</span>
+		}
+		
+<span class="fc bfc" id="L84" title="All 4 branches covered.">		if(value instanceof String &amp;&amp; value.toString().length() == 0){</span>
+<span class="fc" id="L85">			return Boolean.FALSE;</span>
+		}
+		
+<span class="pc bpc" id="L88" title="1 of 4 branches missed.">		if(value instanceof List&lt;?&gt; &amp;&amp; ((List&lt;?&gt;)value).size() == 0){</span>
+<span class="nc" id="L89">			return Boolean.FALSE;</span>
+		}
+		
+<span class="pc bpc" id="L92" title="1 of 4 branches missed.">		if(value instanceof Map&lt;?, ?&gt; &amp;&amp; ((Map&lt;?, ?&gt;)value).size() == 0){</span>
+<span class="nc" id="L93">			return Boolean.FALSE;</span>
+		}
+		
+<span class="fc" id="L96">		return Boolean.TRUE;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PipelineExecutor.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.pipeline</a> &gt; <span class="el_source">PipelineExecutor.java</span></div><h1>PipelineExecutor.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.pipeline;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+
+import com.github.jasonmfehr.combiner.combiner.ResourceCombiner;
+import com.github.jasonmfehr.combiner.factory.InputSourceReaderFactory;
+import com.github.jasonmfehr.combiner.factory.OutputSourceWriterFactory;
+import com.github.jasonmfehr.combiner.factory.ResourceCombinerFactory;
+import com.github.jasonmfehr.combiner.factory.ResourceTransformerFactory;
+import com.github.jasonmfehr.combiner.input.InputSourceReader;
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+import com.github.jasonmfehr.combiner.mojo.Combination;
+import com.github.jasonmfehr.combiner.mojo.CombinerMojo;
+import com.github.jasonmfehr.combiner.output.OutputSourceWriter;
+import com.github.jasonmfehr.combiner.transformer.ResourceTransformer;
+import com.github.jasonmfehr.tojs.exception.NoResourcesFoundException;
+
+@Component(role=PipelineExecutor.class)
+<span class="fc" id="L26">public class PipelineExecutor {</span>
+
+	@Requirement
+	private CombinationValidator validator;
+	
+	@Requirement
+	private CombinationDefaultsManager defaultsManager;
+	
+	@Requirement
+	private InputSourceReaderFactory inputSourceReaderFactory;
+	
+	@Requirement
+	private ResourceTransformerFactory transformerFactory;
+	
+	@Requirement
+	private ResourceCombinerFactory combinerFactory;
+	
+	@Requirement
+	private OutputSourceWriterFactory osFactory;
+	
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	public void execute(final List&lt;Combination&gt; combinations, final MavenProject mavenProject) {
+<span class="fc" id="L50">		logger.warnWithParams(&quot;this is a parameterized warning in {0}&quot;, PipelineExecutor.class);</span>
+<span class="fc" id="L51">		this.logger.debugWithParams(&quot;{0} combination sets specified&quot;, combinations.size());</span>
+		
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		for(Combination c : combinations){</span>
+<span class="fc" id="L54">			this.executeCombination(c, mavenProject);</span>
+<span class="fc" id="L55">		}</span>
+<span class="fc" id="L56">	}</span>
+	
+	private void executeCombination(final Combination combo, final MavenProject mavenProject) {
+		final String combinedResources;
+		Map&lt;String, String&gt; sources;
+		
+<span class="fc" id="L62">		this.logger.debugWithParams(&quot;Executing pipeline{0}&quot;, this.logger.buildCombinationIDString(combo));</span>
+		
+<span class="fc" id="L64">		this.defaultsManager.setupDefaults(combo, mavenProject);</span>
+<span class="fc" id="L65">		this.debugLogInputs(combo, mavenProject);</span>
+
+<span class="fc" id="L67">		this.validator.validate(combo);</span>
+		
+<span class="fc" id="L69">		sources = this.readInputSources(combo, mavenProject);</span>
+<span class="fc" id="L70">		sources = this.executeTransformers(combo, sources, mavenProject);</span>
+<span class="fc" id="L71">		combinedResources = this.combineResources(combo, sources, mavenProject);</span>
+<span class="fc" id="L72">		this.outputResources(combo, combinedResources, mavenProject);</span>
+		
+<span class="fc" id="L74">		this.logger.debugWithParams(&quot;Completed executing pipeline{0}&quot;, this.logger.buildCombinationIDString(combo));</span>
+<span class="fc" id="L75">	}</span>
+	
+	/**
+	 * Executes stage one of the pipeline which reads all the input sources.
+	 * 
+	 * @param combo executes the read input stage of the pipeline on this {@link Combination}
+	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
+	 * @return {@link Map} with a key of the resource name and a value of the resource contents
+	 */
+	private Map&lt;String, String&gt; readInputSources(final Combination combo, final MavenProject mavenProject) {
+		final InputSourceReader isReader;
+		final Map&lt;String, String&gt; resources;
+		
+<span class="fc" id="L88">		this.logger.debug(&quot;Executing pipeline stage one - read input sources&quot;);</span>
+		
+<span class="fc" id="L90">		isReader = inputSourceReaderFactory.buildObject(combo.getInputSourceReader());</span>
+<span class="fc" id="L91">		resources = isReader.read(combo.getEncoding(), combo.getInputSources().getIncludes(), combo.getInputSources().getExcludes(), combo.getSettings(), mavenProject);</span>
+		
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if(resources.isEmpty()){</span>
+<span class="fc" id="L94">			throw new NoResourcesFoundException(combo.getId());</span>
+		}
+		
+<span class="fc" id="L97">		this.logger.debug(&quot;Completed execution of pipeline stage one - read input sources&quot;);</span>
+		
+<span class="fc" id="L99">		return resources;</span>
+	}
+	
+	/**
+	 * Executes stage two of the pipeline which applies transformers to the resources.
+	 * 
+	 * @param combo executes the transform stage of the pipeline on this {@link Combination}
+	 * @param sources contains the sources that were read in the first stage of the pipeline
+	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
+	 * @return {@link Map} with a key of the resource name and a value of the resource contents that were transformed
+	 */
+	private Map&lt;String, String&gt; executeTransformers(final Combination combo, Map&lt;String, String&gt; sources, final MavenProject mavenProject) {
+		final List&lt;ResourceTransformer&gt; tranformers;
+		Map&lt;String, String&gt; transformedSources;
+		
+<span class="fc" id="L114">		this.logger.debug(&quot;Executing pipeline stage two - transform resources&quot;);</span>
+		
+<span class="fc" id="L116">		transformedSources = new HashMap&lt;String, String&gt;();</span>
+<span class="fc" id="L117">		transformedSources.putAll(sources);</span>
+		
+<span class="fc" id="L119">		tranformers = transformerFactory.buildObjectList(combo.getTransformers());</span>
+		
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		for(ResourceTransformer rt : tranformers){</span>
+<span class="fc" id="L122">			this.logger.debugWithParams(&quot;Executing resource transformer with class {0}&quot;, rt.getClass().getName());</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">			for(Entry&lt;String, String&gt; resource : transformedSources.entrySet()){</span>
+<span class="fc" id="L124">				this.logger.debugWithParams(&quot;Executing transformer on resource {0}&quot;, resource.getKey());</span>
+<span class="fc" id="L125">				transformedSources.put(resource.getKey(), rt.transform(resource.getKey(), resource.getValue(), combo.getSettings(), mavenProject));</span>
+<span class="fc" id="L126">			}</span>
+<span class="fc" id="L127">			this.logger.debugWithParams(&quot;Finished executing resource transformer with class {0}&quot;, rt.getClass().getName());</span>
+<span class="fc" id="L128">		}</span>
+		
+<span class="fc" id="L130">		this.logger.debug(&quot;Completed execution of pipeline stage two - transform resources&quot;);</span>
+		
+<span class="fc" id="L132">		return transformedSources;</span>
+	}
+	
+	private String combineResources(final Combination combo, final Map&lt;String, String&gt; resources, final MavenProject mavenProject) {
+		final ResourceCombiner combiner;
+		final String combinedResources;
+		
+<span class="fc" id="L139">		this.logger.debug(&quot;Executing pipeline stage three - combined resources&quot;);</span>
+		
+<span class="fc" id="L141">		combiner = combinerFactory.buildObject(combo.getCombiner());</span>
+<span class="fc" id="L142">		combinedResources = combiner.combine(resources, combo.getSettings(), mavenProject);</span>
+		
+<span class="fc" id="L144">		this.logger.debug(&quot;Completed execution of pipeline stage three - combined resources&quot;);</span>
+		
+<span class="fc" id="L146">		return combinedResources;</span>
+	}
+	
+	private void outputResources(final Combination combo, final String combinedResources, final MavenProject mavenProject) {
+		final OutputSourceWriter osWriter;
+		
+<span class="fc" id="L152">		this.logger.debug(&quot;Executing pipeline stage four - output resources&quot;);</span>
+		
+<span class="fc" id="L154">		osWriter = osFactory.buildObject(combo.getOutputSourceWriter());</span>
+<span class="fc" id="L155">		osWriter.write(combo.getEncoding(), combo.getOutputDestination(), combinedResources, combo.getSettings(), mavenProject);</span>
+		
+<span class="fc" id="L157">		this.logger.debug(&quot;Completed execution of pipeline stage four - output resources&quot;);</span>
+<span class="fc" id="L158">	}</span>
+	
+	/**
+	 * Writes debug level information about the user configurable plugin parameters
+	 * 
+	 * @param combination {@link Combination} object who's information will be logged
+	 * @param mavenProject {@link MavenProject} object that was injected into the {@link CombinerMojo} by maven
+	 */
+	private void debugLogInputs(final Combination combination, final MavenProject mavenProject) {
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if(logger.isDebugEnabled()){</span>
+<span class="nc" id="L168">			logger.debug(&quot;--- Begin Combination Configuration ---&quot;);</span>
+<span class="nc" id="L169">			logger.debug(&quot;all defaults have been applied to parameters that were not specified in the pom&quot;);</span>
+<span class="nc" id="L170">			logger.debugWithParams(&quot;  input source reader: {0}&quot;, combination.getInputSourceReader());</span>
+<span class="nc" id="L171">			logger.debugWithParams(&quot;  transformers: {0}&quot;, combination.getTransformers());</span>
+<span class="nc" id="L172">			logger.debugWithParams(&quot;  combiner: {0}&quot;, combination.getCombiner());</span>
+<span class="nc" id="L173">			logger.debugWithParams(&quot;  output source writer: {0}&quot;, combination.getOutputSourceWriter());</span>
+<span class="nc" id="L174">			logger.debugWithParams(&quot;  encoding: {0}&quot;, combination.getEncoding());</span>
+<span class="nc" id="L175">			logger.debugWithParams(&quot;  output destination: {0}&quot;, combination.getOutputDestination());</span>
+<span class="nc" id="L176">			logger.debugWithParams(&quot;  base directory for input files: {0}&quot;, mavenProject.getBasedir());</span>
+<span class="nc" id="L177">			logger.debugWithParams(&quot;  base build output directory: {0}&quot;, mavenProject.getBuild().getDirectory());</span>
+<span class="nc" id="L178">			logger.debugWithParams(&quot;  input resources: {0}&quot;, combination.getInputSources());</span>
+<span class="nc" id="L179">			logger.debugWithParams(&quot;  settings: {0}&quot;, combination.getSettings());</span>
+<span class="nc" id="L180">			logger.debug(&quot;--- End Combination Set Configuration ---&quot;);</span>
+		}
+<span class="fc" id="L182">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

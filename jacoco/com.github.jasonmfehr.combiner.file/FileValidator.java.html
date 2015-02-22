@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FileValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.file</a> &gt; <span class="el_source">FileValidator.java</span></div><h1>FileValidator.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.file;
+
+import java.io.File;
+
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+import com.github.jasonmfehr.tojs.exception.FileSystemLocationNotFound;
+import com.github.jasonmfehr.tojs.exception.NotReadableException;
+import com.github.jasonmfehr.tojs.exception.NotWriteableException;
+
+@Component(role=FileValidator.class)
+<span class="fc" id="L14">public class FileValidator {</span>
+
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	public void existsAndReadable(final String location) {
+		final File file;
+		
+<span class="fc" id="L22">		this.validateInput(location);</span>
+<span class="fc" id="L23">		file = this.validateExists(location);</span>
+		
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		if(!file.canRead()){</span>
+<span class="fc" id="L26">			throw new NotReadableException(location);</span>
+		}
+		
+<span class="fc" id="L29">		this.logValid(location, &quot;readable&quot;);</span>
+<span class="fc" id="L30">	}</span>
+	
+	public void existsAndWriteable(final String location) {
+		final File file;
+		
+<span class="fc" id="L35">		this.validateInput(location);</span>
+<span class="fc" id="L36">		file = this.validateExists(location);</span>
+		
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if(!file.canWrite()){</span>
+<span class="fc" id="L39">			throw new NotWriteableException(location);</span>
+		}
+		
+<span class="fc" id="L42">		this.logValid(location, &quot;writeable&quot;);</span>
+<span class="fc" id="L43">	}</span>
+	
+	private void validateInput(final String input) {
+<span class="fc bfc" id="L46" title="All 4 branches covered.">		if(input == null || &quot;&quot;.equals(input)){</span>
+<span class="fc" id="L47">			throw new IllegalArgumentException(&quot;No path was specified to validate&quot;);</span>
+		}
+<span class="fc" id="L49">	}</span>
+	
+	private File validateExists(final String location) {
+<span class="fc" id="L52">		final File file = new File(location);</span>
+		
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		if(!file.exists()){</span>
+<span class="fc" id="L55">			throw new FileSystemLocationNotFound(location);</span>
+		}
+<span class="fc" id="L57">		this.logger.debugWithParams(&quot;{0} - location {1} exists&quot;, this.getClass().getSimpleName(), location);</span>
+		
+<span class="fc" id="L59">		return file;</span>
+	}
+	
+	private void logValid(final String location, final String type) {
+<span class="fc" id="L63">		this.logger.debugWithParams(&quot;{0} - location {1} is {2}&quot;, this.getClass().getSimpleName(), location, type);</span>
+<span class="fc" id="L64">		this.logger.debugWithParams(&quot;{0} - location {1} is valid&quot;, this.getClass().getSimpleName(), location);</span>
+<span class="fc" id="L65">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

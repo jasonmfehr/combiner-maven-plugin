@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CombinationValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.pipeline</a> &gt; <span class="el_source">CombinationValidator.java</span></div><h1>CombinationValidator.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.pipeline;
+
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.List;
+import java.util.Map;
+
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+import com.github.jasonmfehr.combiner.mojo.Combination;
+
+@Component(role=CombinationValidator.class)
+<span class="fc" id="L15">public class CombinationValidator {</span>
+
+	protected static final String INPUT_PARAM_INPUT_SOURCE_READER = &quot;inputSourceReader&quot;;
+	protected static final String INPUT_PARAM_OUTPUT_SOURCE_WRITER = &quot;outputSourceWriter&quot;;
+	protected static final String INPUT_PARAM_ENCODING = &quot;encoding&quot;;
+	protected static final String INPUT_PARAM_TRANSFORMERS = &quot;transformers&quot;;
+	
+	private static final String INPUT_PARAM_INPUT_SOURCES = &quot;inputSources&quot;;
+	private static final String INPUT_PARAM_INPUT_SOURCES_INCLUDES = &quot;includes&quot;;
+	private static final String INPUT_PARAM_OUTPUT_DESTINATION = &quot;outputDestination&quot;;
+	
+	private static final String REQUIRED_PARAM_SPECIFIED_MSG = &quot;The {0} parameter was specified&quot;;
+	private static final String REQUIRED_PARAM_CHECKING_MSG = &quot;Checking if the required {0} parameter was specified&quot;;
+	private static final String REQUIRED_PARAM_NOT_SPECIFIED_MSG = &quot;Required {0} parameter was not specified&quot;;
+	
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	/**
+	 * Validates that all required parameters have been specified (or appropriate defaults have been set) in the pom.  
+	 * Missing or invalid  parameters will result in an exception being thrown.
+	 * 
+	 * @param combo {@link Combination} combo that will have its default values set
+	 */
+	public void validate(final Combination combo) {
+<span class="fc" id="L40">		this.validateRequiredInputs(combo);</span>
+<span class="fc" id="L41">	}</span>
+	
+	/**
+	 * Verifies that all required fields are present.  It does check parameters that have a default value set since the checks are 
+	 * quick and it guards against accidental removal of the default values.
+	 * 
+	 * @param combo {@link Combination} combo that will have its required fields checked
+	 */
+	private void validateRequiredInputs(final Combination combo) {
+<span class="fc" id="L50">		this.logger.debugWithParams(&quot;Validating that required input parameters are present&quot;);</span>
+		
+		try{
+<span class="fc" id="L53">			this.validateField(INPUT_PARAM_ENCODING, combo.getEncoding(), combo);</span>
+<span class="fc" id="L54">			Charset.isSupported(combo.getEncoding());</span>
+<span class="fc" id="L55">			this.logger.debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG + &quot; and is a valid charset&quot;, INPUT_PARAM_ENCODING);</span>
+<span class="fc" id="L56">		}catch(IllegalCharsetNameException icne){</span>
+<span class="fc" id="L57">			this.logger.debugWithParams(&quot;Provided charset of {0} is not a valid charset name according to the rules specified in the javadoc of the Charset class&quot;, combo.getEncoding());</span>
+<span class="fc" id="L58">			throw new IllegalArgumentException(&quot;The specified encoding [&quot; + combo.getEncoding() + &quot;] is invalid&quot;, icne);</span>
+<span class="fc" id="L59">		}</span>
+		
+<span class="fc" id="L61">		this.validateField(INPUT_PARAM_INPUT_SOURCE_READER, combo.getInputSourceReader(), combo);</span>
+<span class="fc" id="L62">		this.validateField(INPUT_PARAM_INPUT_SOURCES, combo.getInputSources(), combo);</span>
+<span class="fc" id="L63">		this.validateField(INPUT_PARAM_INPUT_SOURCES_INCLUDES, combo.getInputSources().getIncludes(), combo);</span>
+<span class="fc" id="L64">		this.validateField(INPUT_PARAM_OUTPUT_DESTINATION, combo.getOutputDestination(), combo);</span>
+<span class="fc" id="L65">		this.validateField(INPUT_PARAM_OUTPUT_SOURCE_WRITER, combo.getOutputSourceWriter(), combo);</span>
+		//this.validateField(INPUT_PARAM_TRANSFORMERS, combo.getTransformers(), combo);
+		
+<span class="fc" id="L68">		this.logger.debugWithParams(&quot;Finished validating required input parameters.  All parameters are present.&quot;);</span>
+<span class="fc" id="L69">	}</span>
+	
+	private void validateField(final String fieldName, final Object fieldValue, final Combination combo) {
+		final Integer length;
+		
+<span class="fc" id="L74">		this.logger.debugWithParams(REQUIRED_PARAM_CHECKING_MSG, fieldName);</span>
+		
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if(fieldValue instanceof String){</span>
+<span class="fc" id="L77">			length = fieldValue.toString().length();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		}else if(fieldValue instanceof List){</span>
+<span class="fc" id="L79">			length = ((List&lt;?&gt;)fieldValue).size();</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		}else if(fieldValue instanceof Map){</span>
+<span class="nc" id="L81">			length = ((Map&lt;?, ?&gt;)fieldValue).size();</span>
+		}else{
+			//set length to 1 which will cause only the null check to matter
+<span class="fc" id="L84">			length = Integer.valueOf(1);</span>
+		}
+		
+<span class="fc bfc" id="L87" title="All 4 branches covered.">		if(fieldValue == null || length == 0){</span>
+<span class="fc" id="L88">			this.logger.debugWithParams(REQUIRED_PARAM_NOT_SPECIFIED_MSG, fieldName);</span>
+<span class="fc" id="L89">			throw new IllegalArgumentException(&quot;The &quot; + fieldName + &quot; parameter is required&quot;);</span>
+		}
+<span class="fc" id="L91">		this.logger.debugWithParams(REQUIRED_PARAM_SPECIFIED_MSG, fieldValue);</span>
+<span class="fc" id="L92">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

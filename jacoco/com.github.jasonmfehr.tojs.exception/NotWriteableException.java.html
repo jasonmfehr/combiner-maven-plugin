@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NotWriteableException.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.tojs.exception</a> &gt; <span class="el_source">NotWriteableException.java</span></div><h1>NotWriteableException.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.tojs.exception;
+
+public class NotWriteableException extends AbstractParameterizedException {
+
+	private static final long serialVersionUID = -1733763273463180683L;
+	private static final String MESSAGE = &quot;Could not write file system location &quot; + AbstractParameterizedException.PARAMETER_PLACEHOLDER + &quot;.  The location is not writeable by the executing user.  Ensure that the location is writeable by the executing user.&quot;;
+	
+	public NotWriteableException(final String location) {
+<span class="fc" id="L9">		super(location);</span>
+<span class="fc" id="L10">	}</span>
+
+	@Override
+	protected String getExceptionMessage() {
+<span class="nc" id="L14">		return MESSAGE;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

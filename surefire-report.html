@@ -145,7 +145,7 @@
           <i class="icon-chevron-right"></i>
         Project Information</a>
                   </li>
-                                                                                                                                  
+                                                                                                                                                                      
       <li>
   
                           <a href="project-reports.html" title="Project Reports">
@@ -177,6 +177,20 @@
                           <a href="apidocs/index.html" title="JavaDocs">
           <i class="none"></i>
         JavaDocs</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="jacoco/index.html" title="JaCoCo Test">
+          <i class="none"></i>
+        JaCoCo Test</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="invoker-report.html" title="Invoker Build Results">
+          <i class="none"></i>
+        Invoker Build Results</a>
             </li>
               </ul>
         </li>
@@ -221,7 +235,8 @@ function toggleDisplay(elementId) {
 <div class="section">
 <h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
 <div class="section">
-<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a><br />
+<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="table table-striped">
 <tr class="a">
 <th>Tests</th>
@@ -231,13 +246,869 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
+<td>108</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0%</td>
-<td>0</td></tr></table><br />
+<td>100%</td>
+<td>6.403</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
+<div class="section">
+<h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
+<table border="1" class="table table-striped">
+<tr class="a">
+<th>Package</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.output">com.github.jasonmfehr.combiner.output</a></td>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.193</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.pipeline">com.github.jasonmfehr.combiner.pipeline</a></td>
+<td>19</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.243</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.transformer">com.github.jasonmfehr.combiner.transformer</a></td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.009</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.file">com.github.jasonmfehr.combiner.file</a></td>
+<td>18</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.876</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.logging">com.github.jasonmfehr.combiner.logging</a></td>
+<td>30</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.28</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.combiner">com.github.jasonmfehr.combiner.combiner</a></td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>3.044</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.input">com.github.jasonmfehr.combiner.input</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.558</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.factory">com.github.jasonmfehr.combiner.factory</a></td>
+<td>17</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.084</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.mojo">com.github.jasonmfehr.combiner.mojo</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.116</td></tr></table><br />
+<p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.output"></a>com.github.jasonmfehr.combiner.output</h3><a name="com.github.jasonmfehr.combiner.output"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.outputFileOutputSourceWriterTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.outputFileOutputSourceWriterTest">FileOutputSourceWriterTest</a></td>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.193</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.pipeline"></a>com.github.jasonmfehr.combiner.pipeline</h3><a name="com.github.jasonmfehr.combiner.pipeline"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.pipelineCombinationDefaultsManagerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.pipelineCombinationDefaultsManagerTest">CombinationDefaultsManagerTest</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.072</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.pipelineCombinationValidatorTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.pipelineCombinationValidatorTest">CombinationValidatorTest</a></td>
+<td>13</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.048</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.pipelinePipelineExecutorTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.pipelinePipelineExecutorTest">PipelineExecutorTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.123</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.transformer"></a>com.github.jasonmfehr.combiner.transformer</h3><a name="com.github.jasonmfehr.combiner.transformer"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.transformerEscapeDoubleQuotesTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.transformerEscapeDoubleQuotesTest">EscapeDoubleQuotesTest</a></td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.004</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.transformerStripNewlinesTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.transformerStripNewlinesTest">StripNewlinesTest</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.005</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.file"></a>com.github.jasonmfehr.combiner.file</h3><a name="com.github.jasonmfehr.combiner.file"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.fileFileLocatorTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.fileFileLocatorTest">FileLocatorTest</a></td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.358</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.fileFileValidatorTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.fileFileValidatorTest">FileValidatorTest</a></td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.236</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.fileMultiFileReaderTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.fileMultiFileReaderTest">MultiFileReaderTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.282</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.logging"></a>com.github.jasonmfehr.combiner.logging</h3><a name="com.github.jasonmfehr.combiner.logging"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.loggingParameterizedLoggerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.loggingParameterizedLoggerTest">ParameterizedLoggerTest</a></td>
+<td>30</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.28</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.combiner"></a>com.github.jasonmfehr.combiner.combiner</h3><a name="com.github.jasonmfehr.combiner.combiner"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.combinerAppendingCombinerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.combinerAppendingCombinerTest">AppendingCombinerTest</a></td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.832</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.combinerJSObjectCombinerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.combinerJSObjectCombinerTest">JSObjectCombinerTest</a></td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>2.212</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.input"></a>com.github.jasonmfehr.combiner.input</h3><a name="com.github.jasonmfehr.combiner.input"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.inputFileInputSourceReaderTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.inputFileInputSourceReaderTest">FileInputSourceReaderTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.558</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.factory"></a>com.github.jasonmfehr.combiner.factory</h3><a name="com.github.jasonmfehr.combiner.factory"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.factoryInputSourceReaderFactoryTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.factoryInputSourceReaderFactoryTest">InputSourceReaderFactoryTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.028</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.factoryObjectFactoryTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.factoryObjectFactoryTest">ObjectFactoryTest</a></td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.041</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.factoryOutputSourceWriterFactoryTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.factoryOutputSourceWriterFactoryTest">OutputSourceWriterFactoryTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.006</td></tr>
+<tr class="a">
+<td><a href="#com.github.jasonmfehr.combiner.factoryResourceCombinerFactoryTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.factoryResourceCombinerFactoryTest">ResourceCombinerFactoryTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.005</td></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.factoryResourceTransformerFactoryTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.factoryResourceTransformerFactoryTest">ResourceTransformerFactoryTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.004</td></tr></table></div>
+<div class="section">
+<h3><a name="com.github.jasonmfehr.combiner.mojo"></a>com.github.jasonmfehr.combiner.mojo</h3><a name="com.github.jasonmfehr.combiner.mojo"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<th></th>
+<th>Class</th>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
+<tr class="b">
+<td><a href="#com.github.jasonmfehr.combiner.mojoCombinerMojoTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.github.jasonmfehr.combiner.mojoCombinerMojoTest">CombinerMojoTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.116</td></tr></table></div><br /></div>
+<div class="section">
+<h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
+<div class="section">
+<h3><a name="AppendingCombinerTest"></a>AppendingCombinerTest</h3><a name="com.github.jasonmfehr.combiner.combinerAppendingCombinerTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultNewlines</td>
+<td>0.05</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNewlinesSpecified</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNonNumericNewline</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="JSObjectCombinerTest"></a>JSObjectCombinerTest</h3><a name="com.github.jasonmfehr.combiner.combinerJSObjectCombinerTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullSettings</td>
+<td>0.278</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testObjectNameInSettings</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNoObjectNameSetting</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="InputSourceReaderFactoryTest"></a>InputSourceReaderFactoryTest</h3><a name="com.github.jasonmfehr.combiner.factoryInputSourceReaderFactoryTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultPackage</td>
+<td>0.002</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testObjectInterface</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="ObjectFactoryTest"></a>ObjectFactoryTest</h3><a name="com.github.jasonmfehr.combiner.factoryObjectFactoryTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testListCreate</td>
+<td>0.447</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInstantiateIface</td>
+<td>0.023</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testLoggerConstructor</td>
+<td>0.003</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullClassOrRoleName</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDoeNotImplementIface</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testClassOnly</td>
+<td>0.004</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testRetrieveFromPlexusContainerInvalid</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testRetrieveFromPlexusContainer</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testFullPackage</td>
+<td>0.002</td></tr></table></div>
+<div class="section">
+<h3><a name="OutputSourceWriterFactoryTest"></a>OutputSourceWriterFactoryTest</h3><a name="com.github.jasonmfehr.combiner.factoryOutputSourceWriterFactoryTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultPackage</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testObjectInterface</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="ResourceCombinerFactoryTest"></a>ResourceCombinerFactoryTest</h3><a name="com.github.jasonmfehr.combiner.factoryResourceCombinerFactoryTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultPackage</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testObjectInterface</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="ResourceTransformerFactoryTest"></a>ResourceTransformerFactoryTest</h3><a name="com.github.jasonmfehr.combiner.factoryResourceTransformerFactoryTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultPackage</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testObjectInterface</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="FileLocatorTest"></a>FileLocatorTest</h3><a name="com.github.jasonmfehr.combiner.fileFileLocatorTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testHappyPathWithExcludes</td>
+<td>0.005</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNonReadableBaseDir</td>
+<td>0.005</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEmptyBaseDir</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullBaseDir</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNonExistantBaseDir</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testHappyPathWithoutExcludes</td>
+<td>0.017</td></tr></table></div>
+<div class="section">
+<h3><a name="FileValidatorTest"></a>FileValidatorTest</h3><a name="com.github.jasonmfehr.combiner.fileFileValidatorTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWriteableBlankInput</td>
+<td>0.002</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testReadableBlankInput</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testExistsReadable</td>
+<td>0.004</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testReadableNotExists</td>
+<td>0.022</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testReadableNullInput</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testExistsWriteable</td>
+<td>0.002</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWriteableExistsNotWriteable</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testReadableExistsNotReadable</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWriteableNotExists</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWriteableNullInput</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="MultiFileReaderTest"></a>MultiFileReaderTest</h3><a name="com.github.jasonmfehr.combiner.fileMultiFileReaderTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testHappyPath</td>
+<td>0.248</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testFileNotFound</td>
+<td>0.002</td></tr></table></div>
+<div class="section">
+<h3><a name="FileInputSourceReaderTest"></a>FileInputSourceReaderTest</h3><a name="com.github.jasonmfehr.combiner.inputFileInputSourceReaderTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testHappyPath</td>
+<td>0.002</td></tr></table></div>
+<div class="section">
+<h3><a name="ParameterizedLoggerTest"></a>ParameterizedLoggerTest</h3><a name="com.github.jasonmfehr.combiner.loggingParameterizedLoggerTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testErrorContentException</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInfoContentOnly</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testIsWarnEnabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInfoParameterizedContentDisabled</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWarnExceptionOnly</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugExceptionOnly</td>
+<td>0.012</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugParameterizedContentExceptionDisabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWarnParameterizedContentDisabled</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInfoContentException</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugContentException</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInfoParameterizedContentEnabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testLoggerNotSet</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWarnContentException</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugParameterizedContentOnlyEnabled</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testErrorParameterizedContentDisabled</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWarnContentOnly</td>
+<td>0.002</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testWarnParameterizedContentEnabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testErrorParameterizedContentEnabled</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugContentOnly</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testIsErrorEnabled</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugParameterizedContentExceptionEnabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testValidComboId</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testIsInfoEnabled</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testErrorExceptionOnly</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testIsDebugEnabled</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDebugParameterizedContentOnlyDisabled</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEmptyComboId</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullComboId</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInfoExceptionOnly</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testErrorContentOnly</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="CombinerMojoTest"></a>CombinerMojoTest</h3><a name="com.github.jasonmfehr.combiner.mojoCombinerMojoTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testSkipFalse</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testSkipTrue</td>
+<td>0.002</td></tr></table></div>
+<div class="section">
+<h3><a name="FileOutputSourceWriterTest"></a>FileOutputSourceWriterTest</h3><a name="com.github.jasonmfehr.combiner.outputFileOutputSourceWriterTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testParentDirExistsAndWriteable</td>
+<td>0.011</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testMakeParentDirSucceeds</td>
+<td>0.003</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInvalidCharset</td>
+<td>0.048</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testMakeParentDirFails</td>
+<td>0.002</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testParentDirExistsNotWriteable</td>
+<td>0.002</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testFileExists</td>
+<td>0.002</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testFileAndParentDirectoryNotExists</td>
+<td>0.004</td></tr></table></div>
+<div class="section">
+<h3><a name="CombinationDefaultsManagerTest"></a>CombinationDefaultsManagerTest</h3><a name="com.github.jasonmfehr.combiner.pipelineCombinationDefaultsManagerTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullFieldsAreSet</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEmptyStringFieldsAreSet</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testDefaultsAreSet</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testUserValuesNotOverwritten</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="CombinationValidatorTest"></a>CombinationValidatorTest</h3><a name="com.github.jasonmfehr.combiner.pipelineCombinationValidatorTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullOutputSourceWriter</td>
+<td>0.004</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testInvalidCharset</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullInputSourcesIncludes</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullInputSourceReader</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testBlankInputSourceReader</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullOutputDestination</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testBlankOutputSourceWriter</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testBlankOutputDestination</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEmptyInputSourcesIncludes</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testBlankCharset</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEverythingValid</td>
+<td>0.006</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullCharset</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNullInputSources</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="PipelineExecutorTest"></a>PipelineExecutorTest</h3><a name="com.github.jasonmfehr.combiner.pipelinePipelineExecutorTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testHappyPath</td>
+<td>0.008</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNoInputResourcesFound</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="EscapeDoubleQuotesTest"></a>EscapeDoubleQuotesTest</h3><a name="com.github.jasonmfehr.combiner.transformerEscapeDoubleQuotesTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNoEscapeQuotes</td>
+<td>0.001</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testEscapeQuotes</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testSkipAlreadyEscapedQuotes</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="StripNewlinesTest"></a>StripNewlinesTest</h3><a name="com.github.jasonmfehr.combiner.transformerStripNewlinesTest"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNull</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testStripLineFeedsOnly</td>
+<td>0.001</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testStripCRLF</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testStripCarriageReturnsOnly</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testNoNewlines</td>
+<td>0</td></tr></table></div><br /></div>
                   </div>
             </div>
           </div>

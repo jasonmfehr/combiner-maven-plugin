@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ParameterizedLogger.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.logging</a> &gt; <span class="el_source">ParameterizedLogger.java</span></div><h1>ParameterizedLogger.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.logging;
+
+import java.text.MessageFormat;
+
+import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.component.annotations.Component;
+
+import com.github.jasonmfehr.combiner.mojo.Combination;
+
+@Component(role=ParameterizedLogger.class)
+public class ParameterizedLogger implements Log {
+
+	private Log decoratedLogger;
+	
+<span class="fc" id="L15">	public ParameterizedLogger() {</span>
+<span class="fc" id="L16">		this.decoratedLogger = null;</span>
+<span class="fc" id="L17">	}</span>
+	
+<span class="fc" id="L19">	public ParameterizedLogger(final Log decoratedLogger) {</span>
+<span class="fc" id="L20">		this.decoratedLogger = decoratedLogger;</span>
+<span class="fc" id="L21">	}</span>
+	
+	public void setLogger(final Log logger) {
+<span class="fc" id="L24">		this.decoratedLogger = logger;</span>
+<span class="fc" id="L25">	}</span>
+	
+	public boolean isDebugEnabled() {
+<span class="fc" id="L28">		return this.internalGetLogger().isDebugEnabled();</span>
+	}
+
+	public void debug(final CharSequence content) {
+<span class="fc" id="L32">		this.internalGetLogger().debug(content);</span>
+<span class="fc" id="L33">	}</span>
+
+	public void debug(final CharSequence content, final Throwable error) {
+<span class="fc" id="L36">		this.internalGetLogger().debug(content, error);</span>
+<span class="fc" id="L37">	}</span>
+
+	public void debug(final Throwable error) {
+<span class="fc" id="L40">		this.internalGetLogger().debug(error);</span>
+<span class="fc" id="L41">	}</span>
+	
+	public void debugWithParams(final CharSequence content, final Object... parameters) {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if(this.isDebugEnabled()){</span>
+<span class="fc" id="L45">			this.internalGetLogger().debug(this.formatMessage(content, parameters));</span>
+		}
+<span class="fc" id="L47">	}</span>
+	
+	public void debugWithParams(final CharSequence content, final Throwable error, final Object... parameters) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if(this.isDebugEnabled()){</span>
+<span class="fc" id="L51">			this.internalGetLogger().debug(this.formatMessage(content, parameters), error);</span>
+		}
+<span class="fc" id="L53">	}</span>
+
+	public boolean isInfoEnabled() {
+<span class="fc" id="L56">		return this.internalGetLogger().isInfoEnabled();</span>
+	}
+
+	public void info(final CharSequence content) {
+<span class="fc" id="L60">		this.internalGetLogger().info(content);</span>
+<span class="fc" id="L61">	}</span>
+
+	public void info(final CharSequence content, final Throwable error) {
+<span class="fc" id="L64">		this.internalGetLogger().info(content, error);</span>
+<span class="fc" id="L65">	}</span>
+
+	public void info(final Throwable error) {
+<span class="fc" id="L68">		this.internalGetLogger().info(error);</span>
+<span class="fc" id="L69">	}</span>
+	
+	public void infoWithParams(final CharSequence content, final Object... parameters) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">		if(this.isInfoEnabled()){</span>
+<span class="fc" id="L73">			this.internalGetLogger().info(this.formatMessage(content, parameters));</span>
+		}
+<span class="fc" id="L75">	}</span>
+
+	public boolean isWarnEnabled() {
+<span class="fc" id="L78">		return this.internalGetLogger().isWarnEnabled();</span>
+	}
+
+	public void warn(final CharSequence content) {
+<span class="fc" id="L82">		this.internalGetLogger().warn(content);</span>
+<span class="fc" id="L83">	}</span>
+
+	public void warn(final CharSequence content, final Throwable error) {
+<span class="fc" id="L86">		this.internalGetLogger().warn(content, error);</span>
+<span class="fc" id="L87">	}</span>
+
+	public void warn(final Throwable error) {
+<span class="fc" id="L90">		this.internalGetLogger().warn(error);</span>
+<span class="fc" id="L91">	}</span>
+	
+	public void warnWithParams(final CharSequence content, final Object... parameters) {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		if(this.isWarnEnabled()){</span>
+<span class="fc" id="L95">			this.internalGetLogger().warn(this.formatMessage(content, parameters));</span>
+		}
+<span class="fc" id="L97">	}</span>
+
+	public boolean isErrorEnabled() {
+<span class="fc" id="L100">		return this.internalGetLogger().isErrorEnabled();</span>
+	}
+
+	public void error(final CharSequence content) {
+<span class="fc" id="L104">		this.internalGetLogger().error(content);</span>
+<span class="fc" id="L105">	}</span>
+
+	public void error(final CharSequence content, final Throwable error) {
+<span class="fc" id="L108">		this.internalGetLogger().error(content, error);</span>
+<span class="fc" id="L109">	}</span>
+
+	public void error(final Throwable error) {
+<span class="fc" id="L112">		this.internalGetLogger().error(error);</span>
+<span class="fc" id="L113">	}</span>
+	
+	public void errorWithParams(final CharSequence content, final Object... parameters) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if(this.isErrorEnabled()){</span>
+<span class="fc" id="L117">			this.internalGetLogger().error(this.formatMessage(content, parameters));</span>
+		}
+<span class="fc" id="L119">	}</span>
+	
+	/**
+	 * Determines if the {@code id} field within the provided {@link Combination} exists or not.  If it exists, then a {@link String} is created 
+	 * by concatenating an id provided message String with the {@link Combination#getId()} field.  If it does not exist, 
+	 * then an empty {@link String} is returned.
+	 *  
+	 * @param combo {@link Combination} to check if its {@code id} field has been specified
+	 * @return {@link String}
+	 */
+	public String buildCombinationIDString(final Combination combo) {
+<span class="fc bfc" id="L130" title="All 4 branches covered.">		return combo.getId() != null &amp;&amp; combo.getId().length() &gt; 0 ? &quot; for combination with id &quot; + combo.getId() : &quot;&quot;;</span>
+	}
+
+	private String charSeqToStr(final CharSequence charSequence) {
+<span class="fc" id="L134">		final StringBuilder sb = new StringBuilder(charSequence);</span>
+		
+<span class="fc" id="L136">		return sb.toString();</span>
+	}
+	
+	private String formatMessage(final CharSequence content, final Object... params) {
+<span class="fc" id="L140">		return MessageFormat.format(this.charSeqToStr(content), params);</span>
+	}
+	
+	private Log internalGetLogger() {
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		if(this.decoratedLogger == null){</span>
+<span class="fc" id="L145">			throw new NullPointerException(&quot;Internal logger not set.  This exception may be caused by attempting to use the plexus component before the CombinerMojo class sets the decorated logger&quot;);</span>
+		}else{
+<span class="fc" id="L147">			return this.decoratedLogger;</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JSObjectCombiner.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.combiner</a> &gt; <span class="el_source">JSObjectCombiner.java</span></div><h1>JSObjectCombiner.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.combiner;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.project.MavenProject;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+
+public class JSObjectCombiner implements ResourceCombiner {
+
+	private static final String JS_OBJECT_NAME_KEY = &quot;jsObjectName&quot;;
+	private static final String DEFAULT_JS_OBJECT_NAME = &quot;combiner&quot;;
+	
+	private static final char LINE_SEPARATOR = '\n';
+	
+	private final ParameterizedLogger logger;
+	
+<span class="fc" id="L23">	public JSObjectCombiner(final ParameterizedLogger logger) {</span>
+<span class="fc" id="L24">		this.logger = logger;</span>
+<span class="fc" id="L25">	}</span>
+	
+	public String combine(final Map&lt;String, String&gt; transformedResourceContents, final Map&lt;String, String&gt; settings, final MavenProject mavenProject) {
+		final String combined;
+		
+<span class="fc" id="L30">		this.logger.debugWithParams(&quot;{0} starting execution&quot;, this.getClass().getName());</span>
+<span class="fc" id="L31">		combined = this.doCombine(this.determineJSObjectName(settings), transformedResourceContents);</span>
+<span class="fc" id="L32">		this.logger.debugWithParams(&quot;{0} finished with a combined contents having length {1}&quot;, this.getClass().getName(), combined.length());</span>
+		
+<span class="fc" id="L34">		return combined;</span>
+	}
+	
+	private String determineJSObjectName(final Map&lt;String, String&gt; settings) {
+<span class="fc" id="L38">		String determinedName = DEFAULT_JS_OBJECT_NAME;</span>
+		
+<span class="fc bfc" id="L40" title="All 4 branches covered.">		if(settings != null &amp;&amp; settings.containsKey(JS_OBJECT_NAME_KEY)){</span>
+<span class="fc" id="L41">			return settings.get(JS_OBJECT_NAME_KEY);</span>
+		}
+		
+<span class="fc" id="L44">		return determinedName;</span>
+	}
+	
+	private String doCombine(final String jsObjectName, final Map&lt;String, String&gt; contents) {
+<span class="fc" id="L48">		final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L49">		final List&lt;String&gt; concatedLines = new ArrayList&lt;String&gt;(contents.size());</span>
+		
+<span class="fc" id="L51">		sb.append(&quot;(function(w){&quot;).append(LINE_SEPARATOR);</span>
+<span class="fc" id="L52">		sb.append(&quot;    w.&quot;).append(jsObjectName).append(&quot; = {&quot;).append(LINE_SEPARATOR);</span>
+		
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		for(Entry&lt;String, String&gt; contentsEntry : contents.entrySet()){</span>
+<span class="fc" id="L55">			concatedLines.add(&quot;        \&quot;&quot; + this.findFieldName(contentsEntry.getKey()) + &quot;\&quot; = \&quot;&quot; + contentsEntry.getValue() + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L56">		}</span>
+<span class="fc" id="L57">		sb.append(StringUtils.join(concatedLines, &quot;,&quot; + LINE_SEPARATOR)).append(LINE_SEPARATOR);</span>
+		
+<span class="fc" id="L59">		sb.append(&quot;    };&quot;).append(LINE_SEPARATOR);</span>
+<span class="fc" id="L60">		sb.append(&quot;})(window);&quot;).append(LINE_SEPARATOR).append(LINE_SEPARATOR);</span>
+		
+<span class="fc" id="L62">		return sb.toString();</span>
+	}
+
+	private String findFieldName(final String resourceKey) {
+<span class="fc" id="L66">		return new File(resourceKey).getName().replaceFirst(&quot;\\.[^\\.]*?$&quot;, &quot;&quot;);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

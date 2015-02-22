@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ObjectFactory.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.factory</a> &gt; <span class="el_source">ObjectFactory.java</span></div><h1>ObjectFactory.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.factory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+import com.github.jasonmfehr.tojs.exception.NotAssignableException;
+import com.github.jasonmfehr.tojs.exception.ObjectInstantiationException;
+
+<span class="fc" id="L17">public abstract class ObjectFactory {</span>
+
+	@Requirement
+    private PlexusContainer container;
+	
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	protected abstract Class&lt;?&gt; getObjectClass();
+	protected abstract String getDefaultPackage();
+	
+	public &lt;T&gt; T buildObject(final String classOrRole) {
+		final String fullClassOrRoleName;
+		T obj;
+		Object plexusObj;
+		
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		if(classOrRole == null){</span>
+<span class="fc" id="L34">			throw new NullPointerException(&quot;classOrRole is null&quot;);</span>
+		}
+		
+<span class="fc" id="L37">		fullClassOrRoleName = this.buildFullyQualified(classOrRole);</span>
+		
+<span class="fc" id="L39">		plexusObj = this.attemptPlexusRetrieve(fullClassOrRoleName);</span>
+		
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if(plexusObj != null){</span>
+			//generics in Java are a compile time check, but this class needs to do runtime type checks, thus 
+			//the call to checkAssignability is necessary to ensure the object who's class was determined at 
+			//runtime can be assigned to the class specified by this factory's getObjectClass method
+<span class="fc bfc" id="L45" title="All 2 branches covered.">			if(this.checkAssignability(plexusObj.getClass())){</span>
+<span class="fc" id="L46">				this.logger.debugWithParams(&quot;Found object with class {0} in the plexus container, returning that object&quot;, plexusObj.getClass().getCanonicalName());</span>
+<span class="fc" id="L47">				return (T)plexusObj;</span>
+			}else{
+<span class="fc" id="L49">				this.logger.debugWithParams(&quot;Could not cast object with class {0} that was retrieved from the plexus container to the expected type {1} of this factory, moving ahead with creating a new object&quot;, plexusObj.getClass().getCanonicalName(), this.getObjectClass().getCanonicalName());</span>
+			}
+		}
+		
+<span class="fc" id="L53">		obj = this.constructObject(fullClassOrRoleName);</span>
+
+<span class="fc" id="L55">		return obj;</span>
+	}
+	
+	public &lt;T&gt; List&lt;T&gt; buildObjectList(final List&lt;String&gt; classOrRoleNames) {
+<span class="fc" id="L59">		final List&lt;T&gt; objectList = new ArrayList&lt;T&gt;();</span>
+		
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		for(String cN : classOrRoleNames){</span>
+			//TODO figure out why this has to be cast
+<span class="fc" id="L63">			objectList.add((T)this.buildObject(cN));</span>
+<span class="fc" id="L64">		}</span>
+		
+<span class="fc" id="L66">		return objectList;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private &lt;T&gt; T instantiateObject(Class&lt;?&gt; constructionClass, Object... args) throws NoSuchMethodException {
+		final T obj;
+		
+		try{
+<span class="fc" id="L74">			obj = (T) ConstructorUtils.invokeConstructor(constructionClass, args);</span>
+<span class="nc" id="L75">		} catch (IllegalAccessException e) {</span>
+<span class="nc" id="L76">			throw new ObjectInstantiationException(constructionClass.getName(), e);</span>
+<span class="nc" id="L77">		} catch (InvocationTargetException e) {</span>
+<span class="nc" id="L78">			throw new ObjectInstantiationException(constructionClass.getName(), e);</span>
+<span class="nc" id="L79">		} catch (InstantiationException e) {</span>
+<span class="nc" id="L80">			throw new ObjectInstantiationException(constructionClass.getName(), e);</span>
+<span class="fc" id="L81">		}</span>
+		
+<span class="fc" id="L83">		return obj;</span>
+	}
+	
+	private String buildFullyQualified(final String classOrRole) {
+		final String fullyQualified;
+		
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		if(classOrRole.contains(&quot;.&quot;)){</span>
+<span class="fc" id="L90">			this.logger.debugWithParams(&quot;Provided class or role {0} is already fully qualified&quot;, classOrRole);</span>
+<span class="fc" id="L91">			fullyQualified = classOrRole;</span>
+		}else{
+<span class="fc" id="L93">			fullyQualified = this.getDefaultPackage() + &quot;.&quot; + classOrRole;</span>
+<span class="fc" id="L94">			this.logger.debugWithParams(&quot;Instantiating class {0} after adding default package of {1}&quot;, fullyQualified, this.getDefaultPackage());</span>
+		}
+		
+<span class="fc" id="L97">		return fullyQualified;</span>
+	}
+	
+	private Object attemptPlexusRetrieve(String fullyQualifiedObjectName) {
+<span class="fc" id="L101">		Object obj = null;</span>
+		
+		try {
+<span class="fc" id="L104">			this.logger.debugWithParams(&quot;Attempting lookup from plexus container using value {0}&quot;, fullyQualifiedObjectName);</span>
+<span class="fc" id="L105">			obj = this.container.lookup(fullyQualifiedObjectName);</span>
+<span class="fc" id="L106">		} catch (ComponentLookupException e) {</span>
+<span class="fc" id="L107">			this.logger.debugWithParams(&quot;Did not find component {0} in plexus container&quot;, fullyQualifiedObjectName);</span>
+<span class="fc" id="L108">		}</span>
+		
+<span class="fc" id="L110">		return obj;</span>
+	}
+	
+	private &lt;T&gt; T constructObject(final String fullyQualifiedName) {
+		final Class&lt;?&gt; constructionClass;
+		T obj;
+		
+<span class="fc" id="L117">		this.logger.debugWithParams(&quot;Attempting to load class {0}&quot;, fullyQualifiedName);</span>
+		try {
+<span class="fc" id="L119">			constructionClass = ClassUtils.getClass(fullyQualifiedName);</span>
+<span class="nc" id="L120">		} catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L121">			throw new ObjectInstantiationException(fullyQualifiedName, e);</span>
+<span class="fc" id="L122">		}</span>
+		
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		if(!this.checkAssignability(constructionClass)){</span>
+<span class="fc" id="L125">			throw new NotAssignableException(fullyQualifiedName);</span>
+		}
+		
+		try{
+<span class="fc" id="L129">			this.logger.debugWithParams(&quot;Attempting to instantiate an object with class {0} using a constructor that takes only a org.apache.maven.plugin.logging.Log parameter&quot;, fullyQualifiedName);</span>
+			//try invoking the constructor that has a single org.apache.maven.plugin.logging.Log argument
+<span class="fc" id="L131">			obj = this.instantiateObject(constructionClass, this.logger);</span>
+<span class="fc" id="L132">		}catch(NoSuchMethodException e){</span>
+			try {
+				//no single argument constructor was found, try the default no argument constructor
+<span class="fc" id="L135">				this.logger.debugWithParams(&quot;Could not find a single argument constructor that takes a org.apache.maven.plugin.logging.Log parameter, attempting to use the default constructor to instantiate an object with class {0}&quot;, fullyQualifiedName);</span>
+<span class="fc" id="L136">				obj = this.instantiateObject(constructionClass);</span>
+<span class="fc" id="L137">			} catch (NoSuchMethodException e1) {</span>
+<span class="fc" id="L138">				throw new ObjectInstantiationException(fullyQualifiedName, e);</span>
+<span class="fc" id="L139">			}</span>
+<span class="fc" id="L140">		}</span>
+		
+<span class="fc" id="L142">		this.logger.debugWithParams(&quot;Successfully instantiated an object with class {0}&quot;, fullyQualifiedName);</span>
+		
+<span class="fc" id="L144">		return obj;</span>
+	}
+	
+	/**
+	 * Determines if the class of an object with the provided class can be cast to the class specified in the {@link #getObjectClass()} method.
+	 * 
+	 * @param o {@link Class} that will be checked for type compatibility with the class returned from {@link #getObjectClass()}
+	 * @return {@code boolean} with {@code true} indicating an object with the specified class can be cast or {@code false} indicating it cannot be cast
+	 */
+	private boolean checkAssignability(Class&lt;?&gt; clazz) {
+<span class="fc" id="L154">		return ClassUtils.isAssignable(clazz, this.getObjectClass());</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

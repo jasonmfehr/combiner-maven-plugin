@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FileLocator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">combiner-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">com.github.jasonmfehr.combiner.file</a> &gt; <span class="el_source">FileLocator.java</span></div><h1>FileLocator.java</h1><pre class="source lang-java linenums">package com.github.jasonmfehr.combiner.file;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.util.DirectoryScanner;
+
+import com.github.jasonmfehr.combiner.logging.ParameterizedLogger;
+
+/**
+ * Searches through a base directory locating files that match a 
+ * set of includes patterns but do not match a set of excludes patterns.&lt;br /&gt;&lt;br /&gt;
+ * 
+ * Objects of this class are not thread safe.
+ * 
+ * @author jasonmfehr
+ * @since 1.0.0
+ * 
+ */
+@Component(role=FileLocator.class)
+public class FileLocator {
+
+	@Requirement
+	private FileValidator fileValidator;
+	
+	@Requirement
+	private ParameterizedLogger logger;
+	
+	private final DirectoryScanner directoryScanner;
+	
+<span class="fc" id="L33">	public FileLocator() {</span>
+<span class="fc" id="L34">		this.directoryScanner = new DirectoryScanner();</span>
+<span class="fc" id="L35">	}</span>
+	
+	/**
+	 * Locate a set of files the match the provided includes patterns 
+	 * but do not match the provided excludes patterns.&lt;br /&gt;&lt;br /&gt;
+	 * 
+	 * @param baseDir {@link String} containing an absolute path to a 
+	 *                base directory that will be searched
+	 * @param includes {@link List} containing file patterns to include in the 
+	 *                 results set
+	 * @param excludes {@link List} containing file patterns to exclude from the 
+	 *                 results set
+	 * 
+	 * @return {@link List} of file paths relative to the baseDir
+	 * 
+	 * @throws NullPointerException if the baseDir parameter is null
+	 * @throws IllegalArgumentException if the directory at this path 
+	 *                                  specified in the baseDir parameter 
+	 *                                  does not exist or is not readable 
+	 */
+	public List&lt;String&gt; locateFiles(final String baseDir, final List&lt;String&gt; includes, final List&lt;String&gt; excludes) {
+		final List&lt;String&gt; filesList;
+		
+<span class="fc" id="L58">		fileValidator.existsAndReadable(baseDir);</span>
+		
+<span class="fc" id="L60">		this.logger.debugWithParams(&quot;FileLocator scanning directory {0} for input files&quot;, baseDir);</span>
+		
+<span class="fc" id="L62">		directoryScanner.addDefaultExcludes();</span>
+<span class="fc" id="L63">		directoryScanner.setBasedir(baseDir);</span>
+<span class="fc" id="L64">		directoryScanner.setIncludes(includes.toArray(new String[includes.size()]));</span>
+		
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		if(excludes != null){</span>
+<span class="fc" id="L67">			directoryScanner.setExcludes(excludes.toArray(new String[excludes.size()]));</span>
+		}
+		
+<span class="fc" id="L70">		directoryScanner.scan();</span>
+		
+<span class="fc" id="L72">		filesList = Arrays.asList(directoryScanner.getIncludedFiles());</span>
+		
+<span class="fc" id="L74">		this.logger.infoWithParams(&quot;FileLocator located {0} files&quot;, filesList.size());</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">		if(this.logger.isDebugEnabled()){</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">			for(final String s : filesList){</span>
+<span class="fc" id="L77">				this.logger.debug(&quot;  &quot; + s);</span>
+<span class="fc" id="L78">			}</span>
+		}
+		
+<span class="fc" id="L81">		return filesList;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>
