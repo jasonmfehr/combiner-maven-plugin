@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jasonmfehr/combiner-maven-plugin.svg?branch=master)](https://travis-ci.org/jasonmfehr/combiner-maven-plugin)
 
-*TODO -- insert link to site here end remove below information*
+Documentation can be found at: http://jasonmfehr.github.io/combiner-maven-plugin/
 
 ### Sample pom showing all available configuration options:
 ```
@@ -49,8 +49,3 @@
   </executions>
 </plugin>
 ```
-### Usage Details
-| Name | Type | Description |
-|:-----|:---- | ----------- |
-| combinations | List | Defines a set of related input resources, transformers, combiner, and output destination/writer. |
-| combiner | String | Java class implementation of the combiner pipeline stage used when combining all resources together.  The class specified here must implement the Java interface com.github.jasonmfehr.combiner.combiner.ResourceCombiner from the combiner-maven-plugin-api dependency.  See the above section on pipeline stage construction for information on what values can be specified in this parameter. |

@@ -63,6 +63,7 @@
         <maven.plugin.plugin.version>3.3</maven.plugin.plugin.version>
         <maven.invoker.plugin.version>1.9</maven.invoker.plugin.version>
         <maven.javadoc.plugin.version>2.10.1</maven.javadoc.plugin.version>
+        <github.global.server>github</github.global.server>
     </properties>
     
     <modules>
@@ -162,6 +163,15 @@
                             <version>1.6</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.github</groupId>
+                    <artifactId>site-maven-plugin</artifactId>
+                    <version>0.11</version>
+                    <configuration>
+                        <message>creating site for ${project.version}</message>
+                        <noJekyll>true</noJekyll>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
