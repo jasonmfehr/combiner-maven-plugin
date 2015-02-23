@@ -32,6 +32,10 @@
         
         <menu ref="reports" />
         
+        <menu name="Other Reports">
+            <item name="PIT Report" href="pit-reports/index.html" />
+        </menu>
+        
     </body>
 
 </project>

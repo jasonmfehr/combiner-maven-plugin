@@ -123,9 +123,10 @@
                 <plugin>
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
-                    <version>1.1.3</version>
+                    <version>1.1.4</version>
                     <configuration>
-                       <mutationThreshold>97</mutationThreshold>
+                        <reportsDirectory>${project.build.directory}/site/pit-reports</reportsDirectory>
+                        <mutationThreshold>97</mutationThreshold>
                         <targetClasses>
                             <param>com.github.jasonmfehr.combiner.*</param>
                         </targetClasses>
@@ -246,13 +247,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>2.1.0</version>
-            </plugin>
-            -->
         </plugins>
     </build>
     

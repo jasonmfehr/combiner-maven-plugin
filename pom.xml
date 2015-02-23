@@ -9,7 +9,9 @@
     <packaging>pom</packaging>
     
     <name>${project.artifactId}</name>
-    <url>https://github.com/jasonmfehr/combiner-maven-plugin</url>
+    <url>https://jasonmfehr.github.io/combiner-maven-plugin/</url>
+    <inceptionYear>2014</inceptionYear>
+    
     <description>
         The combiner-maven-plugin is used to take multiple different resources (typically files) and merge 
         them into a single resource.

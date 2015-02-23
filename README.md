@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jasonmfehr/combiner-maven-plugin.svg?branch=master)](https://travis-ci.org/jasonmfehr/combiner-maven-plugin)
 
-Documentation can be found at: http://jasonmfehr.github.io/combiner-maven-plugin/
+Documentation can be found at: https://jasonmfehr.github.io/combiner-maven-plugin/
 
 ### Sample pom showing all available configuration options:
 ```
