@@ -252,7 +252,7 @@
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
+                    <releaseProfiles>release nexus-staging:release run-pit run-its upload-site</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
