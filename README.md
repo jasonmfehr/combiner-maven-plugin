@@ -1,6 +1,6 @@
 # combiner-maven-plugin
 
-[![Build Status](https://travis-ci.org/jasonmfehr/combiner-maven-plugin.svg?branch=master)](https://travis-ci.org/jasonmfehr/combiner-maven-plugin)
+[![Build Status](https://travis-ci.org/jasonmfehr/combiner-maven-plugin.svg?branch=master)](https://travis-ci.org/jasonmfehr/combiner-maven-plugin)  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.jasonmfehr/combiner-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.jasonmfehr/combiner-maven-plugin)
 
 Documentation can be found at: https://jasonmfehr.github.io/combiner-maven-plugin/
 
