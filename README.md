@@ -4,7 +4,7 @@
 
 Documentation can be found at: https://jasonmfehr.github.io/combiner-maven-plugin/
 
-### Sample pom showing all available configuration options:
+##### Sample pom showing all available configuration options:
 ```
 <plugin>
   <groupId>com.github.jasonmfehr</groupId>
