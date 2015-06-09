@@ -38,8 +38,8 @@
         <connection>scm:git:git@github.com:jasonmfehr/combiner-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jasonmfehr/combiner-maven-plugin.git</developerConnection>
         <url>https://github.com/jasonmfehr/combiner-maven-plugin</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     
     <distributionManagement>
         <snapshotRepository>
@@ -61,7 +61,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.5</java.version>
+        <java-version>1.5</java-version>
         <jacoco.version>0.7.2.201409121644</jacoco.version>
         <maven.plugin.plugin.version>3.3</maven.plugin.plugin.version>
         <maven.invoker.plugin.version>1.9</maven.invoker.plugin.version>
@@ -97,7 +97,7 @@
     <build>
         <pluginManagement>
             <plugins>
-	            <plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.5</version>
@@ -198,8 +198,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                    <compilerVersion>${java-version}</compilerVersion>
                 </configuration>
             </plugin>
             <plugin>
@@ -230,6 +231,7 @@
                             <maven-artifactId>${project.artifactId}</maven-artifactId>
                             <maven-version>${project.version}</maven-version>
                             <scm-url>${project.scm.url}</scm-url>
+                            <java-version>${java-version}</java-version>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -281,6 +283,17 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <scm-url>${project.scm.url}/tree/${project.scm.tag}</scm-url>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
